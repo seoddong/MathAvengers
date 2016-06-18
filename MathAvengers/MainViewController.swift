@@ -17,6 +17,9 @@ class MainViewController: UIViewController {
     var labelArray: [String] = []
     var imageNameArray: [String] = []
     var webAddress: [String] = []
+    
+    var selectedIndexPathRow = 0
+    var selectedTitle = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,15 +42,19 @@ class MainViewController: UIViewController {
     }
     
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        let target = segue.destinationViewController as! QuestionViewController
+        target.calledLevel = selectedIndexPathRow + 1
+        debugPrint("prepareForSegue: selectedTitle=\(selectedTitle)")
+        target.calledTitle = selectedTitle
     }
-    */
+
 
 }
 
@@ -59,6 +66,14 @@ extension MainViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return labelArray.count
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        selectedIndexPathRow = indexPath.row
+        let cell = self.levelTableView.cellForRowAtIndexPath(indexPath) as! LevelTableViewCell
+        selectedTitle = cell.cellLabel.text!
+        debugPrint("didSelectRowAtIndexPath: selectedTitle=\(selectedTitle)")
+        
     }
     
 }
