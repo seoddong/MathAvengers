@@ -11,8 +11,11 @@ import UIKit
 class MainViewController: UIViewController {
     
     @IBOutlet weak var levelTableView: UITableView!
+    
+    var targetView: QuestionViewController!
 
     let reuseIdentifier = "reuseCellIdentifier"
+    let segueIdentifier = "levelSegueIdentifier"
     
     var labelArray: [String] = []
     var imageNameArray: [String] = []
@@ -49,11 +52,15 @@ class MainViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        let target = segue.destinationViewController as! QuestionViewController
-        target.calledLevel = selectedIndexPathRow + 1
-        debugPrint("prepareForSegue: selectedTitle=\(selectedTitle)")
-        target.calledTitle = selectedTitle
+        if segueIdentifier == "levelSegueIdentifier" {
+            targetView = segue.destinationViewController as! QuestionViewController
+            let selectedIndexPath = levelTableView.indexPathForSelectedRow
+            let cell = levelTableView.cellForRowAtIndexPath(selectedIndexPath!) as! LevelTableViewCell
+            targetView.calledTitle = cell.cellLabel.text!
+            targetView.calledLevel = (selectedIndexPath?.row)! + 1
+        }
     }
+
 
 
 }
@@ -68,14 +75,6 @@ extension MainViewController: UITableViewDelegate {
         return labelArray.count
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selectedIndexPathRow = indexPath.row
-        let cell = self.levelTableView.cellForRowAtIndexPath(indexPath) as! LevelTableViewCell
-        selectedTitle = cell.cellLabel.text!
-        debugPrint("didSelectRowAtIndexPath: selectedTitle=\(selectedTitle)")
-        
-    }
-    
 }
 
 
@@ -85,7 +84,7 @@ extension MainViewController: UITableViewDataSource {
         
         // 셀의 데이터와 이미지 설정 코드
         let row = indexPath.row
-        cell.cellLabel.text = labelArray[row]
+        cell.cellLabel.text = "\(row + 1). \(labelArray[row])"
         cell.cellImageView.image = UIImage(named: imageNameArray[row])
         
         return cell

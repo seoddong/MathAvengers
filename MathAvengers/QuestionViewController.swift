@@ -14,7 +14,7 @@ class QuestionViewController: UIViewController {
     var stackView: UIStackView!
     var cancelButton: UIButton!
     var titleLabel, scoreLabel: UILabel!
-    var starImageView: [UIImage] = [UIImage(), UIImage(), UIImage()]
+    var starImageView: [UIImageView] = [UIImageView(), UIImageView(), UIImageView()]
     var qLabel: UILabel!
     var aButton: [UIButton] = [UIButton(), UIButton(), UIButton(), UIButton()]
     
@@ -33,6 +33,8 @@ class QuestionViewController: UIViewController {
     var answerArray: [UInt32] = []
     var countCorrectAnswer = 0
     var currentLevel = 0
+    var gameOver = false
+    var startTime = NSDate.timeIntervalSinceReferenceDate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,9 +45,32 @@ class QuestionViewController: UIViewController {
         
         if calledLevel > 0 {
             currentLevel = calledLevel
+            gameOver = false
             makeQuestionLevel(currentLevel)
+            
+            startTime = NSDate.timeIntervalSinceReferenceDate()
+            _ = NSTimer.scheduledTimerWithTimeInterval(
+                0.02,
+                target: self,
+                selector: (#selector(QuestionViewController.displayCollapsedTime(_:))),
+                userInfo: nil,
+                repeats: true)
         }
         
+    }
+    
+    func displayCollapsedTime(timer: NSTimer)
+    {
+        
+        let timeRemaining = NSDate.timeIntervalSinceReferenceDate() - startTime
+        if !gameOver {
+            scoreLabel.text = String(format: "%.07f", timeRemaining)
+        }
+        else{
+            timer.invalidate()
+            //Force the label to 0.0000000 at the end
+            scoreLabel.text = String(format: "%.07f", 0.0)
+        }
     }
     
     func setActions() {
@@ -145,16 +170,24 @@ class QuestionViewController: UIViewController {
         titleLabel = UILabel()
         setDesignForLabel(titleLabel)
         titleLabel.text = calledTitle
-        debugPrint("calledTitle=\(calledTitle)")
-        debugPrint("calledLevel=\(calledLevel)")
+        titleLabel.font = titleLabel.font.fontWithSize(40)
         
         scoreLabel = UILabel()
-        scoreLabel.backgroundColor = UIColor.orangeColor()
-        scoreLabel.widthAnchor.constraintEqualToConstant(300).active = true
+        setDesignForLabel(scoreLabel)
+        titleLabel.font = titleLabel.font.fontWithSize(40)
+        scoreLabel.widthAnchor.constraintEqualToConstant(200).active = true
+        
         stackView.translatesAutoresizingMaskIntoConstraints = true
         stackView.addArrangedSubview(cancelButton)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(scoreLabel)
+        
+//        for ii in 0...2 {
+//            starImageView[ii] = UIImageView(image: UIImage(named: "star_yellow"))
+//            starImageView[ii].widthAnchor.constraintEqualToConstant(50).active = true
+//            stackView.addArrangedSubview(starImageView[ii])
+//        }
+        
         stackView.axis = .Horizontal
         stackView.distribution = .Fill
         stackView.alignment = .Fill
@@ -228,8 +261,7 @@ class QuestionViewController: UIViewController {
             debugPrint("Right!!")
             countCorrectAnswer += 1
             if countCorrectAnswer > 10 {
-                // 전체 스코어 보여주기
-                
+                gameOver = true
             }
             else {
                 // 새로운 문제 수행
