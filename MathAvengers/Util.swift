@@ -7,6 +7,13 @@ class Util {
         return array
     }
     
-    
+    func printFonts() {
+        for familyName in UIFont.familyNames() {
+            print("familyName=\(familyName)")
+            for fontname in UIFont.fontNamesForFamilyName(familyName) {
+                print("fontname=\(fontname)")
+            }
+        }
+    }
     
 }

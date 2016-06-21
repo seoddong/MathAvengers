@@ -9,20 +9,51 @@
 /* Begin PBXBuildFile section */
 		7417EE5D1D11A61D00B7895D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417EE5C1D11A61D00B7895D /* AppDelegate.swift */; };
 		7417EE621D11A61D00B7895D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7417EE601D11A61D00B7895D /* Main.storyboard */; };
-		7417EE651D11A61D00B7895D /* MathAvengers.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7417EE631D11A61D00B7895D /* MathAvengers.xcdatamodeld */; };
 		7417EE671D11A61D00B7895D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7417EE661D11A61D00B7895D /* Assets.xcassets */; };
 		7417EE6A1D11A61D00B7895D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7417EE681D11A61D00B7895D /* LaunchScreen.storyboard */; };
 		7417EE721D120CCA00B7895D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417EE711D120CCA00B7895D /* MainViewController.swift */; };
 		7417EE741D120D3B00B7895D /* LevelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417EE731D120D3B00B7895D /* LevelTableViewCell.swift */; };
 		7417EE761D12D7F500B7895D /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417EE751D12D7F500B7895D /* QuestionViewController.swift */; };
 		7417EE781D12F90A00B7895D /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417EE771D12F90A00B7895D /* Util.swift */; };
+		745087621D194B4A007BF48C /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 745087611D194B4A007BF48C /* Realm.framework */; };
+		745087631D194B4A007BF48C /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 745087611D194B4A007BF48C /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7450876C1D194DEF007BF48C /* MathAvengersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7450876B1D194DEF007BF48C /* MathAvengersTests.swift */; };
+		7460061E1D1837C10053D75B /* UIDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7460061D1D1837C10053D75B /* UIDesign.swift */; };
+		7471FBDB1D17BB7C003A8CA0 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7471FBDA1D17BB7C003A8CA0 /* SummaryViewController.swift */; };
+		74FD38921D198451000CB816 /* Realms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FD38911D198451000CB816 /* Realms.swift */; };
+		74FD38941D19851A000CB816 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD38931D19851A000CB816 /* RealmSwift.framework */; };
+		74FD38951D19851A000CB816 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD38931D19851A000CB816 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7450876E1D194DEF007BF48C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7417EE511D11A61D00B7895D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7417EE581D11A61D00B7895D;
+			remoteInfo = MathAvengers;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		745087641D194B4B007BF48C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				74FD38951D19851A000CB816 /* RealmSwift.framework in Embed Frameworks */,
+				745087631D194B4A007BF48C /* Realm.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		7417EE591D11A61D00B7895D /* MathAvengers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathAvengers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7417EE5C1D11A61D00B7895D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7417EE611D11A61D00B7895D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		7417EE641D11A61D00B7895D /* MathAvengers.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MathAvengers.xcdatamodel; sourceTree = "<group>"; };
 		7417EE661D11A61D00B7895D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7417EE691D11A61D00B7895D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7417EE6B1D11A61D00B7895D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -30,10 +61,27 @@
 		7417EE731D120D3B00B7895D /* LevelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelTableViewCell.swift; sourceTree = "<group>"; };
 		7417EE751D12D7F500B7895D /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
 		7417EE771D12F90A00B7895D /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		745087611D194B4A007BF48C /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		745087691D194DEF007BF48C /* MathAvengersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathAvengersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7450876B1D194DEF007BF48C /* MathAvengersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathAvengersTests.swift; sourceTree = "<group>"; };
+		7450876D1D194DEF007BF48C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7460061D1D1837C10053D75B /* UIDesign.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDesign.swift; sourceTree = "<group>"; };
+		7471FBDA1D17BB7C003A8CA0 /* SummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
+		74FD38911D198451000CB816 /* Realms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Realms.swift; sourceTree = "<group>"; };
+		74FD38931D19851A000CB816 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		7417EE561D11A61D00B7895D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74FD38941D19851A000CB816 /* RealmSwift.framework in Frameworks */,
+				745087621D194B4A007BF48C /* Realm.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		745087661D194DEF007BF48C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,7 +94,10 @@
 		7417EE501D11A61D00B7895D = {
 			isa = PBXGroup;
 			children = (
+				74FD38931D19851A000CB816 /* RealmSwift.framework */,
+				745087611D194B4A007BF48C /* Realm.framework */,
 				7417EE5B1D11A61D00B7895D /* MathAvengers */,
+				7450876A1D194DEF007BF48C /* MathAvengersTests */,
 				7417EE5A1D11A61D00B7895D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -55,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				7417EE591D11A61D00B7895D /* MathAvengers.app */,
+				745087691D194DEF007BF48C /* MathAvengersTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,13 +119,24 @@
 				7417EE661D11A61D00B7895D /* Assets.xcassets */,
 				7417EE681D11A61D00B7895D /* LaunchScreen.storyboard */,
 				7417EE6B1D11A61D00B7895D /* Info.plist */,
-				7417EE631D11A61D00B7895D /* MathAvengers.xcdatamodeld */,
 				7417EE711D120CCA00B7895D /* MainViewController.swift */,
 				7417EE731D120D3B00B7895D /* LevelTableViewCell.swift */,
 				7417EE751D12D7F500B7895D /* QuestionViewController.swift */,
 				7417EE771D12F90A00B7895D /* Util.swift */,
+				7471FBDA1D17BB7C003A8CA0 /* SummaryViewController.swift */,
+				7460061D1D1837C10053D75B /* UIDesign.swift */,
+				74FD38911D198451000CB816 /* Realms.swift */,
 			);
 			path = MathAvengers;
+			sourceTree = "<group>";
+		};
+		7450876A1D194DEF007BF48C /* MathAvengersTests */ = {
+			isa = PBXGroup;
+			children = (
+				7450876B1D194DEF007BF48C /* MathAvengersTests.swift */,
+				7450876D1D194DEF007BF48C /* Info.plist */,
+			);
+			path = MathAvengersTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,6 +149,8 @@
 				7417EE551D11A61D00B7895D /* Sources */,
 				7417EE561D11A61D00B7895D /* Frameworks */,
 				7417EE571D11A61D00B7895D /* Resources */,
+				745087641D194B4B007BF48C /* Embed Frameworks */,
+				745087731D1950BD007BF48C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -95,6 +160,24 @@
 			productName = MathAvengers;
 			productReference = 7417EE591D11A61D00B7895D /* MathAvengers.app */;
 			productType = "com.apple.product-type.application";
+		};
+		745087681D194DEF007BF48C /* MathAvengersTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 745087701D194DEF007BF48C /* Build configuration list for PBXNativeTarget "MathAvengersTests" */;
+			buildPhases = (
+				745087651D194DEF007BF48C /* Sources */,
+				745087661D194DEF007BF48C /* Frameworks */,
+				745087671D194DEF007BF48C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7450876F1D194DEF007BF48C /* PBXTargetDependency */,
+			);
+			name = MathAvengersTests;
+			productName = MathAvengersTests;
+			productReference = 745087691D194DEF007BF48C /* MathAvengersTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -108,6 +191,10 @@
 				TargetAttributes = {
 					7417EE581D11A61D00B7895D = {
 						CreatedOnToolsVersion = 7.3.1;
+					};
+					745087681D194DEF007BF48C = {
+						CreatedOnToolsVersion = 7.3.1;
+						TestTargetID = 7417EE581D11A61D00B7895D;
 					};
 				};
 			};
@@ -125,6 +212,7 @@
 			projectRoot = "";
 			targets = (
 				7417EE581D11A61D00B7895D /* MathAvengers */,
+				745087681D194DEF007BF48C /* MathAvengersTests */,
 			);
 		};
 /* End PBXProject section */
@@ -140,7 +228,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		745087671D194DEF007BF48C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		745087731D1950BD007BF48C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework/strip-frameworks.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7417EE551D11A61D00B7895D /* Sources */ = {
@@ -148,15 +259,33 @@
 			buildActionMask = 2147483647;
 			files = (
 				7417EE721D120CCA00B7895D /* MainViewController.swift in Sources */,
+				74FD38921D198451000CB816 /* Realms.swift in Sources */,
+				7460061E1D1837C10053D75B /* UIDesign.swift in Sources */,
 				7417EE781D12F90A00B7895D /* Util.swift in Sources */,
 				7417EE761D12D7F500B7895D /* QuestionViewController.swift in Sources */,
-				7417EE651D11A61D00B7895D /* MathAvengers.xcdatamodeld in Sources */,
 				7417EE741D120D3B00B7895D /* LevelTableViewCell.swift in Sources */,
+				7471FBDB1D17BB7C003A8CA0 /* SummaryViewController.swift in Sources */,
 				7417EE5D1D11A61D00B7895D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		745087651D194DEF007BF48C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7450876C1D194DEF007BF48C /* MathAvengersTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7450876F1D194DEF007BF48C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7417EE581D11A61D00B7895D /* MathAvengers */;
+			targetProxy = 7450876E1D194DEF007BF48C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7417EE601D11A61D00B7895D /* Main.storyboard */ = {
@@ -267,6 +396,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = MathAvengers/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.songahbie.MathAvengers;
@@ -278,10 +411,40 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = MathAvengers/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.songahbie.MathAvengers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		745087711D194DEF007BF48C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = "/Users/seoddong/Documents/Swift/projects/realm-swift-1.0.1/ios/swift-2.2";
+				INFOPLIST_FILE = MathAvengersTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.songahbie.MathAvengersTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MathAvengers.app/MathAvengers";
+			};
+			name = Debug;
+		};
+		745087721D194DEF007BF48C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = "/Users/seoddong/Documents/Swift/projects/realm-swift-1.0.1/ios/swift-2.2";
+				INFOPLIST_FILE = MathAvengersTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.songahbie.MathAvengersTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MathAvengers.app/MathAvengers";
 			};
 			name = Release;
 		};
@@ -304,21 +467,18 @@
 				7417EE701D11A61D00B7895D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		745087701D194DEF007BF48C /* Build configuration list for PBXNativeTarget "MathAvengersTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				745087711D194DEF007BF48C /* Debug */,
+				745087721D194DEF007BF48C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		7417EE631D11A61D00B7895D /* MathAvengers.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				7417EE641D11A61D00B7895D /* MathAvengers.xcdatamodel */,
-			);
-			currentVersion = 7417EE641D11A61D00B7895D /* MathAvengers.xcdatamodel */;
-			path = MathAvengers.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 7417EE511D11A61D00B7895D /* Project object */;
 }

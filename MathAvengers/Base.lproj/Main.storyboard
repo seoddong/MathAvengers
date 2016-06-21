@@ -77,10 +77,31 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <segue destination="gk5-rj-qHR" kind="showDetail" identifier="summarySegueIdentifier" id="joS-24-YWu"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5j-a0-pax" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="694" y="913"/>
+            <point key="canvasLocation" x="180" y="1007"/>
+        </scene>
+        <!--Summary View Controller-->
+        <scene sceneID="juY-rS-6n3">
+            <objects>
+                <viewController id="gk5-rj-qHR" customClass="SummaryViewController" customModule="MathAvengers" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="23z-AR-RH3"/>
+                        <viewControllerLayoutGuide type="bottom" id="muA-Mv-qKX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Qjl-bO-dO3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8X7-gw-0Wy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="914" y="1007"/>
         </scene>
     </scenes>
 </document>

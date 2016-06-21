@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class QuestionViewController: UIViewController {
     
@@ -23,6 +24,7 @@ class QuestionViewController: UIViewController {
     
     // Utility
     let util = Util()
+    let uidesign = UIDesign()
     
     // 호출됨
     var calledTitle = ""
@@ -32,9 +34,17 @@ class QuestionViewController: UIViewController {
     var correctAnswer: UInt32 = 0
     var answerArray: [UInt32] = []
     var countCorrectAnswer = 0
+    var countIncorrectAnswer = 0
     var currentLevel = 0
+    let totalLife = 3
+    let penaltyTime: NSTimeInterval = 10
     var gameOver = false
     var startTime = NSDate.timeIntervalSinceReferenceDate()
+    var timeRemaining: NSTimeInterval  = 0
+    var maxSec: NSTimeInterval = 100
+    
+    // segue
+    let segueIdentifier = "summarySegueIdentifier"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,30 +69,45 @@ class QuestionViewController: UIViewController {
         
     }
     
+    func setGameover() {
+        // summary 화면 호출
+        performSegueWithIdentifier(segueIdentifier, sender: self)
+    }
+    
+    func reduceTimeRemaining() {
+        maxSec -= penaltyTime
+    }
+    
     func displayCollapsedTime(timer: NSTimer)
     {
-        
-        let timeRemaining = NSDate.timeIntervalSinceReferenceDate() - startTime
+        let passedTime = NSDate.timeIntervalSinceReferenceDate() - startTime
+        timeRemaining = maxSec - passedTime
         if !gameOver {
-            scoreLabel.text = String(format: "%.07f", timeRemaining)
+            scoreLabel.text = String(format: "%.03f", timeRemaining)
+            if timeRemaining <= 0 {
+                // 100초 초과로 게임 종료
+                gameOver = true
+                timer.invalidate()
+                setGameover()
+            }
         }
         else{
             timer.invalidate()
             //Force the label to 0.0000000 at the end
-            scoreLabel.text = String(format: "%.07f", 0.0)
+            scoreLabel.text = String(format: "%.03f", 0.0)
         }
     }
     
     func setActions() {
         
-        cancelButton.addTarget(self, action: #selector(QuestionViewController.cancelTouchUpInside(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        cancelButton.addTarget(self, action: #selector(self.cancelTouchUpInside(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         
         for ii in 0...3 {
             // TouchUpInside
-            aButton[ii].addTarget(self, action: #selector(QuestionViewController.aButtonTouchUpInside(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            aButton[ii].addTarget(self, action: #selector(self.aButtonTouchUpInside(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
             // 버튼을 눌렀을 때
-            aButton[ii].addTarget(self, action: #selector(QuestionViewController.aButtonTouchDown(_:)), forControlEvents: UIControlEvents.TouchDown)
+            aButton[ii].addTarget(self, action: #selector(self.aButtonTouchDown(_:)), forControlEvents: UIControlEvents.TouchDown)
         }
 
     }
@@ -163,18 +188,17 @@ class QuestionViewController: UIViewController {
         let stackViewFrame = CGRectMake(viewFrameInset, statusBarHeight + viewFrameInset, fullWidth, sbHeight)
         stackView = UIStackView(frame: stackViewFrame)
         cancelButton = UIButton()
-        setDesignForButton(cancelButton)
+        uidesign.setButtonLightGrayWithBorder(cancelButton, fontSize: 80)
         cancelButton.setTitle("X", forState: .Normal)
         cancelButton.widthAnchor.constraintEqualToConstant(100).active = true
         
         titleLabel = UILabel()
-        setDesignForLabel(titleLabel)
+        uidesign.setLabelLightGrayWithBorder(titleLabel, fontSize: 40)
         titleLabel.text = calledTitle
-        titleLabel.font = titleLabel.font.fontWithSize(40)
         
         scoreLabel = UILabel()
-        setDesignForLabel(scoreLabel)
-        titleLabel.font = titleLabel.font.fontWithSize(40)
+        uidesign.setLabelLightGrayWithBorder(scoreLabel, fontSize: nil)
+        scoreLabel.font = UIFont(name: "Menlo-Regular", size: 40)
         scoreLabel.widthAnchor.constraintEqualToConstant(200).active = true
         
         stackView.translatesAutoresizingMaskIntoConstraints = true
@@ -200,8 +224,7 @@ class QuestionViewController: UIViewController {
         let qLabelFrame = CGRectMake(viewFrameInset, statusBarHeight + viewFrameInset + sbHeight + viewFrameInset + viewFrameInset, fullWidth, qLabelHeight - sbHeight - viewFrameInset - viewFrameInset)
         qLabel = UILabel(frame: qLabelFrame)
         qLabel.text = "TEST"
-        qLabel.font = qLabel.font.fontWithSize(120)
-        setDesignForLabel(qLabel)
+        uidesign.setLabelLightGrayWithBorder(qLabel, fontSize: 120)
         self.view.addSubview(qLabel)
         
         let aLabelWidth = floor(fullWidth / 2) - viewFrameInset
@@ -217,7 +240,7 @@ class QuestionViewController: UIViewController {
         // 버튼 생성
         for ii in 0...3 {
             aButton[ii] = UIButton(frame: aButtonFrame[ii])
-            setDesignForButton(aButton[ii])
+            uidesign.setButtonLightGrayWithBorder(aButton[ii], fontSize: 80)
             self.view.addSubview(aButton[ii])
         }
         
@@ -227,41 +250,29 @@ class QuestionViewController: UIViewController {
         loadViewIfNeeded()
     }
     
-    func setDesignForButton(aButton: UIButton) {
-        //aLabel = self.view.center
-//        aButton.setTitle("ANSWER", forState: .Normal)
-        aButton.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
-        aButton.titleLabel?.font = aButton.titleLabel?.font.fontWithSize(80)
-        //aButton.textAlignment = .Center
-        aButton.layer.cornerRadius = 10
-        aButton.layer.borderWidth = 3
-        aButton.layer.borderColor = UIColor.blackColor().CGColor
-        aButton.clipsToBounds = true
-        aButton.backgroundColor = UIColor.lightGrayColor()
-        aButton.translatesAutoresizingMaskIntoConstraints = true
+    // 문제 풀이 이력 저장
+    func saveRecord(answer: String, result: Bool) {
+        let question = qLabel.text!
+        let level = titleLabel.text!
+        let playdt = NSDate()
+        let realm = try! Realm()
+        realm.beginWrite()
+        realm.create(TB_RESULTLOG.self, value: ["answer": answer, "question": question, "level": level, "result": result, "playdt": playdt, "user": "songahbie"])
+        try! realm.commitWrite()
     }
     
-    func setDesignForLabel(aLabel: UILabel) {
-        //aLabel = self.view.center
-        aLabel.textAlignment = .Center
-        aLabel.layer.cornerRadius = 10
-        aLabel.layer.borderWidth = 3
-        aLabel.layer.borderColor = UIColor.blackColor().CGColor
-        aLabel.clipsToBounds = true
-        aLabel.backgroundColor = UIColor.lightGrayColor()
-        aLabel.translatesAutoresizingMaskIntoConstraints = true
-    }
     
     // 채점
     func checkAnswer(sender:UIButton!) {
-        // 이력 저장
-        
-        
-        if sender.titleLabel?.text == String(correctAnswer) {
-            debugPrint("Right!!")
+        var result = false
+        let answer = sender.titleLabel?.text
+        if answer == String(correctAnswer) {
+            result = true
             countCorrectAnswer += 1
             if countCorrectAnswer > 10 {
+                // 모든 문제 다 풀음
                 gameOver = true
+                setGameover()
             }
             else {
                 // 새로운 문제 수행
@@ -269,12 +280,22 @@ class QuestionViewController: UIViewController {
             }
         }
         else {
-            debugPrint("Wrong!!")
+            result = false
+            countIncorrectAnswer += 1
+            if countIncorrectAnswer >= totalLife {
+                // totalLife만큼 틀려서 게임 오버
+                gameOver = true
+                setGameover()
+            }
             // 해당 보기에 똥 그림 올리기
             sender.backgroundColor = UIColor.redColor()
             
             // 틀릴 때 마다 점수 까기
+            reduceTimeRemaining()
         }
+        
+        // 이력 저장
+        saveRecord(answer!, result: result)
     }
     
     
@@ -301,14 +322,20 @@ class QuestionViewController: UIViewController {
     }
     
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if (segue.identifier == segueIdentifier) {
+            let targetView = segue.destinationViewController as! SummaryViewController
+            targetView.finalScore = self.timeRemaining
+            targetView.countIncorrectAnswer = self.totalLife - self.countIncorrectAnswer
+            targetView.calledTitle = self.calledTitle
+        }
     }
-    */
+
 
 }
