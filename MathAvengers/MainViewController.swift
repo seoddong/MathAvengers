@@ -12,10 +12,9 @@ class MainViewController: UIViewController {
     
     @IBOutlet weak var levelTableView: UITableView!
     
-    var targetView: QuestionViewController!
-
     let reuseIdentifier = "reuseCellIdentifier"
-    let segueIdentifier = "levelSegueIdentifier"
+    let levelSegueIdentifier = "levelSegueIdentifier"
+    let showLogSegueIdentifier = "showLogSegueIdentifier"
     
     var labelArray: [String] = []
     var imageNameArray: [String] = []
@@ -37,11 +36,32 @@ class MainViewController: UIViewController {
                       "http://en.wikipedia.org/wiki/Windsor_Castle",
                       "http://en.wikipedia.org/wiki/Empire_State_Building"]
         imageNameArray = ["001", "002", "003", "004", "005"]
+        
+        setupUI()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        debugPrint("M1: navigationBarHidden=\(self.navigationController?.navigationBarHidden)")
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupUI() {
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.automaticallyAdjustsScrollViewInsets = false
+        
+        self.title = "Math Avengers"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "기록 보기", style: .Plain, target: self, action: #selector(showLog))
+        //self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(add))
+    }
+    
+    func showLog() {
+        performSegueWithIdentifier(showLogSegueIdentifier, sender: self)
     }
     
 
@@ -52,13 +72,27 @@ class MainViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        if segueIdentifier == "levelSegueIdentifier" {
-            targetView = segue.destinationViewController as! QuestionViewController
-            let selectedIndexPath = levelTableView.indexPathForSelectedRow
-            let cell = levelTableView.cellForRowAtIndexPath(selectedIndexPath!) as! LevelTableViewCell
-            targetView.calledTitle = cell.cellLabel.text!
-            targetView.calledLevel = (selectedIndexPath?.row)! + 1
+        if let segueIdentifier = segue.identifier {
+            
+            switch segueIdentifier {
+            case levelSegueIdentifier:
+                let targetView = segue.destinationViewController as! QuestionViewController
+                let selectedIndexPath = levelTableView.indexPathForSelectedRow
+                let cell = levelTableView.cellForRowAtIndexPath(selectedIndexPath!) as! LevelTableViewCell
+                targetView.calledTitle = cell.cellLabel.text!
+                targetView.calledLevel = (selectedIndexPath?.row)! + 1
+                break
+                
+            case showLogSegueIdentifier:
+                let targetView = segue.destinationViewController as! ShowLogViewController
+                break
+                
+            default:
+                debugPrint("MainViewController.prepareForSegue")
+                break
+            }
         }
+
     }
 
 

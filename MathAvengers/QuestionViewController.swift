@@ -48,7 +48,8 @@ class QuestionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        debugPrint("Q1: navigationBarHidden=\(self.navigationController?.navigationBarHidden)")
         initUIs()
         
         setActions()
@@ -68,6 +69,17 @@ class QuestionViewController: UIViewController {
         }
         
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        debugPrint("Q2: navigationBarHidden=\(self.navigationController?.navigationBarHidden)")
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
     
     func setGameover() {
         // summary 화면 호출
@@ -119,6 +131,7 @@ class QuestionViewController: UIViewController {
         // 보기 버튼 초기화
         for ii in 0...3 {
             aButton[ii].backgroundColor = UIColor.lightGrayColor()
+            aButton[ii].enabled = true
         }
         
     }
@@ -281,6 +294,7 @@ class QuestionViewController: UIViewController {
         }
         else {
             result = false
+            sender.enabled = false
             countIncorrectAnswer += 1
             if countIncorrectAnswer >= totalLife {
                 // totalLife만큼 틀려서 게임 오버
@@ -312,14 +326,10 @@ class QuestionViewController: UIViewController {
     }
     
     func cancelTouchUpInside(sender:UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
 
 

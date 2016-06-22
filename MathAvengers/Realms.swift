@@ -9,13 +9,14 @@
 import Foundation
 import RealmSwift
 
-class Realms: Object {
+class Realms {
     
-// Specify properties to ignore (Realm won't persist these)
-    
-//  override static func ignoredProperties() -> [String] {
-//    return []
-//  }
+    func retreiveTB_RESULTLOG() -> Results<TB_RESULTLOG> {
+        let realm = try! Realm()
+        let results = try! realm.objects(TB_RESULTLOG.self).sorted("playdt", ascending: false)
+        
+        return results
+    }
 }
 
 class TB_RESULTLOG: Object {

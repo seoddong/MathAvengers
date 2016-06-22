@@ -7,9 +7,10 @@
 //
 
 import UIKit
-import RealmSwift
 
 class SummaryViewController: UIViewController {
+    
+    let showLogSegueIdentifier = "showLogSegueIdentifier"
     
     var finalScore: NSTimeInterval = 0
     var countIncorrectAnswer = 0
@@ -44,7 +45,7 @@ class SummaryViewController: UIViewController {
         levelLable.heightAnchor.constraintEqualToConstant(80).active = true
         
         scoreLable = UILabel()
-        scoreLable.text = "최종 점수: \(String(finalScore))"
+        scoreLable.text = "최종 점수: \(String(round(finalScore * 10)/10))"
         uidesign.setLabelLightGrayWithBorder(scoreLable, fontSize: 40)
         scoreLable.heightAnchor.constraintEqualToConstant(80).active = true
         
@@ -78,6 +79,13 @@ class SummaryViewController: UIViewController {
         self.view.addSubview(stackView)
         
         setActions()
+
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        debugPrint("S2: navigationBarHidden=\(self.navigationController?.navigationBarHidden)")
+
     }
     
     func setActions() {
@@ -89,29 +97,8 @@ class SummaryViewController: UIViewController {
     func showLogTouchUpInside(sender: UIButton) {
         sender.backgroundColor = UIColor.orangeColor()
         
-        let realm = try! Realm()
-        let results = try! realm.objects(TB_RESULTLOG.self).sorted("playdt")
-        
-        for result in results {
-            debugPrint("\(result.playdt) \(result.question) \(result.answer) \(result.level) \(result.result) \(result.user) ")
-        }
-        
-        var notificationToken: NotificationToken?
-        
-        notificationToken = results.addNotificationBlock { (changes: RealmCollectionChange) in
-            switch changes {
-            case .Initial:
-                debugPrint("changes.Initial")
-                break
-            case .Update(_, let deletions, let insertions, let modifications):
-                debugPrint("Update")
-                break
-            case .Error(let err):
-                debugPrint("err: \(err.localizedFailureReason)")
-                break
-            }
-            
-        }
+        performSegueWithIdentifier(showLogSegueIdentifier, sender: self)
+
     }
 
     override func didReceiveMemoryWarning() {

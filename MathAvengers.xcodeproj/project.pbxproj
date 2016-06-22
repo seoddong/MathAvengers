@@ -23,6 +23,7 @@
 		74FD38921D198451000CB816 /* Realms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FD38911D198451000CB816 /* Realms.swift */; };
 		74FD38941D19851A000CB816 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD38931D19851A000CB816 /* RealmSwift.framework */; };
 		74FD38951D19851A000CB816 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD38931D19851A000CB816 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		74FD38981D1A0AF6000CB816 /* ShowLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FD38971D1A0AF6000CB816 /* ShowLogViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		7471FBDA1D17BB7C003A8CA0 /* SummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
 		74FD38911D198451000CB816 /* Realms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Realms.swift; sourceTree = "<group>"; };
 		74FD38931D19851A000CB816 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
+		74FD38971D1A0AF6000CB816 /* ShowLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLogViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 				7471FBDA1D17BB7C003A8CA0 /* SummaryViewController.swift */,
 				7460061D1D1837C10053D75B /* UIDesign.swift */,
 				74FD38911D198451000CB816 /* Realms.swift */,
+				74FD38971D1A0AF6000CB816 /* ShowLogViewController.swift */,
 			);
 			path = MathAvengers;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 				7417EE781D12F90A00B7895D /* Util.swift in Sources */,
 				7417EE761D12D7F500B7895D /* QuestionViewController.swift in Sources */,
 				7417EE741D120D3B00B7895D /* LevelTableViewCell.swift in Sources */,
+				74FD38981D1A0AF6000CB816 /* ShowLogViewController.swift in Sources */,
 				7471FBDB1D17BB7C003A8CA0 /* SummaryViewController.swift in Sources */,
 				7417EE5D1D11A61D00B7895D /* AppDelegate.swift in Sources */,
 			);
