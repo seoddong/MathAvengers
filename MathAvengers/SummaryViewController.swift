@@ -15,13 +15,12 @@ class SummaryViewController: UIViewController {
     var finalScore: NSTimeInterval = 0
     var countIncorrectAnswer = 0
     var calledTitle = ""
-    var message = ["이런~ 다음엔 좀 더 잘 할 수 있을 거에요.", "음~ 잘 했어요~", "오~ 이 정도면 훌륭해요!!", "와우! 최고로 잘 했어요!"]
+    var message = ["이런~ 3번 틀렸네요.\n다음엔 좀 더 잘 할 수 있을 거에요.", "음~ 두 번 틀렸네요.\n하지만 잘 했어요~", "오~ 하나 밖에 안 틀렸어요.\n이 정도면 훌륭해요!!", "와우! 모두 다 정답!\n최고로 잘 했어요!"]
     
     var stackView: UIStackView!
-    var levelLable: UILabel!
-    var scoreLable: UILabel!
-    var messageLable: UILabel!
-    var backButton: UIButton!
+    var levelLabel: UILabel!
+    var scoreLabel: UILabel!
+    var messageLabel: UILabel!
     var showLogButton: UIButton!
     var imageView: UIImageView!
     
@@ -31,28 +30,35 @@ class SummaryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        stackView = UIStackView(frame: view.bounds)
-        stackView.translatesAutoresizingMaskIntoConstraints = true
-        stackView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        setupUI()
         
-        backButton = UIButton()
-        backButton.setTitle("닫기", forState: .Normal)
-        uidesign.setButtonLightGrayWithBorder(backButton, fontSize: 80)
+        setActions()
+
+    }
+    
+    func setupUI() {
         
-        levelLable = UILabel()
-        levelLable.text = "도전 단계: \(calledTitle)"
-        uidesign.setLabelLightGrayWithBorder(levelLable, fontSize: 40)
-        levelLable.heightAnchor.constraintEqualToConstant(80).active = true
+        //Navi Bar
+        self.title = "Math Avengers - Summary"
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "처음으로", style: .Plain, target: self, action: #selector(self.leftBarButtonPressed))
+
         
-        scoreLable = UILabel()
-        scoreLable.text = "최종 점수: \(String(round(finalScore * 10)/10))"
-        uidesign.setLabelLightGrayWithBorder(scoreLable, fontSize: 40)
-        scoreLable.heightAnchor.constraintEqualToConstant(80).active = true
+        levelLabel = UILabel()
+        levelLabel.text = "도전 단계: \(calledTitle)"
+        uidesign.setLabelLightGrayWithBorder(levelLabel, fontSize: 40)
+        levelLabel.heightAnchor.constraintEqualToConstant(80).active = true
         
-        messageLable = UILabel()
-        messageLable.text = message[countIncorrectAnswer]
-        uidesign.setLabelLightGrayWithBorder(messageLable, fontSize: 40)
-        messageLable.heightAnchor.constraintEqualToConstant(200).active = true
+        scoreLabel = UILabel()
+        scoreLabel.text = "최종 점수: \(String(round(finalScore * 10)/10))"
+        uidesign.setLabelLightGrayWithBorder(scoreLabel, fontSize: 40)
+        scoreLabel.heightAnchor.constraintEqualToConstant(80).active = true
+        
+        messageLabel = UILabel()
+        messageLabel.lineBreakMode = .ByWordWrapping
+        messageLabel.numberOfLines = 2
+        messageLabel.text = message[countIncorrectAnswer]
+        uidesign.setLabelLightGrayWithBorder(messageLabel, fontSize: 40)
+        messageLabel.heightAnchor.constraintEqualToConstant(200).active = true
         
         showLogButton = UIButton()
         showLogButton.setTitle("내가 푼 문제 보기", forState: .Normal)
@@ -62,29 +68,26 @@ class SummaryViewController: UIViewController {
         //imageView.frame.size = CGSizeMake(imageView.frame.width, imageView.frame.height / 2)
         imageView.heightAnchor.constraintEqualToConstant(400).active = true
         
-        
-        stackView.addArrangedSubview(backButton)
-        stackView.addArrangedSubview(levelLable)
-        stackView.addArrangedSubview(scoreLable)
-        stackView.addArrangedSubview(messageLable)
+        stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(levelLabel)
+        stackView.addArrangedSubview(scoreLabel)
+        stackView.addArrangedSubview(messageLabel)
         stackView.addArrangedSubview(showLogButton)
         stackView.addArrangedSubview(imageView)
         
         stackView.axis = .Vertical
         stackView.distribution = .EqualSpacing
         stackView.alignment = .Fill
-        //stackView.spacing = 30
-        stackView.layoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsetsMake(40, 20, 20, 20)
         self.view.addSubview(stackView)
+        let viewsDictionary = ["stackView": stackView]
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-20-[stackView]-20-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-\((self.navigationController?.navigationBar.frame.size.height)! + 40)-[stackView]-20-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
         
-        setActions()
-
     }
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        debugPrint("S2: navigationBarHidden=\(self.navigationController?.navigationBarHidden)")
 
     }
     
@@ -92,6 +95,11 @@ class SummaryViewController: UIViewController {
         
         showLogButton.addTarget(self, action: #selector(self.showLogTouchUpInside(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         
+    }
+    
+
+    func leftBarButtonPressed(sender: UIBarButtonItem){
+        self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
     func showLogTouchUpInside(sender: UIButton) {

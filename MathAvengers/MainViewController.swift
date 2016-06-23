@@ -42,7 +42,6 @@ class MainViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        debugPrint("M1: navigationBarHidden=\(self.navigationController?.navigationBarHidden)")
     }
 
     override func didReceiveMemoryWarning() {
