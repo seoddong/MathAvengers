@@ -80,7 +80,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="gk5-rj-qHR" kind="show" identifier="summarySegueIdentifier" action="showDetailViewController:sender:" id="joS-24-YWu"/>
+                        <segue destination="gk5-rj-qHR" kind="show" identifier="summarySegueIdentifier" id="l9l-4c-eCV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5j-a0-pax" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -146,6 +146,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="eVA-4e-hFc"/>
+        <segue reference="nS4-iS-4QK"/>
     </inferredMetricsTieBreakers>
 </document>
