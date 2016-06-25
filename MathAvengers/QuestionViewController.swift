@@ -86,10 +86,6 @@ class QuestionViewController: UIViewController {
         performSegueWithIdentifier(segueIdentifier, sender: self)
     }
     
-    func reduceTimeRemaining() {
-        maxSec -= penaltyTime
-    }
-    
     func displayCollapsedTime(timer: NSTimer)
     {
         let passedTime = NSDate.timeIntervalSinceReferenceDate() - startTime
@@ -191,7 +187,8 @@ class QuestionViewController: UIViewController {
     
     func initUIs() {
 
-        let viewFrame = self.view.frame
+        let viewFrame = self.view.bounds
+        debugPrint("initUIs: self.view.bounds=\(self.view.bounds)")
         let viewFrameInset:CGFloat = 10.0
         let fullWidth = round(viewFrame.width - (viewFrameInset * 2))
         
@@ -256,9 +253,6 @@ class QuestionViewController: UIViewController {
             self.view.addSubview(aButton[ii])
         }
         
-        debugPrint("setLabels: stackView.bounds=\(stackView.bounds)")
-        debugPrint("setLabels: stackView.frame=\(stackView.frame)")
-        
         loadViewIfNeeded()
     }
     
@@ -313,7 +307,7 @@ class QuestionViewController: UIViewController {
             sender.backgroundColor = UIColor.redColor()
             
             // 틀릴 때 마다 점수 까기
-            reduceTimeRemaining()
+            maxSec -= penaltyTime
         }
         
     }

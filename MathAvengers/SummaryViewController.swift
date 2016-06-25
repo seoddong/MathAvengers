@@ -15,7 +15,7 @@ class SummaryViewController: UIViewController {
     var finalScore: NSTimeInterval = 0
     var countIncorrectAnswer = 0
     var calledTitle = ""
-    var message = ["이런~ 3번 틀렸네요.\n다음엔 좀 더 잘 할 수 있을 거에요.", "음~ 두 번 틀렸네요.\n하지만 잘 했어요~", "오~ 하나 밖에 안 틀렸어요.\n이 정도면 훌륭해요!!", "와우! 모두 다 정답!\n최고로 잘 했어요!"]
+    var message = ["이런~ 3번 틀렸네요.\n다음엔 좀 더 잘 할 수 있을 거에요.", "음~ 두 번 틀렸네요.\n하지만 잘 했어요~", "오~ 하나 밖에 안 틀렸어요.\n이 정도면 훌륭해요!!", "와우! 모두 다 정답!\n최고로 잘 했어요!", "아악~ 시간이 다 되었네요~\n다음엔 더 빨리 풀어보아요."]
     
     var stackView: UIStackView!
     var levelLabel: UILabel!
@@ -49,14 +49,19 @@ class SummaryViewController: UIViewController {
         levelLabel.heightAnchor.constraintEqualToConstant(80).active = true
         
         scoreLabel = UILabel()
-        scoreLabel.text = "최종 점수: \(String(round(finalScore * 10)/10))"
+        scoreLabel.text = "최종 점수: \(String(round(finalScore * 100)/100))"
         uidesign.setLabelLightGrayWithBorder(scoreLabel, fontSize: 40)
         scoreLabel.heightAnchor.constraintEqualToConstant(80).active = true
         
         messageLabel = UILabel()
         messageLabel.lineBreakMode = .ByWordWrapping
         messageLabel.numberOfLines = 2
-        messageLabel.text = message[countIncorrectAnswer]
+        if finalScore <= 0 {
+            messageLabel.text = message[countIncorrectAnswer]
+        }
+        else {
+            messageLabel.text = message.last
+        }
         uidesign.setLabelLightGrayWithBorder(messageLabel, fontSize: 40)
         messageLabel.heightAnchor.constraintEqualToConstant(200).active = true
         
