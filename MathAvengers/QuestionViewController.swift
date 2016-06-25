@@ -155,7 +155,7 @@ class QuestionViewController: UIViewController {
             let answer = arc4random_uniform(10)
             if answerArray.contains({$0 == answer}) {
                 // 이미 같은 보기가 있으므로 loop를 한 번 더 돈다.
-                debugPrint("already has \(answer)")
+                continue
             }
             else {
                 
@@ -180,7 +180,6 @@ class QuestionViewController: UIViewController {
 
         // 답 배열 섞기
         let shuffledArray = util.arrayShuffle([0,1,2,3])
-        debugPrint("suffledArray=\(shuffledArray)")
         
         // 답 세팅
         for ii in 0...3 {
@@ -268,6 +267,7 @@ class QuestionViewController: UIViewController {
         let question = qLabel.text!
         let level = titleLabel.text!
         let playdt = NSDate()
+        debugPrint("\(playdt) \(question) \(answer) \(result)")
         let realm = try! Realm()
         realm.beginWrite()
         realm.create(TB_RESULTLOG.self, value: ["answer": answer, "question": question, "level": level, "result": result, "playdt": playdt, "user": "songahbie"])
@@ -279,10 +279,15 @@ class QuestionViewController: UIViewController {
     func checkAnswer(sender:UIButton!) {
         var result = false
         let answer = sender.titleLabel?.text
+
         if answer == String(correctAnswer) {
             result = true
+            
+            // 이력 저장
+            saveRecord(answer!, result: result)
+            
             countCorrectAnswer += 1
-            if countCorrectAnswer > 10 {
+            if countCorrectAnswer >= 10 {
                 // 모든 문제 다 풀음
                 gameOver = true
                 setGameover()
@@ -294,7 +299,10 @@ class QuestionViewController: UIViewController {
         }
         else {
             result = false
-            sender.enabled = false
+            
+            // 이력 저장
+            saveRecord(answer!, result: result)
+            
             countIncorrectAnswer += 1
             if countIncorrectAnswer >= totalLife {
                 // totalLife만큼 틀려서 게임 오버
@@ -308,13 +316,12 @@ class QuestionViewController: UIViewController {
             reduceTimeRemaining()
         }
         
-        // 이력 저장
-        saveRecord(answer!, result: result)
     }
     
     
     func aButtonTouchUpInside(sender:UIButton!) {
         sender.backgroundColor = UIColor.lightGrayColor()
+        sender.enabled = false
         checkAnswer(sender)
 
     }

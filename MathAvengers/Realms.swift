@@ -11,9 +11,9 @@ import RealmSwift
 
 class Realms {
     
-    func retreiveTB_RESULTLOG() -> Results<TB_RESULTLOG> {
+    func retreiveTB_RESULTLOG(predicate: NSPredicate) -> Results<TB_RESULTLOG> {
         let realm = try! Realm()
-        let results = try! realm.objects(TB_RESULTLOG.self).sorted("playdt", ascending: false)
+        let results = try! realm.objects(TB_RESULTLOG.self).filter(predicate).sorted("playdt", ascending: false)
         
         return results
     }

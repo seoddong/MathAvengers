@@ -83,7 +83,7 @@ class MainViewController: UIViewController {
                 break
                 
             case showLogSegueIdentifier:
-                let targetView = segue.destinationViewController as! ShowLogViewController
+                _ = segue.destinationViewController as! ShowLogViewController
                 break
                 
             default:
@@ -104,14 +104,14 @@ extension MainViewController: UITableViewDelegate {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return labelArray.count
-    }
-    
 }
 
 
 extension MainViewController: UITableViewDataSource {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return labelArray.count
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.levelTableView.dequeueReusableCellWithIdentifier("reuseCellIdentifier", forIndexPath: indexPath) as! LevelTableViewCell
         
