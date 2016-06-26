@@ -57,6 +57,11 @@ class MainViewController: UIViewController {
         self.title = "Math Avengers"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "기록 보기", style: .Plain, target: self, action: #selector(showLog))
         //self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(add))
+        
+        // 아래 footerView를 만든 이유는 테이블뷰의 빈칸이 화면에 보이지 않도록 하기 위함임
+        let footerView = UIView()
+        footerView.backgroundColor = UIColor.clearColor()
+        levelTableView.tableFooterView = footerView
     }
     
     func showLog() {

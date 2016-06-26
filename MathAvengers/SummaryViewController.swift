@@ -56,7 +56,7 @@ class SummaryViewController: UIViewController {
         messageLabel = UILabel()
         messageLabel.lineBreakMode = .ByWordWrapping
         messageLabel.numberOfLines = 2
-        if finalScore <= 0 {
+        if finalScore > 0 {
             messageLabel.text = message[countIncorrectAnswer]
         }
         else {

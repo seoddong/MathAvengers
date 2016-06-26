@@ -12,9 +12,7 @@ import RealmSwift
 class QuestionViewController: UIViewController {
     
     // UIs
-    var stackView: UIStackView!
-    var cancelButton: UIButton!
-    var titleLabel, scoreLabel: UILabel!
+    var scoreLabel: UILabel!
     var starImageView: [UIImageView] = [UIImageView(), UIImageView(), UIImageView()]
     var qLabel: UILabel!
     var aButton: [UIButton] = [UIButton(), UIButton(), UIButton(), UIButton()]
@@ -71,8 +69,7 @@ class QuestionViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
-        debugPrint("Q2: navigationBarHidden=\(self.navigationController?.navigationBarHidden)")
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -107,8 +104,6 @@ class QuestionViewController: UIViewController {
     }
     
     func setActions() {
-        
-        cancelButton.addTarget(self, action: #selector(self.cancelTouchUpInside(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         
         for ii in 0...3 {
             // TouchUpInside
@@ -186,72 +181,75 @@ class QuestionViewController: UIViewController {
     }
     
     func initUIs() {
-
-        let viewFrame = self.view.bounds
-        debugPrint("initUIs: self.view.bounds=\(self.view.bounds)")
-        let viewFrameInset:CGFloat = 10.0
-        let fullWidth = round(viewFrame.width - (viewFrameInset * 2))
         
-        // 취소, 타이틀(레벨), 남은 시간, 별
-        let sbHeight:CGFloat = 80
-        let stackViewFrame = CGRectMake(viewFrameInset, statusBarHeight + viewFrameInset, fullWidth, sbHeight)
-        stackView = UIStackView(frame: stackViewFrame)
-        cancelButton = UIButton()
-        uidesign.setButtonLightGrayWithBorder(cancelButton, fontSize: 80)
-        cancelButton.setTitle("X", forState: .Normal)
-        cancelButton.widthAnchor.constraintEqualToConstant(100).active = true
+        self.title = calledTitle
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "그만 하기", style: .Plain, target: self, action: #selector(leftBarButtonPressed))
         
-        titleLabel = UILabel()
-        uidesign.setLabelLightGrayWithBorder(titleLabel, fontSize: 40)
-        titleLabel.text = calledTitle
-        
+        // score
         scoreLabel = UILabel()
         uidesign.setLabelLightGrayWithBorder(scoreLabel, fontSize: nil)
         scoreLabel.font = UIFont(name: "Menlo-Regular", size: 40)
-        scoreLabel.widthAnchor.constraintEqualToConstant(200).active = true
+        scoreLabel.heightAnchor.constraintEqualToConstant(80).active = true
+        scoreLabel.widthAnchor.constraintEqualToConstant(400).active = true
         
-        stackView.translatesAutoresizingMaskIntoConstraints = true
-        stackView.addArrangedSubview(cancelButton)
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(scoreLabel)
-        
-//        for ii in 0...2 {
-//            starImageView[ii] = UIImageView(image: UIImage(named: "star_yellow"))
-//            starImageView[ii].widthAnchor.constraintEqualToConstant(50).active = true
-//            stackView.addArrangedSubview(starImageView[ii])
-//        }
-        
-        stackView.axis = .Horizontal
-        stackView.distribution = .Fill
-        stackView.alignment = .Fill
-        stackView.spacing = 10
-        self.view.addSubview(stackView)
+        // starImageView
         
         
+        // topStackView
+        let topStackView = UIStackView()
+        topStackView.spacing = 5
+        topStackView.translatesAutoresizingMaskIntoConstraints = false
+        topStackView.axis = .Horizontal
+        topStackView.distribution = .Fill
+        topStackView.alignment = .Fill
+
+        topStackView.addArrangedSubview(scoreLabel)
+        _ =  starImageView.map { topStackView.addArrangedSubview($0) }
+        
+
         // 문제 Label 생성
-        let qLabelHeight = round((viewFrame.height - (viewFrameInset * 2)) / 2 - viewFrameInset - sbHeight)
-        let qLabelFrame = CGRectMake(viewFrameInset, statusBarHeight + viewFrameInset + sbHeight + viewFrameInset + viewFrameInset, fullWidth, qLabelHeight - sbHeight - viewFrameInset - viewFrameInset)
-        qLabel = UILabel(frame: qLabelFrame)
+        qLabel = UILabel()
         qLabel.text = "TEST"
         uidesign.setLabelLightGrayWithBorder(qLabel, fontSize: 120)
-        self.view.addSubview(qLabel)
-        
-        let aLabelWidth = floor(fullWidth / 2) - viewFrameInset
-        let aLabelHeight = floor(qLabelHeight / 2) - (viewFrameInset * 2)
-        
-        let aButtonFrame: [CGRect] = [
-            CGRectMake(viewFrameInset, statusBarHeight + viewFrameInset + qLabelHeight + (viewFrameInset * 2), aLabelWidth, aLabelHeight),
-            CGRectMake(viewFrameInset + aLabelWidth + (viewFrameInset * 2), statusBarHeight + viewFrameInset + qLabelHeight + (viewFrameInset * 2), aLabelWidth, aLabelHeight),
-            CGRectMake(viewFrameInset, statusBarHeight + viewFrameInset + qLabelHeight + (viewFrameInset * 4) + aLabelHeight, aLabelWidth, aLabelHeight),
-            CGRectMake(viewFrameInset + aLabelWidth + (viewFrameInset * 2), statusBarHeight + viewFrameInset + qLabelHeight + (viewFrameInset * 4) + aLabelHeight, aLabelWidth, aLabelHeight)
-        ]
-        
+
         // 버튼 생성
         for ii in 0...3 {
-            aButton[ii] = UIButton(frame: aButtonFrame[ii])
+            aButton[ii] = UIButton()
             uidesign.setButtonLightGrayWithBorder(aButton[ii], fontSize: 80)
-            self.view.addSubview(aButton[ii])
+            aButton[ii].heightAnchor.constraintEqualToConstant(150).active = true
         }
+        var buttonStackView = [UIStackView(), UIStackView()]
+        for ii in 0...1 {
+            buttonStackView[ii].spacing = 5
+            buttonStackView[ii].translatesAutoresizingMaskIntoConstraints = false
+            buttonStackView[ii].axis = .Horizontal
+            buttonStackView[ii].distribution = .FillEqually
+            buttonStackView[ii].alignment = .Fill
+        }
+        buttonStackView[0].addArrangedSubview(aButton[0])
+        buttonStackView[0].addArrangedSubview(aButton[1])
+        buttonStackView[1].addArrangedSubview(aButton[2])
+        buttonStackView[1].addArrangedSubview(aButton[3])
+        
+        // totalStackView
+        let totalStackView = UIStackView()
+        totalStackView.spacing = 5
+        totalStackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(totalStackView)
+        let viewsDictionary = ["stackView": totalStackView]
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-20-[stackView]-20-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-84-[stackView]-20-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
+        totalStackView.axis = .Vertical
+        totalStackView.distribution = .Fill
+        totalStackView.alignment = .Fill
+        totalStackView.addArrangedSubview(topStackView)
+        totalStackView.addArrangedSubview(qLabel)
+        totalStackView.addArrangedSubview(buttonStackView[0])
+        totalStackView.addArrangedSubview(buttonStackView[1])
+        
+
+        
+        self.view.addSubview(totalStackView)
         
         loadViewIfNeeded()
     }
@@ -259,7 +257,7 @@ class QuestionViewController: UIViewController {
     // 문제 풀이 이력 저장
     func saveRecord(answer: String, result: Bool) {
         let question = qLabel.text!
-        let level = titleLabel.text!
+        let level = calledTitle
         let playdt = NSDate()
         debugPrint("\(playdt) \(question) \(answer) \(result)")
         let realm = try! Realm()
@@ -326,7 +324,7 @@ class QuestionViewController: UIViewController {
 
     }
     
-    func cancelTouchUpInside(sender:UIButton) {
+    func leftBarButtonPressed() {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
