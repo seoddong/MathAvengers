@@ -17,6 +17,21 @@ class Realms {
         
         return results
     }
+    
+    func countTB_LEVEL() -> Int {
+        let realm = try! Realm()
+        let results = try! realm.objects(TB_LEVEL.self)
+        
+        return results.count
+    }
+    
+    func retreiveTB_LEVEL() -> Results<TB_LEVEL> {
+        let realm = try! Realm()
+        let results = try! realm.objects(TB_LEVEL.self).sorted("level")
+
+        
+        return results
+    }
 }
 
 class TB_RESULTLOG: Object {
@@ -26,4 +41,11 @@ class TB_RESULTLOG: Object {
     dynamic var result = false
     dynamic var playdt = NSDate()
     dynamic var user = "songahbie"
+}
+
+class TB_LEVEL: Object {
+    dynamic var level = 0
+    dynamic var levelDesc = ""
+    dynamic var imageURL = ""
+
 }

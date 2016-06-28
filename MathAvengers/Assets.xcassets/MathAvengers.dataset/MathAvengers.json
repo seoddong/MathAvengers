@@ -1,0 +1,30 @@
+{
+    "TB_LEVEL": [
+                 {
+                 "level": 1,
+                 "levelDesc": "사슴",
+                 "imageURL": ""
+                 },
+                 {
+                 "level": 2,
+                 "levelDesc": "개",
+                 "imageURL": ""
+                 },
+                 {
+                 "level": 3,
+                 "levelDesc": "사자",
+                 "imageURL": ""
+                 },
+                 {
+                 "level": 4,
+                 "levelDesc": "백호랑이",
+                 "imageURL": ""
+                 },
+                 {
+                 "level": 5,
+                 "levelDesc": "코끼리",
+                 "imageURL": ""
+                 }
+    ],
+    "stat": "ok"
+}

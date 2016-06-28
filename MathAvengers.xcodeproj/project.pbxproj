@@ -18,8 +18,10 @@
 		745087621D194B4A007BF48C /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 745087611D194B4A007BF48C /* Realm.framework */; };
 		745087631D194B4A007BF48C /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 745087611D194B4A007BF48C /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7450876C1D194DEF007BF48C /* MathAvengersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7450876B1D194DEF007BF48C /* MathAvengersTests.swift */; };
+		745795881D20110300087BC7 /* ImportJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745795871D20110300087BC7 /* ImportJSON.swift */; };
 		7460061E1D1837C10053D75B /* UIDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7460061D1D1837C10053D75B /* UIDesign.swift */; };
 		7471FBDB1D17BB7C003A8CA0 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7471FBDA1D17BB7C003A8CA0 /* SummaryViewController.swift */; };
+		74EA85801D20D9110035A050 /* TB_LEVEL.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74EA857D1D20961D0035A050 /* TB_LEVEL.json */; };
 		74FD38921D198451000CB816 /* Realms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FD38911D198451000CB816 /* Realms.swift */; };
 		74FD38941D19851A000CB816 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD38931D19851A000CB816 /* RealmSwift.framework */; };
 		74FD38951D19851A000CB816 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD38931D19851A000CB816 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -49,6 +51,16 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		74EA857F1D20D8FE0035A050 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				74EA85801D20D9110035A050 /* TB_LEVEL.json in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -66,8 +78,10 @@
 		745087691D194DEF007BF48C /* MathAvengersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathAvengersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7450876B1D194DEF007BF48C /* MathAvengersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathAvengersTests.swift; sourceTree = "<group>"; };
 		7450876D1D194DEF007BF48C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		745795871D20110300087BC7 /* ImportJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportJSON.swift; sourceTree = "<group>"; };
 		7460061D1D1837C10053D75B /* UIDesign.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDesign.swift; sourceTree = "<group>"; };
 		7471FBDA1D17BB7C003A8CA0 /* SummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
+		74EA857D1D20961D0035A050 /* TB_LEVEL.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TB_LEVEL.json; sourceTree = "<group>"; };
 		74FD38911D198451000CB816 /* Realms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Realms.swift; sourceTree = "<group>"; };
 		74FD38931D19851A000CB816 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 		74FD38971D1A0AF6000CB816 /* ShowLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLogViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +143,8 @@
 				7460061D1D1837C10053D75B /* UIDesign.swift */,
 				74FD38911D198451000CB816 /* Realms.swift */,
 				74FD38971D1A0AF6000CB816 /* ShowLogViewController.swift */,
+				745795871D20110300087BC7 /* ImportJSON.swift */,
+				74EA857D1D20961D0035A050 /* TB_LEVEL.json */,
 			);
 			path = MathAvengers;
 			sourceTree = "<group>";
@@ -154,6 +170,7 @@
 				7417EE571D11A61D00B7895D /* Resources */,
 				745087641D194B4B007BF48C /* Embed Frameworks */,
 				745087731D1950BD007BF48C /* ShellScript */,
+				74EA857F1D20D8FE0035A050 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -270,6 +287,7 @@
 				7417EE741D120D3B00B7895D /* LevelTableViewCell.swift in Sources */,
 				74FD38981D1A0AF6000CB816 /* ShowLogViewController.swift in Sources */,
 				7471FBDB1D17BB7C003A8CA0 /* SummaryViewController.swift in Sources */,
+				745795881D20110300087BC7 /* ImportJSON.swift in Sources */,
 				7417EE5D1D11A61D00B7895D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

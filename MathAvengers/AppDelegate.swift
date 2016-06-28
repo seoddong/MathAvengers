@@ -15,8 +15,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // 앱 설치 시 JSON 파일을 읽어 초기 데이터를 Realm에 세팅한다.
+        if didFinishLaunchingOnce() {
+            let documentPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last!
+            let util = Util()
+            util.removeRealmFilesAtPath(documentPath)
+            
+            let realms = Realms()
+            if case let cnt = realms.countTB_LEVEL() where cnt == 0 {
+                _ = ImportJSON()
+            }
+        }
         return true
+    }
+    
+    func didFinishLaunchingOnce() -> Bool
+    {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        if defaults.stringForKey("hasAppBeenLaunchedBefore") != nil {
+            print(" N-th time app launched ")
+            return true
+        }
+        else {
+            print(" First time app launched ")
+            defaults.setBool(true, forKey: "hasAppBeenLaunchedBefore")
+            return false
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {

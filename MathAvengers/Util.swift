@@ -58,4 +58,49 @@ class Util {
         return alertController
     }
     
+    /**
+     Get all directory of the Path
+     
+     - parameter path: The path you want to know
+     
+     - returns: An array of directory in the path
+     */
+    func contentsOfDirectoryAtPath(path: String) -> [String]? {
+        guard let paths = try? NSFileManager.defaultManager().contentsOfDirectoryAtPath(path) else { return nil}
+        return paths.map { aContent in (path as NSString).stringByAppendingPathComponent(aContent)}
+    }
+    
+    
+    /**
+     Remove all files at the path
+     
+     - parameter path: The path you want to delete all in
+     */
+    func removeRealmFilesAtPath(path: String) {
+        do {
+            let files = self.contentsOfDirectoryAtPath(path)!
+            _ = files.map {
+                if $0.rangeOfString("default.realm") != nil {
+                    do {
+                        try NSFileManager.defaultManager().removeItemAtPath($0)
+                    }
+                    catch let error as NSError {
+                        debugPrint("error: \(error.localizedFailureReason)")
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     Get bundle realm url
+     
+     - parameter name: realm name
+     
+     - returns: The path of .realm file
+     */
+    func bundleRealmURL(name: String) -> NSURL? {
+        return NSBundle.mainBundle().URLForResource(name, withExtension: "realm")
+    }
+    
 }

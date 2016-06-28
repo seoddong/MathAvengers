@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MainViewController: UIViewController {
     
@@ -16,26 +17,18 @@ class MainViewController: UIViewController {
     let levelSegueIdentifier = "levelSegueIdentifier"
     let showLogSegueIdentifier = "showLogSegueIdentifier"
     
-    var labelArray: [String] = []
-    var imageNameArray: [String] = []
-    var webAddress: [String] = []
-    
     var selectedIndexPathRow = 0
     var selectedTitle = ""
+    var results: Results<TB_LEVEL>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         levelTableView.delegate = self
         levelTableView.dataSource = self
-
-        labelArray = ["사슴", "개", "사자", "백호랑이", "코끼리"]
-        webAddress = ["http://en.wikipedia.org/wiki/Buckingham_Palace",
-                      "http://en.wikipedia.org/wiki/Eiffel_Tower",
-                      "http://en.wikipedia.org/wiki/Grand_Canyon",
-                      "http://en.wikipedia.org/wiki/Windsor_Castle",
-                      "http://en.wikipedia.org/wiki/Empire_State_Building"]
-        imageNameArray = ["001", "002", "003", "004", "005"]
+        
+        let realms = Realms()
+        results = realms.retreiveTB_LEVEL()
         
         setupUI()
     }
@@ -52,7 +45,7 @@ class MainViewController: UIViewController {
     func setupUI() {
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.automaticallyAdjustsScrollViewInsets = false
+        self.automaticallyAdjustsScrollViewInsets = true
         
         self.title = "Math Avengers"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "기록 보기", style: .Plain, target: self, action: #selector(showLog))
@@ -114,7 +107,7 @@ extension MainViewController: UITableViewDelegate {
 
 extension MainViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return labelArray.count
+        return results.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -122,8 +115,10 @@ extension MainViewController: UITableViewDataSource {
         
         // 셀의 데이터와 이미지 설정 코드
         let row = indexPath.row
-        cell.cellLabel.text = "\(row + 1). \(labelArray[row])"
-        cell.cellImageView.image = UIImage(named: imageNameArray[row])
+        cell.cellLabel.text = "\(results[row].levelDesc)"
+        let imageName = String(format: "%03d", results[row].level)
+        debugPrint("imageName=[\(imageName)]")
+        cell.cellImageView.image = UIImage(named: imageName)
         
         return cell
     }
