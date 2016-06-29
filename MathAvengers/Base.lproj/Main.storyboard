@@ -30,26 +30,26 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BvX-cx-3TU">
-                                                    <rect key="frame" x="22" y="0.0" width="150" height="120"/>
+                                                    <rect key="frame" x="22" y="0.0" width="160" height="120"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="150" id="lhj-sU-mTq"/>
+                                                        <constraint firstAttribute="height" constant="120" id="QNE-7R-CGa"/>
+                                                        <constraint firstAttribute="width" constant="160" id="djE-Y7-rF7"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R4Z-1m-ruI">
-                                                    <rect key="frame" x="192" y="0.0" width="400" height="120"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="60"/>
+                                                    <rect key="frame" x="202" y="0.0" width="390" height="120"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="BvX-cx-3TU" firstAttribute="centerY" secondItem="yZh-iP-VVQ" secondAttribute="centerY" id="5ax-a0-LTv"/>
-                                                <constraint firstItem="BvX-cx-3TU" firstAttribute="leading" secondItem="yZh-iP-VVQ" secondAttribute="leadingMargin" constant="14" id="87o-FK-9b8"/>
-                                                <constraint firstItem="BvX-cx-3TU" firstAttribute="top" secondItem="R4Z-1m-ruI" secondAttribute="top" id="9po-2I-shI"/>
-                                                <constraint firstItem="R4Z-1m-ruI" firstAttribute="trailing" secondItem="yZh-iP-VVQ" secondAttribute="trailingMargin" id="CT9-uA-Q3J"/>
-                                                <constraint firstItem="BvX-cx-3TU" firstAttribute="bottom" secondItem="R4Z-1m-ruI" secondAttribute="bottom" id="ibX-Ea-es4"/>
-                                                <constraint firstItem="BvX-cx-3TU" firstAttribute="top" secondItem="yZh-iP-VVQ" secondAttribute="top" id="lvM-2r-xGH"/>
-                                                <constraint firstItem="R4Z-1m-ruI" firstAttribute="leading" secondItem="BvX-cx-3TU" secondAttribute="trailing" constant="20" id="qGV-Fu-Ws0"/>
+                                                <constraint firstItem="BvX-cx-3TU" firstAttribute="leading" secondItem="yZh-iP-VVQ" secondAttribute="leadingMargin" constant="14" id="0FS-20-mIv"/>
+                                                <constraint firstItem="R4Z-1m-ruI" firstAttribute="leading" secondItem="BvX-cx-3TU" secondAttribute="trailing" constant="20" id="ATf-2U-hur"/>
+                                                <constraint firstItem="BvX-cx-3TU" firstAttribute="bottom" secondItem="R4Z-1m-ruI" secondAttribute="bottom" id="LoT-yE-2OV"/>
+                                                <constraint firstItem="R4Z-1m-ruI" firstAttribute="trailing" secondItem="yZh-iP-VVQ" secondAttribute="trailingMargin" id="NV8-hU-c6Q"/>
+                                                <constraint firstItem="BvX-cx-3TU" firstAttribute="top" secondItem="yZh-iP-VVQ" secondAttribute="top" id="Qze-BL-22q"/>
+                                                <constraint firstItem="BvX-cx-3TU" firstAttribute="top" secondItem="R4Z-1m-ruI" secondAttribute="top" id="nCG-nY-WzW"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -159,6 +159,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="nS4-iS-4QK"/>
+        <segue reference="eVA-4e-hFc"/>
     </inferredMetricsTieBreakers>
 </document>

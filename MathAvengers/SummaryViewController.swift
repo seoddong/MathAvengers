@@ -21,7 +21,6 @@ class SummaryViewController: UIViewController {
     var levelLabel: UILabel!
     var scoreLabel: UILabel!
     var messageLabel: UILabel!
-    var showLogButton: UIButton!
     var imageView: UIImageView!
     
     let uidesign = UIDesign()
@@ -41,6 +40,7 @@ class SummaryViewController: UIViewController {
         //Navi Bar
         self.title = "Math Avengers - Summary"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "처음으로", style: .Plain, target: self, action: #selector(self.leftBarButtonPressed))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "기록 보기", style: .Plain, target: self, action: #selector(self.rightBarButtonPressed))
 
         
         levelLabel = UILabel()
@@ -49,7 +49,7 @@ class SummaryViewController: UIViewController {
         levelLabel.heightAnchor.constraintEqualToConstant(80).active = true
         
         scoreLabel = UILabel()
-        scoreLabel.text = "최종 점수: \(String(round(finalScore * 100)/100))"
+        scoreLabel.text = "최종 점수: \(String(Int(abs(round(finalScore * 10000)))))"
         uidesign.setLabelLightGrayWithBorder(scoreLabel, fontSize: 40)
         scoreLabel.heightAnchor.constraintEqualToConstant(80).active = true
         
@@ -65,10 +65,6 @@ class SummaryViewController: UIViewController {
         uidesign.setLabelLightGrayWithBorder(messageLabel, fontSize: 40)
         messageLabel.heightAnchor.constraintEqualToConstant(200).active = true
         
-        showLogButton = UIButton()
-        showLogButton.setTitle("내가 푼 문제 보기", forState: .Normal)
-        uidesign.setButtonLightGrayWithBorder(showLogButton, fontSize: 40)
-        
         imageView = UIImageView(image: UIImage(named: "rainbow"))
         //imageView.frame.size = CGSizeMake(imageView.frame.width, imageView.frame.height / 2)
         imageView.heightAnchor.constraintEqualToConstant(400).active = true
@@ -78,7 +74,6 @@ class SummaryViewController: UIViewController {
         stackView.addArrangedSubview(levelLabel)
         stackView.addArrangedSubview(scoreLabel)
         stackView.addArrangedSubview(messageLabel)
-        stackView.addArrangedSubview(showLogButton)
         stackView.addArrangedSubview(imageView)
         
         stackView.axis = .Vertical
@@ -98,7 +93,7 @@ class SummaryViewController: UIViewController {
     
     func setActions() {
         
-        showLogButton.addTarget(self, action: #selector(self.showLogTouchUpInside(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        // Button Action
         
     }
     
@@ -107,8 +102,7 @@ class SummaryViewController: UIViewController {
         self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
-    func showLogTouchUpInside(sender: UIButton) {
-        sender.backgroundColor = UIColor.orangeColor()
+    func rightBarButtonPressed() {
         
         performSegueWithIdentifier(showLogSegueIdentifier, sender: self)
 

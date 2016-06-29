@@ -88,7 +88,7 @@ class QuestionViewController: UIViewController {
         let passedTime = NSDate.timeIntervalSinceReferenceDate() - startTime
         timeRemaining = maxSec - passedTime
         if !gameOver {
-            scoreLabel.text = String(format: "%.03f", timeRemaining)
+            scoreLabel.text = String(format: "%.04f", timeRemaining)
             if timeRemaining <= 0 {
                 // 100초 초과로 게임 종료
                 gameOver = true
@@ -99,7 +99,7 @@ class QuestionViewController: UIViewController {
         else{
             timer.invalidate()
             //Force the label to 0.0000000 at the end
-            scoreLabel.text = String(format: "%.03f", 0.0)
+            scoreLabel.text = String(format: "%.04f", 0.0)
         }
     }
     

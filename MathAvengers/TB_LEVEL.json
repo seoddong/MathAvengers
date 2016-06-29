@@ -1,27 +1,27 @@
 [
     {
     "level": 1,
-    "levelDesc": "사슴",
+    "levelDesc": "결과가 10 미만인 더하기",
     "imageURL": ""
     },
     {
     "level": 2,
-    "levelDesc": "개",
+    "levelDesc": "합이 10이 되는 두 수 찾기 1",
     "imageURL": ""
     },
     {
     "level": 3,
-    "levelDesc": "사자",
+    "levelDesc": "한 자리 수 + 한 자리 수",
     "imageURL": ""
     },
     {
     "level": 4,
-    "levelDesc": "백호랑이",
+    "levelDesc": "합이 10이 되는 두 수 찾기 2",
     "imageURL": ""
     },
     {
     "level": 5,
-    "levelDesc": "코끼리",
+    "levelDesc": "두 자리 수 + 한 자리 수",
     "imageURL": ""
     }
 ]
