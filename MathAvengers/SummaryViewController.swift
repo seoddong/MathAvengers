@@ -69,7 +69,7 @@ class SummaryViewController: UIViewController {
         showLogButton.setTitle("내가 푼 문제 보기", forState: .Normal)
         uidesign.setButtonLightGrayWithBorder(showLogButton, fontSize: 40)
         
-        imageView = UIImageView(image: UIImage(named: "010"))
+        imageView = UIImageView(image: UIImage(named: "rainbow"))
         //imageView.frame.size = CGSizeMake(imageView.frame.width, imageView.frame.height / 2)
         imageView.heightAnchor.constraintEqualToConstant(400).active = true
         

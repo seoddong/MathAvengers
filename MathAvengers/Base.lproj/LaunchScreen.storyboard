@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8150" systemVersion="15A204g" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8122"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -15,8 +16,28 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rainbow" translatesAutoresizingMaskIntoConstraints="NO" id="qPh-s2-dn8">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Math Avengers" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Fd-42-J8r">
+                                <rect key="frame" x="0.0" y="246" width="600" height="108"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="80"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="4Fd-42-J8r" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="226" id="Bpi-yj-sQI"/>
+                            <constraint firstItem="4Fd-42-J8r" firstAttribute="centerY" secondItem="qPh-s2-dn8" secondAttribute="centerY" id="Dj6-n2-JNK"/>
+                            <constraint firstItem="qPh-s2-dn8" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="Hqd-3U-WMR"/>
+                            <constraint firstItem="qPh-s2-dn8" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="YQ9-MK-t4b"/>
+                            <constraint firstItem="4Fd-42-J8r" firstAttribute="leading" secondItem="qPh-s2-dn8" secondAttribute="leading" id="i1u-vj-Scr"/>
+                            <constraint firstItem="qPh-s2-dn8" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="nhv-EW-DVs"/>
+                            <constraint firstAttribute="trailing" secondItem="qPh-s2-dn8" secondAttribute="trailing" id="q1a-rr-6yA"/>
+                            <constraint firstItem="4Fd-42-J8r" firstAttribute="trailing" secondItem="qPh-s2-dn8" secondAttribute="trailing" id="soN-Or-a6C"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -24,4 +45,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="rainbow" width="2048" height="1536"/>
+    </resources>
 </document>

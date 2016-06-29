@@ -190,9 +190,7 @@ class QuestionViewController: UIViewController {
         uidesign.setLabelLightGrayWithBorder(scoreLabel, fontSize: nil)
         scoreLabel.font = UIFont(name: "Menlo-Regular", size: 40)
         scoreLabel.heightAnchor.constraintEqualToConstant(80).active = true
-        scoreLabel.widthAnchor.constraintEqualToConstant(400).active = true
-        
-        // starImageView
+        //scoreLabel.widthAnchor.constraintEqualToConstant(400).active = true
         
         
         // topStackView
@@ -204,8 +202,15 @@ class QuestionViewController: UIViewController {
         topStackView.alignment = .Fill
 
         topStackView.addArrangedSubview(scoreLabel)
-        _ =  starImageView.map { topStackView.addArrangedSubview($0) }
         
+        // starImageView
+        _ = starImageView.map {
+                $0.image = UIImage(named: "star_yellow")
+                $0.heightAnchor.constraintEqualToConstant(80).active = true
+                $0.widthAnchor.constraintEqualToConstant(80).active = true
+                topStackView.addArrangedSubview($0)
+        }
+    
 
         // 문제 Label 생성
         qLabel = UILabel()
@@ -214,7 +219,6 @@ class QuestionViewController: UIViewController {
 
         // 버튼 생성
         for ii in 0...3 {
-            aButton[ii] = UIButton()
             uidesign.setButtonLightGrayWithBorder(aButton[ii], fontSize: 80)
             aButton[ii].heightAnchor.constraintEqualToConstant(150).active = true
         }
