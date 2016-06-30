@@ -63,6 +63,7 @@ class SummaryViewController: UIViewController {
             messageLabel.text = message.last
         }
         uidesign.setLabelLightGrayWithBorder(messageLabel, fontSize: 40)
+        messageLabel.backgroundColor = UIColor(patternImage: UIImage(named:"tile001")!)
         messageLabel.heightAnchor.constraintEqualToConstant(200).active = true
         
         imageView = UIImageView(image: UIImage(named: "rainbow"))
@@ -71,15 +72,19 @@ class SummaryViewController: UIViewController {
         
         stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.addArrangedSubview(levelLabel)
-        stackView.addArrangedSubview(scoreLabel)
-        stackView.addArrangedSubview(messageLabel)
-        stackView.addArrangedSubview(imageView)
-        
         stackView.axis = .Vertical
         stackView.distribution = .EqualSpacing
         stackView.alignment = .Fill
+        
         self.view.addSubview(stackView)
+        UIView.animateWithDuration(0.75, animations: {
+            self.stackView.addArrangedSubview(self.levelLabel)
+            self.stackView.addArrangedSubview(self.scoreLabel)
+            self.stackView.addArrangedSubview(self.messageLabel)
+            self.stackView.addArrangedSubview(self.imageView)
+            self.stackView.layoutIfNeeded()
+        })
+        
         let viewsDictionary = ["stackView": stackView]
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-20-[stackView]-20-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-\((self.navigationController?.navigationBar.frame.size.height)! + 40)-[stackView]-20-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))

@@ -12,7 +12,7 @@ import RealmSwift
 class ImportJSON {
     init () {
         let jsonFilePath = NSBundle.mainBundle().pathForResource("TB_LEVEL", ofType: "json")
-        
+        debugPrint("jsonFilePath=\(jsonFilePath)")
         do
         {
             let jsonData = try NSData(contentsOfFile: jsonFilePath!, options: NSDataReadingOptions(rawValue: 0))

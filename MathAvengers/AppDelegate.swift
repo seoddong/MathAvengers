@@ -18,10 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // 앱 설치 시 JSON 파일을 읽어 초기 데이터를 Realm에 세팅한다.
         if !didFinishLaunchingOnce() {
-            let documentPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last!
-            let util = Util()
-            util.removeRealmFilesAtPath(documentPath)
-            
+
             let realms = Realms()
             if case let cnt = realms.countTB_LEVEL() where cnt == 0 {
                 _ = ImportJSON()
@@ -29,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
+
     
     func didFinishLaunchingOnce() -> Bool
     {

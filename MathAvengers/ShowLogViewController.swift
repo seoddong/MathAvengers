@@ -66,7 +66,16 @@ class ShowLogViewController: UIViewController {
         tableView = UITableView(frame: CGRectMake(0, 0, 200, 200), style: .Plain)
         tableView.registerClass(Cell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // 아래 footerView를 만든 이유는 테이블뷰의 빈칸이 화면에 보이지 않도록 하기 위함임
+        let footerView = UIView()
+        footerView.backgroundColor = UIColor.clearColor()
+        tableView.tableFooterView = footerView
+        
+        // 뷰 추가
         view.addSubview(tableView)
+        
+        // 뷰 Layout 설정
         let viewsDictionary = ["tableView": tableView]
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[tableView]-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[tableView]-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
@@ -149,7 +158,7 @@ extension ShowLogViewController: UITableViewDataSource {
         
         dateFormatter.dateFormat = "yyyy.MM.dd HH:mm:ss"
         cell.textLabel?.text = "\(record.question)      선택한 답: \(record.answer)"
-        cell.detailTextLabel?.text = "\(String(dateFormatter.stringFromDate(record.playdt))) - \(record.result)"
+        cell.detailTextLabel?.text = "\(String(dateFormatter.stringFromDate(record.playdt))) - \(record.result ? "맞음" : "틀림")"
         cell.result = record.result
 
         return cell

@@ -205,7 +205,7 @@ class QuestionViewController: UIViewController {
         
         // starImageView
         _ = starImageView.map {
-                $0.image = UIImage(named: "star_yellow")
+                $0.image = UIImage(named: "star")
                 $0.heightAnchor.constraintEqualToConstant(80).active = true
                 $0.widthAnchor.constraintEqualToConstant(80).active = true
                 topStackView.addArrangedSubview($0)
@@ -305,11 +305,15 @@ class QuestionViewController: UIViewController {
                 gameOver = true
                 setGameover()
             }
-            // 해당 보기에 똥 그림 올리기
-            sender.backgroundColor = UIColor.redColor()
-            
-            // 틀릴 때 마다 점수 까기
-            maxSec -= penaltyTime
+            else {
+                // star_sad
+                starImageView[countIncorrectAnswer-1].image = UIImage(named: "star_sad")
+                
+                sender.backgroundColor = UIColor.redColor()
+                
+                // 틀릴 때 마다 점수 까기
+                maxSec -= penaltyTime
+            }
         }
         
     }
