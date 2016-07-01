@@ -22,6 +22,7 @@ class MainViewController: UIViewController {
     var results: Results<TB_LEVEL>!
     
     var ubiquityURL: NSURL!
+    var metaDataQuery: NSMetadataQuery?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,14 +78,15 @@ class MainViewController: UIViewController {
         debugPrint("ubiquityURL=\(ubiquityURL)")
         
         // iCloud storage를 검색할 조건과 검색 범위를 지정
-        let metaDataQuery = NSMetadataQuery()
-        metaDataQuery.predicate = NSPredicate(format: "%K like 'default.realm'", NSMetadataItemFSNameKey)
-        metaDataQuery.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
+        metaDataQuery = NSMetadataQuery()
+        metaDataQuery?.predicate = NSPredicate(format: "%K like 'default.realm'", NSMetadataItemFSNameKey)
+        metaDataQuery?.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
         
         // 검색이 끝나면 결과를 알려줄 noti 설정
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainViewController.metadataQueryDidFinishGathering(_:)), name: NSMetadataQueryDidFinishGatheringNotification, object: metaDataQuery)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainViewController.metadataQueryDidFinishGathering), name: NSMetadataQueryDidFinishGatheringNotification, object: metaDataQuery)
         
-        metaDataQuery.startQuery()
+        let state = metaDataQuery?.startQuery()
+        debugPrint("state=\(state)")
         
 //        let dirPath = filemgr.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
 //        // dirPath=[file:///Users/seoddong/Library/Developer/CoreSimulator/Devices/CAE86DB6-92BC-44D3-93D0-F5D4826B54D5/data/Containers/Data/Application/1AA46834-C0FC-43A5-8D41-F3BEA3B048BD/Documents/]
@@ -100,7 +102,7 @@ class MainViewController: UIViewController {
     }
     
     func metadataQueryDidFinishGathering(notification: NSNotification) -> Void {
-        // 일단 결과르 받았으니 더 이상의 쿼리 진행은 막고 noti도 그만 받는 거로 설정한다.
+        // 일단 결과를 받았으니 더 이상의 쿼리 진행은 막고 noti도 그만 받는 거로 설정한다.
         let query = notification.object as! NSMetadataQuery
         query.disableUpdates()
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NSMetadataQueryDidFinishGatheringNotification, object: query)

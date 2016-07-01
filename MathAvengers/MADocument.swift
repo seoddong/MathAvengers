@@ -13,15 +13,21 @@ class MADocument: UIDocument {
     var userText: String? = "Some Sample Text"
     
     override func contentsForType(typeName: String) throws -> AnyObject {
-        debugPrint("contentsForType: typeName = \(typeName)")
+
         // default.realm을 읽어야 한다.
-        let filePath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        if let content = userText {
+        let filemgr = NSFileManager.defaultManager()
+        let dirPath = filemgr.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        debugPrint("filePath=\(dirPath)")
+        let realmURL = dirPath[0].URLByAppendingPathComponent("default.realm")
+        
+        // NSFileWrapper를 만들기 위해 file을 NSData로 변환한다.
+        if let content = NSData(contentsOfURL: realmURL) {
             
-            let length = content.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
-            return NSData(bytes:content, length: length)
-            
-        } else {
+            let fileWrapper = NSFileWrapper(regularFileWithContents: content)
+            debugPrint("contentsForType: fileWrapper=\(fileWrapper)")
+            return fileWrapper
+        }
+        else {
             return NSData()
         }
     }
