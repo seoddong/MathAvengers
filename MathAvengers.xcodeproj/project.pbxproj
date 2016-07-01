@@ -16,6 +16,8 @@
 		7417EE761D12D7F500B7895D /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417EE751D12D7F500B7895D /* QuestionViewController.swift */; };
 		7417EE781D12F90A00B7895D /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417EE771D12F90A00B7895D /* Util.swift */; };
 		742F949F1D248EA8001EA2D5 /* MADocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742F949E1D248EA8001EA2D5 /* MADocument.swift */; };
+		742F94A71D268949001EA2D5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742F94A61D268949001EA2D5 /* SettingsViewController.swift */; };
+		742F94AA1D26BBA8001EA2D5 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742F94A91D26BBA8001EA2D5 /* UIViewExtensions.swift */; };
 		745087621D194B4A007BF48C /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 745087611D194B4A007BF48C /* Realm.framework */; };
 		745087631D194B4A007BF48C /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 745087611D194B4A007BF48C /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7450876C1D194DEF007BF48C /* MathAvengersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7450876B1D194DEF007BF48C /* MathAvengersTests.swift */; };
@@ -77,6 +79,8 @@
 		7417EE771D12F90A00B7895D /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		742F949E1D248EA8001EA2D5 /* MADocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MADocument.swift; sourceTree = "<group>"; };
 		742F94A51D2672BF001EA2D5 /* MathAvengers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MathAvengers.entitlements; sourceTree = "<group>"; };
+		742F94A61D268949001EA2D5 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		742F94A91D26BBA8001EA2D5 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		745087611D194B4A007BF48C /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		745087691D194DEF007BF48C /* MathAvengersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathAvengersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7450876B1D194DEF007BF48C /* MathAvengersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathAvengersTests.swift; sourceTree = "<group>"; };
@@ -133,25 +137,35 @@
 		7417EE5B1D11A61D00B7895D /* MathAvengers */ = {
 			isa = PBXGroup;
 			children = (
+				742F94A81D268EA1001EA2D5 /* Controller */,
 				742F94A51D2672BF001EA2D5 /* MathAvengers.entitlements */,
 				7417EE5C1D11A61D00B7895D /* AppDelegate.swift */,
 				7417EE601D11A61D00B7895D /* Main.storyboard */,
 				7417EE661D11A61D00B7895D /* Assets.xcassets */,
 				7417EE681D11A61D00B7895D /* LaunchScreen.storyboard */,
 				7417EE6B1D11A61D00B7895D /* Info.plist */,
-				7417EE711D120CCA00B7895D /* MainViewController.swift */,
 				7417EE731D120D3B00B7895D /* LevelTableViewCell.swift */,
-				7417EE751D12D7F500B7895D /* QuestionViewController.swift */,
 				7417EE771D12F90A00B7895D /* Util.swift */,
-				7471FBDA1D17BB7C003A8CA0 /* SummaryViewController.swift */,
 				7460061D1D1837C10053D75B /* UIDesign.swift */,
 				74FD38911D198451000CB816 /* Realms.swift */,
-				74FD38971D1A0AF6000CB816 /* ShowLogViewController.swift */,
 				745795871D20110300087BC7 /* ImportJSON.swift */,
 				74EA857D1D20961D0035A050 /* TB_LEVEL.json */,
 				742F949E1D248EA8001EA2D5 /* MADocument.swift */,
+				742F94A91D26BBA8001EA2D5 /* UIViewExtensions.swift */,
 			);
 			path = MathAvengers;
+			sourceTree = "<group>";
+		};
+		742F94A81D268EA1001EA2D5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7417EE711D120CCA00B7895D /* MainViewController.swift */,
+				7417EE751D12D7F500B7895D /* QuestionViewController.swift */,
+				7471FBDA1D17BB7C003A8CA0 /* SummaryViewController.swift */,
+				74FD38971D1A0AF6000CB816 /* ShowLogViewController.swift */,
+				742F94A61D268949001EA2D5 /* SettingsViewController.swift */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 		7450876A1D194DEF007BF48C /* MathAvengersTests */ = {
@@ -292,6 +306,7 @@
 				7417EE721D120CCA00B7895D /* MainViewController.swift in Sources */,
 				74FD38921D198451000CB816 /* Realms.swift in Sources */,
 				7460061E1D1837C10053D75B /* UIDesign.swift in Sources */,
+				742F94AA1D26BBA8001EA2D5 /* UIViewExtensions.swift in Sources */,
 				7417EE781D12F90A00B7895D /* Util.swift in Sources */,
 				7417EE761D12D7F500B7895D /* QuestionViewController.swift in Sources */,
 				7417EE741D120D3B00B7895D /* LevelTableViewCell.swift in Sources */,
@@ -300,6 +315,7 @@
 				7471FBDB1D17BB7C003A8CA0 /* SummaryViewController.swift in Sources */,
 				745795881D20110300087BC7 /* ImportJSON.swift in Sources */,
 				7417EE5D1D11A61D00B7895D /* AppDelegate.swift in Sources */,
+				742F94A71D268949001EA2D5 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
