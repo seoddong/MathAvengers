@@ -20,6 +20,8 @@ class MainViewController: UIViewController {
     var selectedIndexPathRow = 0
     var selectedTitle = ""
     var results: Results<TB_LEVEL>!
+    
+    var ubiquityURL: NSURL!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +51,7 @@ class MainViewController: UIViewController {
         
         self.title = "Math Avengers"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "기록 보기", style: .Plain, target: self, action: #selector(showLog))
-        //self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(add))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "cloud", style: .Plain, target: self, action: #selector(cloudPressed))
         
         // 아래 footerView를 만든 이유는 테이블뷰의 빈칸이 화면에 보이지 않도록 하기 위함임
         let footerView = UIView()
@@ -59,6 +61,79 @@ class MainViewController: UIViewController {
     
     func showLog() {
         performSegueWithIdentifier(showLogSegueIdentifier, sender: self)
+    }
+    
+    func cloudPressed() {
+        let filemgr = NSFileManager.defaultManager()
+        
+        ubiquityURL = filemgr.URLForUbiquityContainerIdentifier(nil)
+        guard ubiquityURL != nil else {
+            debugPrint("Unable to access iCloud Account")
+            debugPrint("Open the Settings app and enter your Apple ID into iCloud settings")
+            return
+        }
+        
+        ubiquityURL = ubiquityURL?.URLByAppendingPathComponent("Documents/default.realm")
+        debugPrint("ubiquityURL=\(ubiquityURL)")
+        
+        // iCloud storage를 검색할 조건과 검색 범위를 지정
+        let metaDataQuery = NSMetadataQuery()
+        metaDataQuery.predicate = NSPredicate(format: "%K like 'default.realm'", NSMetadataItemFSNameKey)
+        metaDataQuery.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
+        
+        // 검색이 끝나면 결과를 알려줄 noti 설정
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainViewController.metadataQueryDidFinishGathering(_:)), name: NSMetadataQueryDidFinishGatheringNotification, object: metaDataQuery)
+        
+        metaDataQuery.startQuery()
+        
+//        let dirPath = filemgr.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
+//        // dirPath=[file:///Users/seoddong/Library/Developer/CoreSimulator/Devices/CAE86DB6-92BC-44D3-93D0-F5D4826B54D5/data/Containers/Data/Application/1AA46834-C0FC-43A5-8D41-F3BEA3B048BD/Documents/]
+//        if let path = dirPath {
+//            let documentURL = path.URLByAppendingPathComponent("default.realm")
+//            let maDoc = MADocument(fileURL: documentURL)
+//            maDoc.checkFileExist(documentURL)
+//        }
+//        else {
+//            debugPrint("There is no Document folder..")
+//        }
+
+    }
+    
+    func metadataQueryDidFinishGathering(notification: NSNotification) -> Void {
+        // 일단 결과르 받았으니 더 이상의 쿼리 진행은 막고 noti도 그만 받는 거로 설정한다.
+        let query = notification.object as! NSMetadataQuery
+        query.disableUpdates()
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NSMetadataQueryDidFinishGatheringNotification, object: query)
+        query.stopQuery()
+        
+        let results = query.results
+        if query.resultCount == 1 {
+            let resultURL = results[0].valueForAttribute(NSMetadataItemURLKey) as! NSURL
+            let maDoc = MADocument(fileURL: resultURL)
+            maDoc.openWithCompletionHandler({ (success: Bool) -> Void in
+                if success {
+                    debugPrint("iCloud file open OK")
+                    
+                } else {
+                    debugPrint("iCloud file open failed")
+                }
+            })
+        }
+        else if query.resultCount > 1 {
+            debugPrint("query.results = \(results)")
+        }
+        else {
+            // iCloud에 파일이 없으므로 파일을 카피해 놓는다
+            let maDoc = MADocument(fileURL: ubiquityURL)
+            
+            maDoc.saveToURL(ubiquityURL, forSaveOperation: .ForCreating, completionHandler: {(success: Bool) -> Void in
+                if success {
+                    print("iCloud create OK")
+                } else {
+                    print("iCloud create failed")
+                }
+            })
+        }
     }
     
 
