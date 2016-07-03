@@ -11,12 +11,21 @@ extension UIView {
     // Name this function in a way that makes sense to you...
     // slideFromLeft, slideRight, slideLeftToRight, etc. are great alternative names
     func slideInFromLeft(duration: NSTimeInterval = 1.0, completionDelegate: AnyObject? = nil) {
+        
+        CATransaction.begin()
+        
         // Create a CATransition animation
         let slideInFromLeftTransition = CATransition()
         
         // Set its callback delegate to the completionDelegate that was provided (if any)
         if let delegate: AnyObject = completionDelegate {
             slideInFromLeftTransition.delegate = delegate
+            CATransaction.setCompletionBlock({
+                debugPrint("slide in completed..")
+                let settingsView = delegate as! SettingsViewController
+                settingsView.nameField.becomeFirstResponder()
+            })
+            
         }
         
         // Customize the animation's properties
@@ -28,6 +37,9 @@ extension UIView {
         
         // Add the animation to the View's layer
         self.layer.addAnimation(slideInFromLeftTransition, forKey: "slideInFromLeftTransition")
+        
+
+        CATransaction.commit()
     }
     
     func fadeIn() {

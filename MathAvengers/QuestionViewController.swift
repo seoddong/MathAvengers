@@ -165,8 +165,10 @@ class QuestionViewController: UIViewController {
         switch level {
         case 1:
             createLevel1()
+            break
         default:
             createLevel1()
+            break
         }
 
         // 답 배열 섞기

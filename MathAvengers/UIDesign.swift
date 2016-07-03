@@ -9,6 +9,19 @@
 import UIKit
 
 class UIDesign {
+    
+    let colors = [
+        UIColor(red: 1, green: 0, blue: 0, alpha: 0.5),
+        UIColor(red: 1, green: 0.5, blue: 0, alpha: 0.5),
+        UIColor(red: 1, green: 1, blue: 0, alpha: 0.5),
+        UIColor(red: 0, green: 1, blue: 0, alpha: 0.5),
+        UIColor(red: 0, green: 0, blue: 1, alpha: 0.5),
+        UIColor(red: 0.5, green: 0, blue: 1, alpha: 0.5),
+        UIColor(red: 0.5, green: 0, blue: 0.5, alpha: 0.5),
+        UIColor.whiteColor()
+    ]
+    
+    
     func setButtonLightGrayWithBorder(aButton: UIButton, fontSize: CGFloat?) {
         if let fontSize = fontSize {
             aButton.titleLabel?.font = aButton.titleLabel?.font.fontWithSize(fontSize)
@@ -33,5 +46,14 @@ class UIDesign {
         aLabel.clipsToBounds = true
         aLabel.backgroundColor = UIColor.lightGrayColor()
         aLabel.translatesAutoresizingMaskIntoConstraints = true
+    }
+    
+    func setViewLayout(view: UIView, color: Int?) {
+        if let col = color where col < colors.count {
+            view.backgroundColor = colors[col]
+        }
+        view.layer.cornerRadius = 30
+        view.layer.borderWidth = 3
+        view.layer.borderColor = UIColor.blackColor().CGColor
     }
 }
