@@ -1,0 +1,33 @@
+ [
+  {
+  "seq": 1,
+  "section": "name",
+  "cellType": "label"
+  },
+  {
+  "seq": 2,
+  "section": "name",
+  "cellType": "textField"
+  },
+  {
+  "seq": 3,
+  "section": "name",
+  "cellType": "imageButton"
+  },
+  {
+  "seq": 4,
+  "section": "age",
+  "cellType": "label"
+  },
+  {
+  "seq": 5,
+  "section": "age",
+  "cellType": "textField"
+  },
+  {
+  "seq": 6,
+  "section": "age",
+  "cellType": "imageButton"
+  }
+  ]
+

@@ -7,23 +7,7 @@
 //
 
 struct GlobalSettings {
-    
-    static var cloudSaveYN: Bool {
-        get {
-            return self.cloudSaveYN
-        }
-        set (state) {
-            self.cloudSaveYN = state
-        }
-    }
-    
-    static var user: String {
-        get {
-            return self.user
-        }
-        set (name) {
-            self.user = name
-        }
-    }
-    
+
+    static var cloudSaveYN: Bool = false
+    static var user: String = ""
 }

@@ -20,23 +20,32 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rainbow" translatesAutoresizingMaskIntoConstraints="NO" id="qPh-s2-dn8">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Math Avengers" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Fd-42-J8r">
-                                <rect key="frame" x="0.0" y="246" width="600" height="108"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="80"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="2" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Fd-42-J8r">
+                                <rect key="frame" x="100" y="175" width="400" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="AY5-Pk-wY7"/>
+                                    <constraint firstAttribute="width" constant="400" id="Lgq-kg-O2j"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment content="Math Avengers">
+                                        <attributes>
+                                            <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <font key="NSFont" size="80" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="4Fd-42-J8r" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="226" id="Bpi-yj-sQI"/>
-                            <constraint firstItem="4Fd-42-J8r" firstAttribute="centerY" secondItem="qPh-s2-dn8" secondAttribute="centerY" id="Dj6-n2-JNK"/>
+                            <constraint firstItem="4Fd-42-J8r" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Gnr-98-R56"/>
                             <constraint firstItem="qPh-s2-dn8" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="Hqd-3U-WMR"/>
+                            <constraint firstItem="4Fd-42-J8r" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="M5p-jD-6Bq"/>
                             <constraint firstItem="qPh-s2-dn8" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="YQ9-MK-t4b"/>
-                            <constraint firstItem="4Fd-42-J8r" firstAttribute="leading" secondItem="qPh-s2-dn8" secondAttribute="leading" id="i1u-vj-Scr"/>
                             <constraint firstItem="qPh-s2-dn8" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="nhv-EW-DVs"/>
                             <constraint firstAttribute="trailing" secondItem="qPh-s2-dn8" secondAttribute="trailing" id="q1a-rr-6yA"/>
-                            <constraint firstItem="4Fd-42-J8r" firstAttribute="trailing" secondItem="qPh-s2-dn8" secondAttribute="trailing" id="soN-Or-a6C"/>
                         </constraints>
                     </view>
                 </viewController>

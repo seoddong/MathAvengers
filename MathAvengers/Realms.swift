@@ -32,6 +32,21 @@ class Realms {
         
         return results
     }
+    
+    func countTB_SETTINS() -> Int {
+        let realm = try! Realm()
+        let results = try! realm.objects(TB_SETTINGS.self)
+        
+        return results.count
+    }
+    
+    func retreiveTB_SETTINGS() -> Results<TB_SETTINGS> {
+        let realm = try! Realm()
+        let results = try! realm.objects(TB_SETTINGS.self).sorted("seq")
+        
+        
+        return results
+    }
 }
 
 class TB_RESULTLOG: Object {
@@ -49,3 +64,13 @@ class TB_LEVEL: Object {
     dynamic var imageURL = ""
 
 }
+
+class TB_SETTINGS: Object {
+    dynamic var seq = 0
+    dynamic var section = ""
+    dynamic var cellType = ""
+}
+
+
+
+
