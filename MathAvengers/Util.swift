@@ -104,3 +104,37 @@ class Util {
     }
     
 }
+
+// String Extension
+let whitespaceAndNewlineChars: [Character] = ["\n", "\r", "\t", " "]
+extension String {
+    func rtrim() -> String {
+        if isEmpty { return "" }
+        var i = endIndex
+        while i >= startIndex {
+            i = i.predecessor()
+            let c = self[i]
+            if !whitespaceAndNewlineChars.contains(c) {
+                break
+            }
+        }
+        return self[startIndex...i]
+    }
+    
+    func ltrim() -> String {
+        if isEmpty { return "" }
+        var i = startIndex
+        while i < endIndex {
+            let c = self[i]
+            if !whitespaceAndNewlineChars.contains(c) {
+                break
+            }
+            i = i.successor()
+        }
+        return self[i..<endIndex]
+    }
+    
+    func trim() -> String {
+        return ltrim().rtrim()
+    }
+}

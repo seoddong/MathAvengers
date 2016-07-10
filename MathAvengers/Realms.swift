@@ -72,6 +72,14 @@ class TB_SETTINGS: Object {
     dynamic var desc = ""
 }
 
-
+class TB_USER: Object {
+    dynamic var userName = ""
+    dynamic var age = 0
+    dynamic var regidt = NSDate()
+    
+    override static func primaryKey() -> String? {
+        return "userName"
+    }
+}
 
 

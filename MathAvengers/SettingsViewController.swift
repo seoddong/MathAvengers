@@ -123,7 +123,7 @@ class SettingsViewController: UIViewController {
                     switch section {
                     case 0:
                         if let text = activeText where text != "" {
-                            name = text
+                            name = text.trim()
                             activeField?.endEditing(true)
                             let indexPath = NSIndexPath(forRow: 0, inSection: section + 1)
                             collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
@@ -151,7 +151,11 @@ class SettingsViewController: UIViewController {
                         break
                     case 2:
                         // realm에 저장
-                        debugPrint("realm에 저장")
+                        debugPrint("realm에 저장: \(self.name)  \(self.age)")
+                        let realm = try! Realm()
+                        try! realm.write {
+                            realm.create(TB_USER.self, value: ["userName": self.name, "age": self.age, "regidt": NSDate()], update: true)
+                        }
                         break
                     default:
                         debugPrint("default")
