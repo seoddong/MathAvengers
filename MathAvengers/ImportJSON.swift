@@ -31,7 +31,7 @@ class ImportJSON {
                 {
                     for each in json
                     {
-                        realm.create(TB_SETTINGS.self, value: [each["seq"] as! Int, each["section"] as! String, each["cellType"] as! String])
+                        realm.create(TB_SETTINGS.self, value: [each["seq"] as! Int, each["section"] as! String, each["cellType"] as! String, each["labelText"] as! String])
                     }
                     
             }

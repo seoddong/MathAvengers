@@ -69,6 +69,7 @@ class TB_SETTINGS: Object {
     dynamic var seq = 0
     dynamic var section = ""
     dynamic var cellType = ""
+    dynamic var desc = ""
 }
 
 

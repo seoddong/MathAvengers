@@ -7,7 +7,7 @@
 //
 //  이 키보드 확장을 제대로 사용하기 위해서는 다음 단계로 세팅이 필요하다.
 //  1. 본 클래스에 변수 설정
-//     var keyboardYN = false
+//     var keyboardScrollYN = true
 //     var rectKeyboard: CGRect!
 //  2. 본 클래스의 viewDidLoad에 키보드 이벤트 등록
 //     self.performSelector(#selector(registerKeyboardEvent))
@@ -25,7 +25,6 @@ extension SettingsViewController {
     // 키보드가 떠오를 때 발생하는 이벤트 처리
     func keyboardWillShow(notification: NSNotification) {
         debugPrint("keyboard will show")
-        keyboardYN = true
         let userInfo = notification.userInfo!
         rectKeyboard = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
@@ -34,16 +33,17 @@ extension SettingsViewController {
         let collectionViewOffset = self.collectionView.contentOffset
         let activeFieldOrigin = CGPointMake((activeField!.superview?.superview?.frame.origin.x)! - collectionViewOffset.x, (activeField!.superview?.superview?.frame.origin.y)! - collectionViewOffset.y)
         // 키보드에 가려지는 경우에만 화면을 올린다.
-        if CGRectContainsPoint(rectKeyboard, activeFieldOrigin) {
+        if CGRectContainsPoint(rectKeyboard, activeFieldOrigin) && keyboardScrollYN == true {
             self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, self.collectionView.contentOffset.y + rectKeyboard.size.height)
         }
+        keyboardScrollYN = true
         
     }
     
     // 키보드가 사라질 때 발생하는 이벤트 처리
     func keyboardWillHide(notification: NSNotification) {
+/* 여기서는 키보드 내릴 때 화면을 내릴 필요가 없다.
         debugPrint("keyboard will hide")
-        keyboardYN = false
         let userInfo = notification.userInfo!
         rectKeyboard = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
@@ -56,7 +56,7 @@ extension SettingsViewController {
         if CGRectContainsPoint(newRectKeyboard, activeFieldOrigin) && collectionViewOffset.y >= rectKeyboard.height {
             self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, self.collectionView.contentOffset.y - rectKeyboard.size.height)
         }
-
+*/
     }
     
     // 위 두 가지 키보드 이벤트를 이벤트로 등록

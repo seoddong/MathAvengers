@@ -27,7 +27,7 @@ class UIDesign {
         textField.layer.borderColor = UIColor.blackColor().CGColor
         textField.layer.borderWidth = 3
         textField.layer.cornerRadius = 10
-        textField.backgroundColor = UIColor.lightGrayColor()
+        textField.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
         textField.clearButtonMode = .WhileEditing
     }
     

@@ -9,6 +9,7 @@
 import UIKit
 import RealmSwift
 
+/* 섹션 헤더 설정
 class SupplementaryView: UICollectionReusableView {
     var imageView = UIImageView()
     override init(frame: CGRect) {
@@ -22,6 +23,7 @@ class SupplementaryView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+*/
 
 class SettingsCell: UICollectionViewCell {
     var imageView = UIImageView()
@@ -48,9 +50,14 @@ class SettingsCell: UICollectionViewCell {
 class SettingsViewController: UIViewController {
     
     // 키보드 처리를 위한 변수
-    var keyboardYN = false
+    var keyboardScrollYN = true
     var rectKeyboard: CGRect!
     var activeField: UITextField?
+    
+    // realm용 변수
+    var name = ""
+    var age = 0
+    var results: Results<TB_SETTINGS>!
     
     let util = Util()
     let uidesign = UIDesign()
@@ -60,9 +67,9 @@ class SettingsViewController: UIViewController {
     
     let reuseIdentifier = "reuseIdentifier"
     let headerIdentifier = "headerIdentifier"
-    var results: Results<TB_SETTINGS>!
     var items: [[String]] = []
     var sections: [String] = []
+    var desc: [String] = []
     
     var collectionViewWidth: CGFloat = 0
     var currentIndexPath: NSIndexPath?
@@ -107,13 +114,51 @@ class SettingsViewController: UIViewController {
         
     }
     func handleNextTap(sender: UITapGestureRecognizer) {
-        
         // 제스쳐가 끝났는지 확인 후 코드 진행
         if sender.state == .Ended {
-            debugPrint("next")
-            if (sender.view as? UIImageView) != nil {
-                let indexPath = NSIndexPath(forRow: 0, inSection: 1)
-                collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+            if let imageView = sender.view as? UIImageView {
+                debugPrint("next")
+                if let section = imageView.layer.valueForKey("section")?.integerValue {
+                    let activeText = activeField?.text
+                    switch section {
+                    case 0:
+                        if let text = activeText where text != "" {
+                            name = text
+                            activeField?.endEditing(true)
+                            let indexPath = NSIndexPath(forRow: 0, inSection: section + 1)
+                            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+                        }
+                        else {
+                            self.presentViewController(util.alert("알림", message: "이름를 적어주세요.", ok: "확인", cancel: nil), animated: true, completion: {
+                                let cell = self.collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: 2, inSection: section)) as! SettingsCell
+                                cell.textField.becomeFirstResponder()
+                            })
+                        }
+                        break
+                    case 1:
+                        if let text = activeText where text != "" {
+                            age = Int(text)!
+                            activeField?.endEditing(true)
+                            let indexPath = NSIndexPath(forRow: 0, inSection: section + 1)
+                            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+                        }
+                        else {
+                            self.presentViewController(util.alert("알림", message: "나이를 적어주세요.", ok: "확인", cancel: nil), animated: true, completion: {
+                                let cell = self.collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: 2, inSection: section)) as! SettingsCell
+                                cell.textField.becomeFirstResponder()
+                            })
+                        }
+                        break
+                    case 2:
+                        // realm에 저장
+                        debugPrint("realm에 저장")
+                        break
+                    default:
+                        debugPrint("default")
+                        break
+                    }
+                }
+                
             }
         }
         
@@ -142,6 +187,9 @@ class SettingsViewController: UIViewController {
             else {
                 row.append(result.cellType)
             }
+            if result.desc != "" {
+                desc.append(result.desc)
+            }
         }
         items.append(row)
     }
@@ -155,20 +203,24 @@ class SettingsViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "다음 단계로", style: .Plain, target: self, action: #selector(self.nextButtonPressed))
         
         layout.scrollDirection = .Vertical
-        layout.headerReferenceSize = (UIImage(named: "name")?.size)!
-        layout.sectionHeadersPinToVisibleBounds = true
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 0
         // 섹션 사이의 거리를 많이 두어 다른 페이지처럼 느끼게 만들고, cell이 미리 준비되는 것을 막음(?)
         layout.sectionInset = UIEdgeInsetsMake(0, 0, self.view.frame.size.height, 0)
         
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
-        collectionView.backgroundColor = UIColor.yellowColor()
+        collectionView.backgroundColor = UIColor.whiteColor()
         collectionView.collectionViewLayout = layout
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(collectionView)
         collectionView.registerClass(SettingsCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        collectionView.registerClass(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerIdentifier)
+
+        
+/* 섹션 헤더 설정
+         layout.headerReferenceSize = (UIImage(named: "name")?.size)!
+         layout.sectionHeadersPinToVisibleBounds = true
+         collectionView.registerClass(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerIdentifier)
+*/
         
         collectionViewWidth = collectionView.frame.size.width
         
@@ -237,12 +289,12 @@ extension SettingsViewController: UICollectionViewDataSource {
         switch items[indexPath.section][indexPath.row] {
         case "label":
             
-            cell.cellLabel.text = "이름을 적어주세요.\(indexPath.row)"
+            cell.cellLabel.text = desc[indexPath.section]
             uidesign.setLabelLayout(cell.cellLabel, fontsize: 40)
             
             let viewsDictionary = ["cellLabel": cell.cellLabel]
             cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[cellLabel]-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
-            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[cellLabel]-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[cellLabel]-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
             
             break
             
@@ -251,11 +303,10 @@ extension SettingsViewController: UICollectionViewDataSource {
             cell.textField.text = ""
             uidesign.setTextFieldLayout(cell.textField, fontsize: 40)
             cell.textField.delegate = self
-            cell.textField.becomeFirstResponder()
             
             let viewsDictionary = ["textField": cell.textField]
             cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textField]-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
-            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[textField]-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[textField]-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
             
             break
             
@@ -263,18 +314,33 @@ extension SettingsViewController: UICollectionViewDataSource {
             
             let image = UIImage(named: "next")
             cell.imageView.image = image
-            cell.imageView.backgroundColor = UIColor.redColor()
+            //cell.imageView.backgroundColor = UIColor.redColor()
             cell.imageView.contentMode = .ScaleAspectFit
+            cell.imageView.layer.setValue(indexPath.section, forKey: "section")
+            debugPrint("sections[indexPath.section]=\(sections[indexPath.section])")
+            
             // 다음 이미지
             cell.imageView.userInteractionEnabled = true
-            let nextTap = UITapGestureRecognizer(target: self, action: #selector(handleNextTap))
+            let nextTap = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.handleNextTap(_:)))
             cell.imageView.addGestureRecognizer(nextTap)
             
-            let margin = (collectionViewWidth - image!.size.width) / 2
+            //let margin = (collectionViewWidth - image!.size.width) / 2
             let viewsDictionary = ["imageView": cell.imageView]
-            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-\(margin)-[imageView]-\(margin)-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[imageView]-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
             cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[imageView]-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
-
+            
+            break
+ 
+        case "image":
+            
+            let image = UIImage(named: sections[indexPath.section])
+            cell.imageView.image = image
+            //cell.imageView.backgroundColor = UIColor.redColor()
+            cell.imageView.contentMode = .ScaleAspectFit
+            
+            let viewsDictionary = ["imageView": cell.imageView]
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[imageView]-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[imageView]-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
             
             break
             
@@ -285,6 +351,18 @@ extension SettingsViewController: UICollectionViewDataSource {
         return cell
     }
     
+    // 화면에서 셀이 사라지면서 activeField가 가리키는 textField가 사라질 경우
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        
+        if self.activeField != nil {
+            let cell = cell as! SettingsCell
+            if cell.textField == self.activeField {
+                self.activeField = nil
+            }
+        }
+    }
+    
+/*
     // 섹션 헤더 설정
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
 
@@ -299,30 +377,46 @@ extension SettingsViewController: UICollectionViewDataSource {
             
             let viewsDictionary = ["imageView": headerView!.imageView]
             headerView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[imageView]-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
-            headerView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[imageView]-|", options: .AlignAllTop, metrics: nil, views: viewsDictionary))
+            headerView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[imageView]|", options: .AlignAllTop, metrics: nil, views: viewsDictionary))
         }
         return headerView!
     }
+ */
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         let cell = cell as! SettingsCell
         switch items[indexPath.section][indexPath.row] {
         case "label":
-            cell.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
+            //cell.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
             cell.cellLabel.hidden = false
             cell.imageView.hidden = true
             cell.textField.hidden = true
             break
             
         case "textField":
-            cell.backgroundColor = UIColor(red: 1, green: 0.5, blue: 0, alpha: 0.5)
+            //cell.backgroundColor = UIColor(red: 1, green: 0.5, blue: 0, alpha: 0.5)
             cell.textField.hidden = false
             cell.cellLabel.hidden = true
             cell.imageView.hidden = true
+            switch indexPath.section {
+            case 0:
+                cell.textField.keyboardType = .Default
+                break
+            case 1:
+                cell.textField.keyboardType = .NumberPad
+                break
+            default:
+                cell.textField.keyboardType = .Default
+                break
+            }
+            
+            keyboardScrollYN = false
+            cell.textField.becomeFirstResponder()
+
             break
             
-        case "imageButton":
-            cell.backgroundColor = UIColor(red: 0, green: 0.5, blue: 1, alpha: 0.5)
+        case "image", "imageButton":
+            //cell.backgroundColor = UIColor(red: 0, green: 0.5, blue: 1, alpha: 0.5)
             cell.imageView.hidden = false
             cell.cellLabel.hidden = true
             cell.textField.hidden = true
@@ -341,14 +435,18 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         
         switch items[indexPath.section][indexPath.row] {
         case "label":
-            return CGSizeMake(collectionViewWidth, 200)
+            return CGSizeMake(collectionViewWidth, 100)
             
         case "imageButton":
             let image = UIImage(named: "next")
+            return image!.size //CGSizeMake(collectionViewWidth, 150) //(image?.size.height)!)
+            
+        case "image":
+            let image = UIImage(named: sections[indexPath.section])
             return CGSizeMake(collectionViewWidth, (image?.size.height)!)
             
         case "textField":
-            return CGSizeMake(collectionViewWidth - 200, 100)
+            return CGSizeMake(collectionViewWidth - 100, 100)
             
         default:
             return CGSizeMake(collectionViewWidth, 200)

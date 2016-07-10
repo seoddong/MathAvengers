@@ -1,33 +1,69 @@
  [
   {
+  "seq": 0,
+  "section": "name",
+  "cellType": "image",
+  "labelText": ""
+  },
+  {
   "seq": 1,
   "section": "name",
-  "cellType": "label"
+  "cellType": "label",
+  "labelText": "이름을 적어주세요."
   },
   {
   "seq": 2,
   "section": "name",
-  "cellType": "textField"
+  "cellType": "textField",
+  "labelText": ""
   },
   {
   "seq": 3,
   "section": "name",
-  "cellType": "imageButton"
+  "cellType": "imageButton",
+  "labelText": ""
   },
   {
   "seq": 4,
   "section": "age",
-  "cellType": "label"
+  "cellType": "image",
+  "labelText": ""
   },
   {
   "seq": 5,
   "section": "age",
-  "cellType": "textField"
+  "cellType": "label",
+  "labelText": "나이를 적어주세요."
   },
   {
   "seq": 6,
   "section": "age",
-  "cellType": "imageButton"
+  "cellType": "textField",
+  "labelText": ""
+  },
+  {
+  "seq": 7,
+  "section": "age",
+  "cellType": "imageButton",
+  "labelText": ""
+  },
+  {
+  "seq": 8,
+  "section": "save",
+  "cellType": "image",
+  "labelText": ""
+  },
+  {
+  "seq": 9,
+  "section": "save",
+  "cellType": "label",
+  "labelText": "저장하시겠어요?"
+  },
+  {
+  "seq": 10,
+  "section": "save",
+  "cellType": "imageButton",
+  "labelText": ""
   }
   ]
 
