@@ -18,6 +18,7 @@
 		742F949F1D248EA8001EA2D5 /* MADocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742F949E1D248EA8001EA2D5 /* MADocument.swift */; };
 		742F94A71D268949001EA2D5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742F94A61D268949001EA2D5 /* SettingsViewController.swift */; };
 		742F94AD1D27FACF001EA2D5 /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742F94AC1D27FACF001EA2D5 /* GlobalSettings.swift */; };
+		743A23CF1D3313A800B65BFA /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743A23CE1D3313A800B65BFA /* IntroViewController.swift */; };
 		745087621D194B4A007BF48C /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 745087611D194B4A007BF48C /* Realm.framework */; };
 		745087631D194B4A007BF48C /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 745087611D194B4A007BF48C /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7450876C1D194DEF007BF48C /* MathAvengersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7450876B1D194DEF007BF48C /* MathAvengersTests.swift */; };
@@ -84,6 +85,7 @@
 		742F94A51D2672BF001EA2D5 /* MathAvengers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MathAvengers.entitlements; sourceTree = "<group>"; };
 		742F94A61D268949001EA2D5 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		742F94AC1D27FACF001EA2D5 /* GlobalSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
+		743A23CE1D3313A800B65BFA /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		745087611D194B4A007BF48C /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		745087691D194DEF007BF48C /* MathAvengersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathAvengersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7450876B1D194DEF007BF48C /* MathAvengersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathAvengersTests.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 		7417EE5B1D11A61D00B7895D /* MathAvengers */ = {
 			isa = PBXGroup;
 			children = (
+				742F94AB1D26CE01001EA2D5 /* View */,
 				742F94A81D268EA1001EA2D5 /* Controller */,
 				742F94AE1D28101B001EA2D5 /* Model */,
 				742F94A51D2672BF001EA2D5 /* MathAvengers.entitlements */,
@@ -159,13 +162,13 @@
 		742F94A81D268EA1001EA2D5 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				743A23CE1D3313A800B65BFA /* IntroViewController.swift */,
 				7417EE711D120CCA00B7895D /* MainViewController.swift */,
 				7417EE751D12D7F500B7895D /* QuestionViewController.swift */,
 				7471FBDA1D17BB7C003A8CA0 /* SummaryViewController.swift */,
 				74FD38971D1A0AF6000CB816 /* ShowLogViewController.swift */,
 				742F94A61D268949001EA2D5 /* SettingsViewController.swift */,
 				74D895DD1D2C70C600C25762 /* KeyboardExtension.swift */,
-				742F94AB1D26CE01001EA2D5 /* View */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				743A23CF1D3313A800B65BFA /* IntroViewController.swift in Sources */,
 				74D895DE1D2C70C600C25762 /* KeyboardExtension.swift in Sources */,
 				7417EE721D120CCA00B7895D /* MainViewController.swift in Sources */,
 				74FD38921D198451000CB816 /* Realms.swift in Sources */,

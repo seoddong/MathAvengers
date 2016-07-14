@@ -47,6 +47,29 @@ class Realms {
         
         return results
     }
+    
+    func retreiveTB_USER() -> Results<TB_USER> {
+        let realm = try! Realm()
+        let predicate = NSPredicate(format: "currentYN == %@", true)
+        
+        var results = try! realm.objects(TB_USER.self).filter(predicate)
+        if results.count == 0 {
+            results = try! realm.objects(TB_USER.self)
+            if results.count == 0 {
+                return results
+            }
+            else {
+                try! realm.write({
+                    // 첫 번째 사용자의 currentYN을 true로 변경
+                    realm.create(TB_USER.self, value: [results[0].userName, results[0].age, NSDate(), true])
+                    //이 함수를 다시 호출
+                    results = try! realm.objects(TB_USER.self).filter(predicate)
+                })
+            }
+        }
+        
+        return results
+    }
 }
 
 class TB_RESULTLOG: Object {
@@ -76,6 +99,7 @@ class TB_USER: Object {
     dynamic var userName = ""
     dynamic var age = 0
     dynamic var regidt = NSDate()
+    dynamic var currentYN = false
     
     override static func primaryKey() -> String? {
         return "userName"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="smz-aw-Q0v">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="PCh-2T-TaV">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -156,7 +156,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l4I-yF-eZk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="992" y="-449"/>
+            <point key="canvasLocation" x="1804" y="-449"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="UeS-AY-DlG">
@@ -176,23 +176,42 @@
             </objects>
             <point key="canvasLocation" x="180" y="259"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Rwn-iK-iS7">
+        <!--Intro View Controller-->
+        <scene sceneID="TaK-7E-hhu">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="smz-aw-Q0v" sceneMemberID="viewController">
+                <viewController id="Jcl-ZT-YA2" customClass="IntroViewController" customModule="MathAvengers" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7rr-93-wme"/>
+                        <viewControllerLayoutGuide type="bottom" id="BIi-tq-c4p"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="IlZ-dL-gyF">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="so3-Ua-1i3"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lQ3-a7-zaX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1105" y="-449"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="iIP-MV-yAf">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PCh-2T-TaV" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="E4z-7q-SRj">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="hxb-gi-VYP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="rXY-GQ-abg" kind="relationship" relationship="rootViewController" id="4lU-ce-LnA"/>
+                        <segue destination="Jcl-ZT-YA2" kind="relationship" relationship="rootViewController" id="a2i-jZ-eQt"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tIZ-US-UCm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZqJ-0d-gDG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="180" y="-449"/>
+            <point key="canvasLocation" x="293" y="-449"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
