@@ -72,7 +72,7 @@ class SettingsViewController: UIViewController {
     var desc: [String] = []
     
     var collectionViewWidth: CGFloat = 0
-    var currentIndexPath: NSIndexPath?
+    var currentSection: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,6 +113,15 @@ class SettingsViewController: UIViewController {
         }
         
     }
+    
+    func showAlert(section: Int, message: String) {
+        self.presentViewController(util.alert("알림", message: message, ok: "확인", cancel: nil), animated: true, completion: {
+            let cell = self.collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: 2, inSection: section)) as! SettingsCell
+            cell.textField.becomeFirstResponder()
+            cell.textField.text = ""
+        })
+    }
+    
     func handleNextTap(sender: UITapGestureRecognizer) {
         // 제스쳐가 끝났는지 확인 후 코드 진행
         if sender.state == .Ended {
@@ -124,15 +133,18 @@ class SettingsViewController: UIViewController {
                     case 0:
                         if let text = activeText where text != "" {
                             name = text.trim()
+                            // 이름이 pk이므로 이미 같은 이름이 있는지 확인한다.
+                            let realm = try! Realm()
+                            if realm.objects(TB_USER.self).filter("userName == %@", name).count > 0 {
+                                showAlert(section, message: "같은 이름이 있습니다.\n다른 이름을 적어주세요.")
+                                break
+                            }
                             activeField?.endEditing(true)
                             let indexPath = NSIndexPath(forRow: 0, inSection: section + 1)
                             collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
                         }
                         else {
-                            self.presentViewController(util.alert("알림", message: "이름를 적어주세요.", ok: "확인", cancel: nil), animated: true, completion: {
-                                let cell = self.collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: 2, inSection: section)) as! SettingsCell
-                                cell.textField.becomeFirstResponder()
-                            })
+                            showAlert(section, message: "이름을 적어주세요.")
                         }
                         break
                     case 1:
@@ -143,19 +155,27 @@ class SettingsViewController: UIViewController {
                             collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
                         }
                         else {
-                            self.presentViewController(util.alert("알림", message: "나이를 적어주세요.", ok: "확인", cancel: nil), animated: true, completion: {
-                                let cell = self.collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: 2, inSection: section)) as! SettingsCell
-                                cell.textField.becomeFirstResponder()
-                            })
-                        }
+                            showAlert(section, message: "나이를 적어주세요.")                        }
                         break
                     case 2:
                         // realm에 저장
                         debugPrint("realm에 저장: \(self.name)  \(self.age)")
                         let realm = try! Realm()
+                        let users = realm.objects(TB_USER.self).filter("currentYN == true")
                         try! realm.write {
-                            realm.create(TB_USER.self, value: ["userName": self.name, "age": self.age, "regidt": NSDate()], update: true)
+
+                            // 기존 currentYN = true 인 애들을 false로 변경한다.
+                            for user in users {
+                                user.currentYN = false
+                            }
+                            realm.create(TB_USER.self, value: ["userName": self.name, "age": self.age, "regidt": NSDate(), "currentYN": true], update: false)
+                            
                         }
+                        
+                        // icloud에 저장djdddj
+                        
+                        // 처음으로 화면 이동
+                        self.navigationController?.popToRootViewControllerAnimated(true)
                         break
                     default:
                         debugPrint("default")
@@ -236,16 +256,6 @@ class SettingsViewController: UIViewController {
         
     }
     
-    func leftBarButtonPressed() {
-        
-    }
-    
-    func nextButtonPressed() {
-        self.presentViewController(util.alert("앗!", message: "이름을 입력하지 않으셨네요~", ok: "네, 입력할게요", cancel: nil), animated: true, completion: nil)
-        let indexPath = NSIndexPath(forRow: 0, inSection: 1)
-        collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
-    }
-    
     // 텍스트필드말고 다른 곳 터치하면 키보드를 가리도록 한다.
     // 고대로부터 전해져 내려오는 얘기로는 UITableView, UICollectionView는 이 메소드가 먹지 않는다고 한다.
     // 물론 toucheBegan을 Cell에 장착하면 이벤트가 발생한다. 하지만 Cell과 Cell사이를 탭하거나 Section Header를 탭할 때는 역시 이벤트가 발생하지 않는다.
@@ -264,6 +274,36 @@ class SettingsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+
+        let currentText = textField.text ?? ""
+        let prospectiveText = (currentText as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        
+        switch currentSection! {
+        case 0:
+            // name
+            let length = prospectiveText.characters.count
+            if length > 10 {
+                // label에 경고 문구를 띄운다.
+                let cell = self.collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: 1, inSection: currentSection!)) as! SettingsCell
+                cell.cellLabel.text = "\((cell.cellLabel.text)!)\n(이름은 10글자를 넘으면 안되요~)"
+                
+            }
+            return prospectiveText.characters.count <= 10
+        case 1:
+            // age
+            if !prospectiveText.containsOnlyCharactersIn("0123456789") {
+                // label에 경고 문구를 띄운다.
+                let cell = self.collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: 1, inSection: currentSection!)) as! SettingsCell
+                cell.cellLabel.text = "\((cell.cellLabel.text)!)\n(나이는 숫자만 적어주세요~)"
+                
+            }
+            return prospectiveText.containsOnlyCharactersIn("0123456789") && prospectiveText.characters.count <= 3
+        default:
+            return true
+        }
+    }
+    
     
     /*
      // MARK: - Navigation
@@ -274,6 +314,17 @@ class SettingsViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
+    
+    func leftBarButtonPressed() {
+        // 한 스크롤 씩 앞으로
+    }
+    
+    func nextButtonPressed() {
+        self.presentViewController(util.alert("앗!", message: "이름을 입력하지 않으셨네요~", ok: "네, 입력할게요", cancel: nil), animated: true, completion: nil)
+        let indexPath = NSIndexPath(forRow: 0, inSection: 1)
+        collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+    }
+    
     
 }
 
@@ -295,10 +346,12 @@ extension SettingsViewController: UICollectionViewDataSource {
             
             cell.cellLabel.text = desc[indexPath.section]
             uidesign.setLabelLayout(cell.cellLabel, fontsize: 40)
+            cell.cellLabel.lineBreakMode = .ByWordWrapping
+            cell.cellLabel.numberOfLines = 2
             
             let viewsDictionary = ["cellLabel": cell.cellLabel]
-            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[cellLabel]-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
-            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[cellLabel]-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[cellLabel]-|", options: [], metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[cellLabel]-|", options: [], metrics: nil, views: viewsDictionary))
             
             break
             
@@ -309,8 +362,8 @@ extension SettingsViewController: UICollectionViewDataSource {
             cell.textField.delegate = self
             
             let viewsDictionary = ["textField": cell.textField]
-            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textField]-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
-            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[textField]-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textField]-|", options: [], metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[textField]-|", options: [], metrics: nil, views: viewsDictionary))
             
             break
             
@@ -330,8 +383,8 @@ extension SettingsViewController: UICollectionViewDataSource {
             
             //let margin = (collectionViewWidth - image!.size.width) / 2
             let viewsDictionary = ["imageView": cell.imageView]
-            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[imageView]-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
-            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[imageView]-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[imageView]-|", options: [], metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[imageView]-|", options: [], metrics: nil, views: viewsDictionary))
             
             break
  
@@ -343,8 +396,8 @@ extension SettingsViewController: UICollectionViewDataSource {
             cell.imageView.contentMode = .ScaleAspectFit
             
             let viewsDictionary = ["imageView": cell.imageView]
-            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[imageView]-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
-            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[imageView]-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[imageView]-|", options: [], metrics: nil, views: viewsDictionary))
+            cell.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[imageView]-|", options: [], metrics: nil, views: viewsDictionary))
             
             break
             
@@ -388,6 +441,7 @@ extension SettingsViewController: UICollectionViewDataSource {
  */
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        currentSection = indexPath.section
         let cell = cell as! SettingsCell
         switch items[indexPath.section][indexPath.row] {
         case "label":
@@ -439,7 +493,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         
         switch items[indexPath.section][indexPath.row] {
         case "label":
-            return CGSizeMake(collectionViewWidth, 100)
+            return CGSizeMake(collectionViewWidth, 150)
             
         case "imageButton":
             let image = UIImage(named: "next")

@@ -73,4 +73,24 @@ class UIDesign {
         view.layer.borderWidth = 3
         view.layer.borderColor = UIColor.blackColor().CGColor
     }
+    
+    func setTextButton(aButton: UIButton, fontColor: UIColor?, fontSize: CGFloat?) {
+        if let fontSize = fontSize {
+            aButton.titleLabel?.font = aButton.titleLabel?.font.fontWithSize(fontSize)
+        }
+        if let color = fontColor {
+            aButton.setTitleColor(color, forState: .Normal)
+        }
+        aButton.backgroundColor = UIColor.whiteColor()
+        aButton.clipsToBounds = true
+        aButton.setTitleShadowColor(UIColor.lightGrayColor(), forState: .Normal)
+        aButton.translatesAutoresizingMaskIntoConstraints = true
+        aButton.layer.cornerRadius = 5
+        
+        aButton.layer.shadowRadius = 5
+        aButton.layer.shadowColor = UIColor.lightGrayColor().CGColor
+        aButton.layer.shadowOffset = CGSizeMake(0, 1)
+        aButton.layer.shadowOpacity = 0.5
+        aButton.layer.masksToBounds = false
+    }
 }

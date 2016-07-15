@@ -16,16 +16,21 @@ class IntroViewController: UIViewController {
     // views
     let stackViews = [UIStackView()]
     let welcomeImageView = [UIImageView(), UIImageView()]
-    let welcomeImage = [UIImage(named:"welcome"), UIImage(named:"owl"), UIImage(named: "start"), UIImage(named: "newname")]
+    let welcomeImage = [UIImage(named:"welcome"), UIImage(named:"owl_small"), UIImage(named: "start"), UIImage(named: "newname")]
     let welcomeLabel = [UILabel(), UILabel(), UILabel()]
-    var labelText = ["환영합니다!", "지금 게임을 시작할까요?", "새로운 이름을 사용할래요?"]
-    let okButton = UIButton(), cancelButton = UIButton()
+    var labelText = ["환영합니다!", "     지금 게임을 시작할래요!     ", "     다른 이름을 선택할래요!     ", "     새로운 이름을 사용할래요!     "]
+    let startButton = UIButton(), otherNameButton = UIButton(), newnameButton = UIButton()
     
     var userName = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+      
         let realms = Realms()
         let results = realms.retreiveTB_USER()
         if results.count == 0 {
@@ -35,21 +40,23 @@ class IntroViewController: UIViewController {
         }
         else {
             userName = results[0].userName
-            labelText[0] = "\(userName)님! \(labelText[0])"
+            labelText[0] = "\(userName)님! 환영합니다!"
         }
         
         setupUI()
         
         if userName.isEmpty {
             welcomeLabel[1].hidden = true
-            okButton.hidden = true
+            startButton.hidden = true
+            otherNameButton.hidden = true
         }
+        
     }
     
     func setupUI() {
         
         //  Navi Bar
-        self.title = "Math Avengers - Intro"
+        self.title = "Intro"
 //        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "이전 단계로", style: .Plain, target: self, action: #selector(self.leftBarButtonPressed))
 //        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "다음 단계로", style: .Plain, target: self, action: #selector(self.nextButtonPressed))
         
@@ -59,9 +66,7 @@ class IntroViewController: UIViewController {
             welcomeImageView[ii].translatesAutoresizingMaskIntoConstraints = false
             welcomeImageView[ii].backgroundColor = UIColor.whiteColor()
             welcomeImageView[ii].contentMode = .ScaleAspectFit
-            self.view.addSubview(welcomeImageView[ii])
         }
-        
         
         // welcome Text
         for ii in 0 ..< welcomeLabel.count {
@@ -69,55 +74,79 @@ class IntroViewController: UIViewController {
             uidesign.setLabelLayout(welcomeLabel[ii], fontsize: 40)
             welcomeLabel[ii].text = labelText[ii]
             //welcomeLabel[ii].backgroundColor = UIColor.yellowColor()
-            self.view.addSubview(welcomeLabel[ii])
         }
         
         // buttons
-        okButton.translatesAutoresizingMaskIntoConstraints = false
-        okButton.backgroundColor = UIColor.whiteColor()
-        okButton.setImage(welcomeImage[2], forState: .Normal)
+        startButton.translatesAutoresizingMaskIntoConstraints = false
+        startButton.setTitle(labelText[1], forState: .Normal)
+        uidesign.setTextButton(startButton, fontColor: UIColor.blueColor(), fontSize: 30)
+        startButton.addTarget(self, action: #selector(startGame), forControlEvents: UIControlEvents.TouchUpInside)
+        startButton.addTarget(self, action: #selector(blink), forControlEvents: UIControlEvents.TouchDown)
         
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.backgroundColor = UIColor.whiteColor()
-        cancelButton.setImage(welcomeImage[3], forState: .Normal)
-        //uidesign.setButtonLightGrayWithBorder(cancelButton, fontSize: 40)
+        otherNameButton.translatesAutoresizingMaskIntoConstraints = false
+        otherNameButton.setTitle(labelText[2], forState: .Normal)
+        uidesign.setTextButton(otherNameButton, fontColor: UIColor.blueColor(), fontSize: 30)
+        otherNameButton.addTarget(self, action: #selector(selectOtherName), forControlEvents: UIControlEvents.TouchUpInside)
+        otherNameButton.addTarget(self, action: #selector(blink), forControlEvents: UIControlEvents.TouchDown)
         
-        self.view.addSubview(okButton)
-        self.view.addSubview(cancelButton)
+        newnameButton.translatesAutoresizingMaskIntoConstraints = false
+        newnameButton.setTitle(labelText[3], forState: .Normal)
+        uidesign.setTextButton(newnameButton, fontColor: UIColor.blueColor(), fontSize: 30)
+        newnameButton.addTarget(self, action: #selector(createNewname), forControlEvents: UIControlEvents.TouchUpInside)
+        newnameButton.addTarget(self, action: #selector(blink), forControlEvents: UIControlEvents.TouchDown)
         
-        let viewsDictionary = ["welcomeImage0": welcomeImageView[0], "welcomeImage1": welcomeImageView[1], "welcomeLabel0": welcomeLabel[0], "welcomeLabel1": welcomeLabel[1], "welcomeLabel2": welcomeLabel[2], "okButton": okButton,  "cancelButton": cancelButton]
-        var constraints: [NSLayoutConstraint] = []
-        constraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-[welcomeLabel0]-|",
-            options: [], metrics: nil, views: viewsDictionary))
-        constraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-100-[welcomeImage0(\((welcomeImage[0]?.size.height)!))]-[welcomeLabel0(100)]",
-            options: [NSLayoutFormatOptions.AlignAllCenterX], metrics: nil, views: viewsDictionary))
+        stackViews[0].addArrangedSubview(welcomeImageView[0])
+        stackViews[0].addArrangedSubview(welcomeLabel[0])
+        stackViews[0].addArrangedSubview(startButton)
+        stackViews[0].addArrangedSubview(newnameButton)
+        stackViews[0].addArrangedSubview(welcomeImageView[1])
+        self.view.addSubview(stackViews[0])
 
-        constraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[welcomeLabel0]-[welcomeLabel1]-[welcomeLabel2]",
-            options: [], metrics: nil, views: viewsDictionary))
-        constraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[welcomeLabel0]-[okButton(93)]-[cancelButton(==okButton)]",
-            options: [], metrics: nil, views: viewsDictionary))
-        constraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-[welcomeLabel1]-[okButton(200)]-|",
-            options: [NSLayoutFormatOptions.AlignAllCenterY], metrics: nil, views: viewsDictionary))
-        constraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-[welcomeLabel2]-[cancelButton(==okButton)]-|",
-            options: [NSLayoutFormatOptions.AlignAllCenterY], metrics: nil, views: viewsDictionary))
-
-        constraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[welcomeLabel2]-[welcomeImage1]|",
-            options: [], metrics: nil, views: viewsDictionary))
-        constraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-[welcomeImage1]-|",
-            options: [], metrics: nil, views: viewsDictionary))
+        // stackView[0] Layout 설정
+        stackViews[0].axis = .Vertical
+        stackViews[0].distribution = .EqualSpacing
+        stackViews[0].alignment = .Center
+        stackViews[0].spacing = 20
+        stackViews[0].translatesAutoresizingMaskIntoConstraints = false
+        stackViews[0].frame = self.view.frame
         
-        NSLayoutConstraint.activateConstraints(constraints)
+        let margins = self.view.layoutMarginsGuide
+        stackViews[0].leadingAnchor.constraintEqualToAnchor(margins.leadingAnchor).active = true
+        stackViews[0].trailingAnchor.constraintEqualToAnchor(margins.trailingAnchor).active = true
+        NSLayoutConstraint(item: stackViews[0], attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .TopMargin, multiplier: 1.0, constant: 100.0).active = true
+        NSLayoutConstraint(item: stackViews[0], attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .BottomMargin, multiplier: 1.0, constant: -100.0).active = true
         
     }
-
+    
+    func startGame(sender: UIButton!) {
+        debugPrint(sender)
+    }
+    
+    func selectOtherName(sender: UIButton!) {
+        debugPrint(sender)
+        let settings = SettingsViewController()
+        self.navigationController?.pushViewController(settings, animated: true)
+    }
+    
+    func createNewname(sender: UIButton!) {
+        debugPrint(sender)
+        let settings = SettingsViewController()
+        self.navigationController?.pushViewController(settings, animated: true)
+    }
+    
+    func blink(sender: UIButton!) {
+        sender.backgroundColor = UIColor.yellowColor()
+        
+        // 잠시 후에 배경색 원복
+        let seconds = 0.1
+        let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+            sender.backgroundColor = UIColor.whiteColor()
+        })
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

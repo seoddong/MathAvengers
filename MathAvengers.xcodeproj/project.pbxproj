@@ -15,6 +15,7 @@
 		7417EE741D120D3B00B7895D /* LevelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417EE731D120D3B00B7895D /* LevelTableViewCell.swift */; };
 		7417EE761D12D7F500B7895D /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417EE751D12D7F500B7895D /* QuestionViewController.swift */; };
 		7417EE781D12F90A00B7895D /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417EE771D12F90A00B7895D /* Util.swift */; };
+		741FD4A11D393F18000CEE46 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741FD4A01D393F18000CEE46 /* UsersViewController.swift */; };
 		742F949F1D248EA8001EA2D5 /* MADocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742F949E1D248EA8001EA2D5 /* MADocument.swift */; };
 		742F94A71D268949001EA2D5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742F94A61D268949001EA2D5 /* SettingsViewController.swift */; };
 		742F94AD1D27FACF001EA2D5 /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742F94AC1D27FACF001EA2D5 /* GlobalSettings.swift */; };
@@ -81,6 +82,7 @@
 		7417EE731D120D3B00B7895D /* LevelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelTableViewCell.swift; sourceTree = "<group>"; };
 		7417EE751D12D7F500B7895D /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
 		7417EE771D12F90A00B7895D /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		741FD4A01D393F18000CEE46 /* UsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		742F949E1D248EA8001EA2D5 /* MADocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MADocument.swift; sourceTree = "<group>"; };
 		742F94A51D2672BF001EA2D5 /* MathAvengers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MathAvengers.entitlements; sourceTree = "<group>"; };
 		742F94A61D268949001EA2D5 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				74FD38971D1A0AF6000CB816 /* ShowLogViewController.swift */,
 				742F94A61D268949001EA2D5 /* SettingsViewController.swift */,
 				74D895DD1D2C70C600C25762 /* KeyboardExtension.swift */,
+				741FD4A01D393F18000CEE46 /* UsersViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				7417EE721D120CCA00B7895D /* MainViewController.swift in Sources */,
 				74FD38921D198451000CB816 /* Realms.swift in Sources */,
 				7460061E1D1837C10053D75B /* UIDesign.swift in Sources */,
+				741FD4A11D393F18000CEE46 /* UsersViewController.swift in Sources */,
 				742F94AD1D27FACF001EA2D5 /* GlobalSettings.swift in Sources */,
 				7417EE781D12F90A00B7895D /* Util.swift in Sources */,
 				7417EE761D12D7F500B7895D /* QuestionViewController.swift in Sources */,

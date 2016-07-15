@@ -11,6 +11,7 @@ import RealmSwift
 
 class Realms {
     
+    
     func retreiveTB_RESULTLOG(predicate: NSPredicate) -> Results<TB_RESULTLOG> {
         let realm = try! Realm()
         let results = try! realm.objects(TB_RESULTLOG.self).filter(predicate).sorted("playdt", ascending: false)
@@ -61,7 +62,7 @@ class Realms {
             else {
                 try! realm.write({
                     // 첫 번째 사용자의 currentYN을 true로 변경
-                    realm.create(TB_USER.self, value: [results[0].userName, results[0].age, NSDate(), true])
+                    realm.create(TB_USER.self, value: ["userName": results[0].userName, "age": results[0].age, "regidt": NSDate(), "currentYN": true], update: true)
                     //이 함수를 다시 호출
                     results = try! realm.objects(TB_USER.self).filter(predicate)
                 })
