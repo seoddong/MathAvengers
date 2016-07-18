@@ -125,6 +125,8 @@ class IntroViewController: UIViewController {
     
     func startGame(sender: UIButton!) {
         debugPrint(sender)
+        let start = MainViewController()
+        self.navigationController?.pushViewController(start, animated: true)
     }
     
     func selectOtherName(sender: UIButton!) {

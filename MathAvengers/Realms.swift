@@ -81,7 +81,7 @@ class Realms {
     func updateTB_USER(userName: String, bestScore: Int) {
         let realm = try! Realm()
         
-        let result = try! realm.objects(TB_USER.self).sorted("bestScore", ascending: false).first
+        let result = try! realm.objects(TB_USER.self).filter("userName == %@", userName).sorted("bestScore", ascending: false).first
         var bestScore = bestScore
         if let score = result?.bestScore {
             bestScore = bestScore > score ? bestScore : score
@@ -115,7 +115,7 @@ class TB_RESULTLOG: Object {
     dynamic var level = ""
     dynamic var result = false
     dynamic var playdt = NSDate()
-    dynamic var user = ""
+    dynamic var userName = ""
 }
 
 class TB_LEVEL: Object {

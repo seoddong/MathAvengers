@@ -103,15 +103,16 @@ extension UsersViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as! UsersCell
         let result = results[indexPath.row]
         cell.userName = result.userName
-        if result.bestScore == 0 {
-            cell.textLabel?.text = "\(result.userName)"
-        } else {
-            cell.textLabel?.text = "\(result.userName)  최고 기록: \(result.bestScore)"
-        }
+        cell.textLabel?.text = "\(result.userName)"
         
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd HH:mm:ss"
-        cell.detailTextLabel?.text = String(dateFormatter.stringFromDate(result.lastPlaydt))
+        
+        if result.bestScore == 0 {
+            cell.detailTextLabel?.text = "\(String(dateFormatter.stringFromDate(result.lastPlaydt)))"
+        } else {
+            cell.detailTextLabel?.text = "최고 기록: \(result.bestScore) - \(String(dateFormatter.stringFromDate(result.lastPlaydt)))"
+        }
         return cell
     }
 }

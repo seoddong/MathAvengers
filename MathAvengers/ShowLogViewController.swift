@@ -32,6 +32,7 @@ class ShowLogViewController: UIViewController {
     var notificationToken: NotificationToken?
     var prevCountResults = 0
     
+    let userName = NSUserDefaults.standardUserDefaults().objectForKey("userName") as! String
     var filterDate = NSDate()
     let dateFormatter = NSDateFormatter()
 
@@ -57,7 +58,10 @@ class ShowLogViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - setupUI
     func setupUI() {
+        
+        self.view.backgroundColor = UIColor.whiteColor()
         
         self.title = "기록 보기"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "하루 더 조회", style: .Plain, target: self, action: #selector(rightBarButtonPressed))
@@ -81,6 +85,7 @@ class ShowLogViewController: UIViewController {
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[tableView]-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
     }
     
+    // MARK: - Actions
     func rightBarButtonPressed() {
         
         filterDate = NSCalendar.currentCalendar().dateByAddingUnit(.Day, value: -1, toDate: filterDate, options:NSCalendarOptions(rawValue: 0))!
@@ -90,7 +95,7 @@ class ShowLogViewController: UIViewController {
         
         
         let realms = Realms()
-        let predicate = NSPredicate(format: "playdt >= %@", filterDate)
+        let predicate = NSPredicate(format: "userName == %@ AND playdt >= %@", userName, filterDate)
         results = realms.retreiveTB_RESULTLOG(predicate)
         let countResults = results.count
         if prevCountResults != countResults {
@@ -129,6 +134,7 @@ class ShowLogViewController: UIViewController {
 
 }
 
+// MARK: - UITableViewDelegate
 extension ShowLogViewController: UITableViewDelegate {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -145,6 +151,7 @@ extension ShowLogViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension ShowLogViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return results.count

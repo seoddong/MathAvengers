@@ -10,10 +10,16 @@ import UIKit
 
 class SummaryViewController: UIViewController {
     
-    let showLogSegueIdentifier = "showLogSegueIdentifier"
-    
+    var countLife = 3
     var finalScore: NSTimeInterval = 0
-    var countIncorrectAnswer = 0
+    var finalScoreInt: Int {
+        if countLife == 0 {
+            return 0
+        }
+        else {
+            return Int(abs(round(finalScore * 10000)))
+        }
+    }
     var calledTitle = ""
     var message = ["이런~ 3번 틀렸네요.\n다음엔 좀 더 잘 할 수 있을 거에요.", "음~ 두 번 틀렸네요.\n하지만 잘 했어요~", "오~ 하나 밖에 안 틀렸어요.\n이 정도면 훌륭해요!!", "와우! 모두 다 정답!\n최고로 잘 했어요!", "아악~ 시간이 다 되었네요~\n다음엔 더 빨리 풀어보아요."]
     
@@ -33,16 +39,17 @@ class SummaryViewController: UIViewController {
 
         setupUI()
         
-        setActions()
-        
         // 최종 플레이시간, 최고 기록 갱신
         let realms = Realms()
-        realms.updateTB_USER(userName, bestScore: Int(scoreLabel.text!)!)
-        
+        realms.updateTB_USER(userName, bestScore: finalScoreInt)
+        debugPrint("\(finalScoreInt) \(countLife)")
 
     }
     
+    // MARK: - setupUI
     func setupUI() {
+        
+        self.view.backgroundColor = UIColor.whiteColor()
         
         //Navi Bar
         self.title = "Math Avengers - Summary"
@@ -52,24 +59,24 @@ class SummaryViewController: UIViewController {
         
         levelLabel = UILabel()
         levelLabel.text = "도전 단계: \(calledTitle)"
-        uidesign.setLabelLightGrayWithBorder(levelLabel, fontSize: 40)
+        uidesign.setLabelBubbleGreenSmallWithBorder(levelLabel, fontSize: 40)
         levelLabel.heightAnchor.constraintEqualToConstant(80).active = true
         
         scoreLabel = UILabel()
-        scoreLabel.text = "최종 점수: \(String(Int(abs(round(finalScore * 10000)))))"
-        uidesign.setLabelLightGrayWithBorder(scoreLabel, fontSize: 40)
+        scoreLabel.text = "최종 점수: \(String(finalScoreInt))"
+        uidesign.setLabelBubbleGreenSmallWithBorder(scoreLabel, fontSize: 40)
         scoreLabel.heightAnchor.constraintEqualToConstant(80).active = true
         
         messageLabel = UILabel()
         messageLabel.lineBreakMode = .ByWordWrapping
         messageLabel.numberOfLines = 2
         if finalScore > 0 {
-            messageLabel.text = message[countIncorrectAnswer]
+            messageLabel.text = message[countLife]
         }
         else {
             messageLabel.text = message.last
         }
-        uidesign.setLabelLightGrayWithBorder(messageLabel, fontSize: 40)
+        uidesign.setLabelBubbleGreenWithBorder(messageLabel, fontSize: 40)
         messageLabel.backgroundColor = UIColor(patternImage: UIImage(named:"tile001")!)
         messageLabel.heightAnchor.constraintEqualToConstant(200).active = true
         
@@ -97,29 +104,24 @@ class SummaryViewController: UIViewController {
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-\((self.navigationController?.navigationBar.frame.size.height)! + 40)-[stackView]-20-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
         
     }
-    
-    override func viewWillAppear(animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
 
-    }
-    
-    func setActions() {
-        
-        // Button Action
-        
-    }
     
 
+    // MARK: - Actions
     func leftBarButtonPressed(sender: UIBarButtonItem){
         self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
     func rightBarButtonPressed() {
-        
-        performSegueWithIdentifier(showLogSegueIdentifier, sender: self)
+        let targetView = ShowLogViewController()
+        self.navigationController?.pushViewController(targetView, animated: true)
 
     }
-
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

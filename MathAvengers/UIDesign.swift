@@ -52,7 +52,7 @@ class UIDesign {
         aButton.translatesAutoresizingMaskIntoConstraints = true
     }
     
-    func setLabelLightGrayWithBorder(aLabel: UILabel, fontSize: CGFloat?) {
+    func setLabelBubbleGreenWithBorder(aLabel: UILabel, fontSize: CGFloat?) {
         if let fontSize = fontSize {
             aLabel.font = aLabel.font.fontWithSize(fontSize)
         }
@@ -61,7 +61,20 @@ class UIDesign {
         aLabel.layer.borderWidth = 3
         aLabel.layer.borderColor = UIColor.blackColor().CGColor
         aLabel.clipsToBounds = true
-        aLabel.backgroundColor = UIColor.lightGrayColor()
+        aLabel.backgroundColor = UIColor(patternImage: UIImage(named: "bubble_green")!) //UIColor.lightGrayColor()
+        aLabel.translatesAutoresizingMaskIntoConstraints = true
+    }
+    
+    func setLabelBubbleGreenSmallWithBorder(aLabel: UILabel, fontSize: CGFloat?) {
+        if let fontSize = fontSize {
+            aLabel.font = aLabel.font.fontWithSize(fontSize)
+        }
+        aLabel.textAlignment = .Center
+        aLabel.layer.cornerRadius = 10
+        aLabel.layer.borderWidth = 0
+        aLabel.layer.borderColor = UIColor.blackColor().CGColor
+        aLabel.clipsToBounds = true
+        aLabel.backgroundColor = UIColor(patternImage: UIImage(named: "bubble_green_small")!) //UIColor.lightGrayColor()
         aLabel.translatesAutoresizingMaskIntoConstraints = true
     }
     
