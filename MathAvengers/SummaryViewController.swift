@@ -25,6 +25,8 @@ class SummaryViewController: UIViewController {
     
     let uidesign = UIDesign()
     
+    let userName = NSUserDefaults.standardUserDefaults().objectForKey("userName") as! String
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +34,11 @@ class SummaryViewController: UIViewController {
         setupUI()
         
         setActions()
+        
+        // 최종 플레이시간, 최고 기록 갱신
+        let realms = Realms()
+        realms.updateTB_USER(userName, bestScore: Int(scoreLabel.text!)!)
+        
 
     }
     

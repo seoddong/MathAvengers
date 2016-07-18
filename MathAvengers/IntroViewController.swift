@@ -17,7 +17,7 @@ class IntroViewController: UIViewController {
     let stackViews = [UIStackView()]
     let welcomeImageView = [UIImageView(), UIImageView()]
     let welcomeImage = [UIImage(named:"welcome"), UIImage(named:"owl_small"), UIImage(named: "start"), UIImage(named: "newname")]
-    let welcomeLabel = [UILabel(), UILabel(), UILabel()]
+    let welcomeLabel = [UILabel()]
     var labelText = ["환영합니다!", "     지금 게임을 시작할래요!     ", "     다른 이름을 선택할래요!     ", "     새로운 이름을 사용할래요!     "]
     let startButton = UIButton(), otherNameButton = UIButton(), newnameButton = UIButton()
     
@@ -32,7 +32,7 @@ class IntroViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
       
         let realms = Realms()
-        let results = realms.retreiveTB_USER()
+        let results = realms.retreiveCurrentTB_USER()
         if results.count == 0 {
             // 생성해놓은 캐릭터가 없다
             debugPrint("생성해놓은 캐릭터가 없다")
@@ -40,15 +40,19 @@ class IntroViewController: UIViewController {
         }
         else {
             userName = results[0].userName
+            NSUserDefaults.standardUserDefaults().setObject(results[0].userName, forKey: "userName")
             labelText[0] = "\(userName)님! 환영합니다!"
         }
         
         setupUI()
         
         if userName.isEmpty {
-            welcomeLabel[1].hidden = true
             startButton.hidden = true
             otherNameButton.hidden = true
+        }
+        else {
+            startButton.hidden = false
+            otherNameButton.hidden = false
         }
         
     }
@@ -98,6 +102,7 @@ class IntroViewController: UIViewController {
         stackViews[0].addArrangedSubview(welcomeImageView[0])
         stackViews[0].addArrangedSubview(welcomeLabel[0])
         stackViews[0].addArrangedSubview(startButton)
+        stackViews[0].addArrangedSubview(otherNameButton)
         stackViews[0].addArrangedSubview(newnameButton)
         stackViews[0].addArrangedSubview(welcomeImageView[1])
         self.view.addSubview(stackViews[0])
@@ -114,7 +119,7 @@ class IntroViewController: UIViewController {
         stackViews[0].leadingAnchor.constraintEqualToAnchor(margins.leadingAnchor).active = true
         stackViews[0].trailingAnchor.constraintEqualToAnchor(margins.trailingAnchor).active = true
         NSLayoutConstraint(item: stackViews[0], attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .TopMargin, multiplier: 1.0, constant: 100.0).active = true
-        NSLayoutConstraint(item: stackViews[0], attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .BottomMargin, multiplier: 1.0, constant: -100.0).active = true
+        NSLayoutConstraint(item: stackViews[0], attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .BottomMargin, multiplier: 1.0, constant: -50.0).active = true
         
     }
     
@@ -124,8 +129,8 @@ class IntroViewController: UIViewController {
     
     func selectOtherName(sender: UIButton!) {
         debugPrint(sender)
-        let settings = SettingsViewController()
-        self.navigationController?.pushViewController(settings, animated: true)
+        let users = UsersViewController()
+        self.navigationController?.pushViewController(users, animated: true)
     }
     
     func createNewname(sender: UIButton!) {
