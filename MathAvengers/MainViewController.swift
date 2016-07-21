@@ -101,9 +101,11 @@ class MainViewController: UIViewController {
         
         let results = query.results
         if query.resultCount == 1 {
+            // 내가 쓰고자 하는 파일 하나만 검색되면 OK
             let resultURL = results[0].valueForAttribute(NSMetadataItemURLKey) as! NSURL
             let maDoc = MADocument(fileURL: resultURL)
             maDoc.openWithCompletionHandler({ (success: Bool) -> Void in
+                // 이렇게 파일을 여는 경우는 클라우드의 파일을 읽어 특정 정보를 가져오려 할 때이다.
                 if success {
                     debugPrint("iCloud file open OK")
                     
@@ -137,39 +139,8 @@ class MainViewController: UIViewController {
     }
     
     func cloudPressed() {
-        let filemgr = NSFileManager.defaultManager()
-        
-        ubiquityURL = filemgr.URLForUbiquityContainerIdentifier(nil)
-        guard ubiquityURL != nil else {
-            debugPrint("Unable to access iCloud Account")
-            debugPrint("Open the Settings app and enter your Apple ID into iCloud settings")
-            return
-        }
-        
-        ubiquityURL = ubiquityURL?.URLByAppendingPathComponent("Documents/default.realm")
-        debugPrint("ubiquityURL=\(ubiquityURL)")
-        
-        // iCloud storage를 검색할 조건과 검색 범위를 지정
-        metaDataQuery = NSMetadataQuery()
-        metaDataQuery?.predicate = NSPredicate(format: "%K like 'default.realm'", NSMetadataItemFSNameKey)
-        metaDataQuery?.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
-        
-        // 검색이 끝나면 결과를 알려줄 noti 설정
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainViewController.metadataQueryDidFinishGathering), name: NSMetadataQueryDidFinishGatheringNotification, object: metaDataQuery)
-        
-        let state = metaDataQuery?.startQuery()
-        debugPrint("state=\(state)")
-        
-        //        let dirPath = filemgr.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
-        //        // dirPath=[file:///Users/seoddong/Library/Developer/CoreSimulator/Devices/CAE86DB6-92BC-44D3-93D0-F5D4826B54D5/data/Containers/Data/Application/1AA46834-C0FC-43A5-8D41-F3BEA3B048BD/Documents/]
-        //        if let path = dirPath {
-        //            let documentURL = path.URLByAppendingPathComponent("default.realm")
-        //            let maDoc = MADocument(fileURL: documentURL)
-        //            maDoc.checkFileExist(documentURL)
-        //        }
-        //        else {
-        //            debugPrint("There is no Document folder..")
-        //        }
+        let cloud = CloudViewController()
+        self.navigationController?.pushViewController(cloud, animated: true)
         
     }
 
@@ -184,7 +155,7 @@ class MainViewController: UIViewController {
         
         self.title = "Math Avengers"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "기록 보기", style: .Plain, target: self, action: #selector(showLog))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "cloud", style: .Plain, target: self, action: #selector(cloudPressed))
+        //self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "cloud", style: .Plain, target: self, action: #selector(cloudPressed))
         
         // TableView 설정
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -250,6 +221,10 @@ extension MainViewController: UITableViewDelegate {
         let targetView = QuestionViewController()
         let selectedIndexPath = tableView.indexPathForSelectedRow
         let cell = tableView.cellForRowAtIndexPath(selectedIndexPath!) as! LevelTableViewCell
+        cell.contentView.backgroundColor = UIColor.whiteColor()
+        cell.contentView.layer.borderColor = UIColor.orangeColor().CGColor
+        cell.contentView.layer.borderWidth = 5
+        cell.contentView.layer.cornerRadius = 10
         targetView.calledTitle = cell.cellLabel.text!
         targetView.calledLevel = (selectedIndexPath?.row)! + 1
         self.navigationController?.pushViewController(targetView, animated: true)

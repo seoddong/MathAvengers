@@ -16,10 +16,10 @@ class IntroViewController: UIViewController {
     // views
     let stackViews = [UIStackView()]
     let welcomeImageView = [UIImageView(), UIImageView()]
-    let welcomeImage = [UIImage(named:"welcome"), UIImage(named:"owl_small"), UIImage(named: "start"), UIImage(named: "newname")]
+    let welcomeImage = [UIImage(named:"welcome"), UIImage(named:"owl_small")]
     let welcomeLabel = [UILabel()]
-    var labelText = ["환영합니다!", "     지금 게임을 시작할래요!     ", "     다른 이름을 선택할래요!     ", "     새로운 이름을 사용할래요!     "]
-    let startButton = UIButton(), otherNameButton = UIButton(), newnameButton = UIButton()
+    var labelText = ["환영합니다!", "     지금 게임을 시작할래요!     ", "     다른 이름을 선택할래요!     ", "     새로운 이름을 사용할래요!     ", "     클라우드 데이터 가져오기     "]
+    let introButton = [UIButton(), UIButton(), UIButton(), UIButton()]
     
     var userName = ""
 
@@ -47,22 +47,32 @@ class IntroViewController: UIViewController {
         setupUI()
         
         if userName.isEmpty {
-            startButton.hidden = true
-            otherNameButton.hidden = true
+            introButton[0].hidden = true
+            introButton[1].hidden = true
         }
         else {
-            startButton.hidden = false
-            otherNameButton.hidden = false
+            introButton[0].hidden = false
+            introButton[1].hidden = false
         }
         
     }
     
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    // MARK: - setupUI
     func setupUI() {
+        
+        self.view.backgroundColor = UIColor.whiteColor()
         
         //  Navi Bar
         self.title = "Intro"
 //        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "이전 단계로", style: .Plain, target: self, action: #selector(self.leftBarButtonPressed))
-//        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "다음 단계로", style: .Plain, target: self, action: #selector(self.nextButtonPressed))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "세팅", style: .Plain, target: self, action: #selector(settingGame))
         
         // Welcome Image
         for ii in 0 ..< welcomeImageView.count {
@@ -76,34 +86,28 @@ class IntroViewController: UIViewController {
         for ii in 0 ..< welcomeLabel.count {
             welcomeLabel[ii].translatesAutoresizingMaskIntoConstraints = false
             uidesign.setLabelLayout(welcomeLabel[ii], fontsize: 40)
-            welcomeLabel[ii].text = labelText[ii]
+            welcomeLabel[ii].text = labelText.first!
             //welcomeLabel[ii].backgroundColor = UIColor.yellowColor()
         }
         
         // buttons
-        startButton.translatesAutoresizingMaskIntoConstraints = false
-        startButton.setTitle(labelText[1], forState: .Normal)
-        uidesign.setTextButton(startButton, fontColor: UIColor.blueColor(), fontSize: 30)
-        startButton.addTarget(self, action: #selector(startGame), forControlEvents: UIControlEvents.TouchUpInside)
-        startButton.addTarget(self, action: #selector(blink), forControlEvents: UIControlEvents.TouchDown)
-        
-        otherNameButton.translatesAutoresizingMaskIntoConstraints = false
-        otherNameButton.setTitle(labelText[2], forState: .Normal)
-        uidesign.setTextButton(otherNameButton, fontColor: UIColor.blueColor(), fontSize: 30)
-        otherNameButton.addTarget(self, action: #selector(selectOtherName), forControlEvents: UIControlEvents.TouchUpInside)
-        otherNameButton.addTarget(self, action: #selector(blink), forControlEvents: UIControlEvents.TouchDown)
-        
-        newnameButton.translatesAutoresizingMaskIntoConstraints = false
-        newnameButton.setTitle(labelText[3], forState: .Normal)
-        uidesign.setTextButton(newnameButton, fontColor: UIColor.blueColor(), fontSize: 30)
-        newnameButton.addTarget(self, action: #selector(createNewname), forControlEvents: UIControlEvents.TouchUpInside)
-        newnameButton.addTarget(self, action: #selector(blink), forControlEvents: UIControlEvents.TouchDown)
+        for ii in 0 ..< introButton.count {
+            
+            introButton[ii].translatesAutoresizingMaskIntoConstraints = false
+            introButton[ii].setTitle(labelText[ii+1], forState: .Normal)
+            uidesign.setTextButton(introButton[ii], fontColor: UIColor.blueColor(), fontSize: 30)
+            introButton[ii].addTarget(self, action: #selector(blink), forControlEvents: UIControlEvents.TouchDown)
+        }
+
+        introButton[0].addTarget(self, action: #selector(startGame), forControlEvents: UIControlEvents.TouchUpInside)
+        introButton[1].addTarget(self, action: #selector(selectOtherName), forControlEvents: UIControlEvents.TouchUpInside)
+        introButton[2].addTarget(self, action: #selector(createNewname), forControlEvents: UIControlEvents.TouchUpInside)
+        introButton[3].addTarget(self, action: #selector(getCloud), forControlEvents: UIControlEvents.TouchUpInside)
+
         
         stackViews[0].addArrangedSubview(welcomeImageView[0])
         stackViews[0].addArrangedSubview(welcomeLabel[0])
-        stackViews[0].addArrangedSubview(startButton)
-        stackViews[0].addArrangedSubview(otherNameButton)
-        stackViews[0].addArrangedSubview(newnameButton)
+        _ = introButton.map({stackViews[0].addArrangedSubview($0)})
         stackViews[0].addArrangedSubview(welcomeImageView[1])
         self.view.addSubview(stackViews[0])
 
@@ -123,22 +127,36 @@ class IntroViewController: UIViewController {
         
     }
     
+    // MARK: - Actions
+    func settingGame() {
+        debugPrint(settingGame)
+        let setGame = SetEnvViewController()
+        self.navigationController?.pushViewController(setGame, animated: true)
+    }
+    
     func startGame(sender: UIButton!) {
-        debugPrint(sender)
+        debugPrint(startGame)
         let start = MainViewController()
         self.navigationController?.pushViewController(start, animated: true)
     }
     
     func selectOtherName(sender: UIButton!) {
-        debugPrint(sender)
+        debugPrint(selectOtherName)
         let users = UsersViewController()
         self.navigationController?.pushViewController(users, animated: true)
     }
     
     func createNewname(sender: UIButton!) {
-        debugPrint(sender)
+        debugPrint(createNewname)
         let settings = SettingsViewController()
         self.navigationController?.pushViewController(settings, animated: true)
+    }
+    
+    func getCloud(sender: UIButton!) {
+        debugPrint(getCloud)
+        let cloud = CloudViewController()
+        cloud.command = CloudViewController.commandType.download
+        self.navigationController?.pushViewController(cloud, animated: true)
     }
     
     func blink(sender: UIButton!) {
@@ -153,11 +171,7 @@ class IntroViewController: UIViewController {
         })
         
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
     
 
     /*

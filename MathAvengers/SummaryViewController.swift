@@ -44,6 +44,10 @@ class SummaryViewController: UIViewController {
         realms.updateTB_USER(userName, bestScore: finalScoreInt)
         debugPrint("\(finalScoreInt) \(countLife)")
 
+        // icloud에 저장
+        let cloud = CloudViewController()
+        cloud.command = CloudViewController.commandType.store
+        self.navigationController?.pushViewController(cloud, animated: true)
     }
     
     // MARK: - setupUI

@@ -73,9 +73,10 @@ class SettingsViewController: UIViewController {
     
     var collectionViewWidth: CGFloat = 0
     var currentSection: Int?
-    
+       
     override func viewDidLoad() {
         super.viewDidLoad()
+        debugPrint("viewDidLoad: SettingsViewController")
         
         // 키보드 이벤트 등록
         self.performSelector(#selector(registerKeyboardEvent))
@@ -94,6 +95,37 @@ class SettingsViewController: UIViewController {
         self.view.addGestureRecognizer(dismissTap)
 
         //self.collectionView.scrollEnabled = false
+    }
+    
+    
+    override func viewDidDisappear(animated: Bool) {
+        self.performSelector(#selector(unregisterKeyboardEvent))
+    }
+    
+    func setupData() {
+        let realms = Realms()
+        results = realms.retreiveTB_SETTINGS()
+        
+        var row: [String] = []
+        for result in results {
+            if sections.count == 0 {
+                sections.append(result.section)
+                row.append(result.cellType)
+            }
+            else if sections.last != result.section {
+                items.append(row)
+                row.removeAll()
+                sections.append(result.section)
+                row.append(result.cellType)
+            }
+            else {
+                row.append(result.cellType)
+            }
+            if result.desc != "" {
+                desc.append(result.desc)
+            }
+        }
+        items.append(row)
     }
     
     //
@@ -122,6 +154,7 @@ class SettingsViewController: UIViewController {
         })
     }
     
+    // MARK: - Actions
     func handleNextTap(sender: UITapGestureRecognizer) {
         // 제스쳐가 끝났는지 확인 후 코드 진행
         if sender.state == .Ended {
@@ -172,10 +205,11 @@ class SettingsViewController: UIViewController {
                             
                         }
                         
-                        // icloud에 저장djdddj
-                        
-                        // 처음으로 화면 이동
-                        self.navigationController?.popToRootViewControllerAnimated(true)
+                        // icloud에 저장
+                        let cloud = CloudViewController()
+                        cloud.command = CloudViewController.commandType.store
+                        self.navigationController?.pushViewController(cloud, animated: true)
+
                         break
                     default:
                         debugPrint("default")
@@ -188,43 +222,25 @@ class SettingsViewController: UIViewController {
         
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        self.performSelector(#selector(unregisterKeyboardEvent))
+    
+    func leftBarButtonPressed() {
+        self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
-    func setupData() {
-        let realms = Realms()
-        results = realms.retreiveTB_SETTINGS()
-        
-        var row: [String] = []
-        for result in results {
-            if sections.count == 0 {
-                sections.append(result.section)
-                row.append(result.cellType)
-            }
-            else if sections.last != result.section {
-                items.append(row)
-                row.removeAll()
-                sections.append(result.section)
-                row.append(result.cellType)
-            }
-            else {
-                row.append(result.cellType)
-            }
-            if result.desc != "" {
-                desc.append(result.desc)
-            }
-        }
-        items.append(row)
+    func nextButtonPressed() {
+        self.presentViewController(util.alert("앗!", message: "이름을 입력하지 않으셨네요~", ok: "네, 입력할게요", cancel: nil), animated: true, completion: nil)
+        let indexPath = NSIndexPath(forRow: 0, inSection: 1)
+        collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
     }
+
     
-    
+    // MARK: - setupUI
     func setupUI() {
         
         //  Navi Bar
         self.title = "Math Avengers - Settings"
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "이전 단계로", style: .Plain, target: self, action: #selector(self.leftBarButtonPressed))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "다음 단계로", style: .Plain, target: self, action: #selector(self.nextButtonPressed))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "처음으로", style: .Plain, target: self, action: #selector(self.leftBarButtonPressed))
+        //self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "다음 단계로", style: .Plain, target: self, action: #selector(self.nextButtonPressed))
         
         layout.scrollDirection = .Vertical
         layout.minimumLineSpacing = 10
@@ -245,14 +261,11 @@ class SettingsViewController: UIViewController {
          layout.sectionHeadersPinToVisibleBounds = true
          collectionView.registerClass(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerIdentifier)
 */
-        
         collectionViewWidth = collectionView.frame.size.width
         
         let viewsDictionary = ["collectionView": collectionView]
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|",
-            options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[collectionView]|",
-            options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: [], metrics: nil, views: viewsDictionary))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[collectionView]|", options: [], metrics: nil, views: viewsDictionary))
         
     }
     
@@ -274,6 +287,7 @@ class SettingsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - textField(event)
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
 
         let currentText = textField.text ?? ""
@@ -314,21 +328,10 @@ class SettingsViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
-    
-    func leftBarButtonPressed() {
-        // 한 스크롤 씩 앞으로
-    }
-    
-    func nextButtonPressed() {
-        self.presentViewController(util.alert("앗!", message: "이름을 입력하지 않으셨네요~", ok: "네, 입력할게요", cancel: nil), animated: true, completion: nil)
-        let indexPath = NSIndexPath(forRow: 0, inSection: 1)
-        collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
-    }
-    
-    
+   
 }
 
-
+// MARK: - UICollectionViewDataSource
 extension SettingsViewController: UICollectionViewDataSource {
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return sections.count
@@ -488,6 +491,7 @@ extension SettingsViewController: UICollectionViewDataSource {
     
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension SettingsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
