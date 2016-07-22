@@ -147,7 +147,7 @@ class SettingsViewController: UIViewController {
     }
     
     func showAlert(section: Int, message: String) {
-        self.presentViewController(util.alert("알림", message: message, ok: "확인", cancel: nil), animated: true, completion: {
+        self.presentViewController(util.alert("알림", message: message, ok: "확인", cancel: nil, okAction: nil, cancelAction: nil), animated: true, completion: {
             let cell = self.collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: 2, inSection: section)) as! SettingsCell
             cell.textField.becomeFirstResponder()
             cell.textField.text = ""
@@ -206,9 +206,21 @@ class SettingsViewController: UIViewController {
                         }
                         
                         // icloud에 저장
-                        let cloud = CloudViewController()
-                        cloud.command = CloudViewController.commandType.store
-                        self.navigationController?.pushViewController(cloud, animated: true)
+                        if NSUserDefaults.standardUserDefaults().boolForKey("iCloudYN") {
+                            let cloud = CloudViewController()
+                            cloud.command = CloudViewController.commandType.storeToRoot
+                            self.navigationController?.pushViewController(cloud, animated: true)
+                        }
+                        else {
+                            let okAction = UIAlertAction(title: "네, 저장합니다", style: UIAlertActionStyle.Default) { (result : UIAlertAction) -> Void in
+                                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "iCloudYN")
+                                let cloud = CloudViewController()
+                                cloud.command = CloudViewController.commandType.storeToRoot
+                                self.navigationController?.pushViewController(cloud, animated: true)
+                            }
+                            let alert = util.alert("알림", message: "iCloud에 저장할까요?", ok: "네, 저장합니다", cancel: "아니오", okAction: okAction, cancelAction: nil)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        }
 
                         break
                     default:
@@ -228,7 +240,7 @@ class SettingsViewController: UIViewController {
     }
     
     func nextButtonPressed() {
-        self.presentViewController(util.alert("앗!", message: "이름을 입력하지 않으셨네요~", ok: "네, 입력할게요", cancel: nil), animated: true, completion: nil)
+        self.presentViewController(util.alert("앗!", message: "이름을 입력하지 않으셨네요~", ok: "네, 입력할게요", cancel: nil, okAction: nil, cancelAction: nil), animated: true, completion: nil)
         let indexPath = NSIndexPath(forRow: 0, inSection: 1)
         collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
     }

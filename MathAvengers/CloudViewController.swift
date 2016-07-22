@@ -18,22 +18,23 @@ class CloudViewController: UIViewController {
     var cloudDocumentsDirectory: NSURL?
     
     enum commandType: Int {
-        case download = 0, store
+        case download = 0, store, retrieve, storeWithReturn, downloadWithReturn, storeToRoot
     }
     var command: commandType?
-    var filename: String?
+    let filename = "default.realm"
     
     override func viewDidLoad() {
         
         setupUI()
         
-        let containerURL = fileManager.URLForUbiquityContainerIdentifier(nil)
-        guard containerURL != nil else {
+        // 클라우드 기본 디렉토리 정보 획득
+        let cloudBaseURL = fileManager.URLForUbiquityContainerIdentifier(nil)
+        guard cloudBaseURL != nil else {
             debugPrint("Unable to access iCloud Account")
             debugPrint("Open the Settings app and enter your Apple ID into iCloud settings")
             return
         }
-        cloudDocumentsDirectory = containerURL?.URLByAppendingPathComponent("Documents")
+        cloudDocumentsDirectory = cloudBaseURL?.URLByAppendingPathComponent("Documents")
         
         // download와 store 시에 스마트하게 처리할 수 있는 방안이 떠오르질 않는다. 일단 임시로 아래와 같이 코드를 작성함
         // 이렇게 하는 이유는 startQuery의 결과를 두 가지 용도로 사용하기 때문이다.
@@ -41,13 +42,29 @@ class CloudViewController: UIViewController {
         switch self.command! {
         case commandType.download:
             // download
-            filename = "default.realm"
-            startQuery(filename)
+            downloadFile(filename)
             break
         case commandType.store:
             // store file
-            filename = nil
-            storeFile("default.realm")
+            storeFile(filename)
+            break
+        case commandType.retrieve:
+            startQuery(nil)
+            break
+        case commandType.downloadWithReturn:
+            // download
+            downloadFile(filename)
+            self.navigationController?.popViewControllerAnimated(true)
+            break
+        case commandType.storeWithReturn:
+            // store file
+            storeFile(filename)
+            self.navigationController?.popViewControllerAnimated(true)
+            break
+        case commandType.storeToRoot:
+            // store file
+            storeFile(filename)
+            self.navigationController?.popToRootViewControllerAnimated(true)
             break
         }
     }
@@ -78,8 +95,42 @@ class CloudViewController: UIViewController {
     }
     
     // MARK: - Actions
-    func storeFile(fileName: String){
-        debugPrint("Storing a file in the directory...")
+    func downloadFile(fileName: String) {
+        debugPrint("Downloading a cloud file in the local directory...")
+        if let directory = cloudDocumentsDirectory{
+            let destinationUrl = directory.URLByAppendingPathComponent(fileName)
+            
+            // filename이 있으면 download한다.
+            if fileManager.fileExistsAtPath(destinationUrl.path!) {
+                do{
+                    // local file URL
+                    let dirPath = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
+                    var localURL: NSURL?
+                    if let path = dirPath {
+                        localURL = path.URLByAppendingPathComponent(fileName)
+                    }
+                    // local에 이미 파일이 있다면..
+                    if fileManager.fileExistsAtPath(localURL!.path!) {
+                        // remove local file
+                        try fileManager.removeItemAtURL(localURL!)
+                    }
+                    
+                    try fileManager.copyItemAtURL(destinationUrl, toURL: localURL!)
+                    debugPrint("Successfully copied the cloud file to the local...")
+                    statusLabel.text = "Download is OK"
+
+                }
+                catch let err as NSError{
+                    //error handling
+                    debugPrint("err = \(err.localizedDescription)")
+                    statusLabel.text = "Download id Failed.."
+                }
+            }
+        }
+    }
+    
+    func storeFile(fileName: String) {
+        debugPrint("Storing a file in the cloud directory...")
         
         if let directory = cloudDocumentsDirectory{
             
@@ -116,28 +167,22 @@ class CloudViewController: UIViewController {
                         // 있으면 파일 제거
                         debugPrint("remove target file in the cloud...")
                         try fileManager.removeItemAtURL(destinationUrl)
-
                     }
-                    
-                    // 첫 번째 인자가 true면 로컬 파일을 클라우드로 move (copy가 아니다!)
-//                    try fileManager.setUbiquitous(true,
-//                                                  itemAtURL: localURL,
-//                                                  destinationURL: destinationUrl)
+
                     try fileManager.copyItemAtURL(localURL, toURL: destinationUrl)
                     debugPrint("Successfully copied the file to the cloud...")
+                    statusLabel.text = "Saving is OK"
                 } catch let error1 as NSError {
                     savingError = error1
                     if let error = savingError {
                         debugPrint("Failed to move the file to the cloud = \(error)")
+                        statusLabel.text = "Saving is Failed.."
                     }
                 }
             }
             else {
                 debugPrint("There is no Document folder..")
             }
-            
-            // 잘 저장되었는지 확인?
-            startQuery(nil)
             
         } else {
             debugPrint("The directory was nil")
@@ -164,9 +209,6 @@ class CloudViewController: UIViewController {
     // MARK: - metadataQuery
     func startQuery(fileName: String?){
         debugPrint("Starting the query now...")
-        if fileName == nil {
-            self.filename = nil
-        }
         
         metadataQuery.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
         if let filename = fileName {
@@ -193,17 +235,16 @@ class CloudViewController: UIViewController {
         }
     }
     
+    
+    /**
+     클라우드의 documents 폴더 내용 검색
+     
+     - parameter notification: notification
+     */
     func handleMetadataQueryFinished(notification: NSNotification){
         
         debugPrint("Search finished");
-        
-        // local file과 비교
-        let dirPath = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
-        var localURL: NSURL?
-        if let path = dirPath {
-            localURL = path.URLByAppendingPathComponent("default.realm")
-        }
-        
+
         let query = notification.object as! NSMetadataQuery
         query.disableUpdates()
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NSMetadataQueryDidFinishGatheringNotification, object: query)
@@ -218,15 +259,9 @@ class CloudViewController: UIViewController {
         
         for item in results as! [NSMetadataItem]{
             
-            let itemName = item.valueForAttribute(NSMetadataItemFSNameKey)
-                as! String
-            
-            let itemUrl = item.valueForAttribute(NSMetadataItemURLKey)
-                as! NSURL
-            
-            let itemSize = item.valueForAttribute(NSMetadataItemFSSizeKey)
-                as! Int
-            
+            let itemName = item.valueForAttribute(NSMetadataItemFSNameKey) as! String
+            let itemUrl = item.valueForAttribute(NSMetadataItemURLKey) as! NSURL
+            let itemSize = item.valueForAttribute(NSMetadataItemFSSizeKey) as! Int
             let itemContentChangeDate = item.valueForAttribute(NSMetadataItemFSContentChangeDateKey) as! NSDate
             let itemCreationDate = item.valueForAttribute(NSMetadataItemFSCreationDateKey) as! NSDate
             
@@ -240,37 +275,8 @@ class CloudViewController: UIViewController {
             debugPrint("Item MDate = \(String(dateFormatter.stringFromDate(itemContentChangeDate)))")
             debugPrint("Item CDate = \(String(dateFormatter.stringFromDate(itemCreationDate)))")
             
-            
-            if let fileName = self.filename {
-                // filename이 있으면 download한다.
-                if itemName == fileName {
-                    do{
-                        // 파일 사이즈 및 생성일을 판단하여 교체 여부를 묻는다.
-                        let fileAttributes = try fileManager.attributesOfItemAtPath(localURL!.path!)
-                        let fileSize = fileAttributes[NSFileSize]
-                        debugPrint("file size = \(fileSize)")
-                        let fileModificationDate = fileAttributes[NSFileModificationDate] as! NSDate
-                        debugPrint("file MDate = \(String(dateFormatter.stringFromDate(fileModificationDate)))")
-                        
-                        // remove local file
-                        try fileManager.removeItemAtURL(localURL!)
-                        
-                        // 첫 번째 인자가 false면 클라우드 파일을 로컬로 move (copy가 아니다!)
-//                        try fileManager.setUbiquitous(false,
-//                                                      itemAtURL: itemUrl,
-//                                                      destinationURL: localURL!)
-                        try fileManager.copyItemAtURL(itemUrl, toURL: localURL!)
-                        debugPrint("Successfully copied the cloud file to the local...")
-                        
-                        // cloud 파일이 지워졌는지 확인용
-                        startQuery(nil)
-                    }
-                    catch let err as NSError{
-                        //error handling
-                        debugPrint("err = \(err.localizedDescription)")
-                    }
-                }
-            }
+            statusLabel.text! += "\(itemName)\n"
+
         }
         
     }

@@ -17,7 +17,7 @@ class SetEnvViewController: UIViewController {
     // views
     let stackViews = [UIStackView(), UIStackView()]
     let welcomeImageView = [UIImageView(), UIImageView()]
-    let welcomeImage = [UIImage(named:"welcome"), UIImage(named:"owl_small")]
+    let welcomeImage = [UIImage(named:"setenv"), UIImage(named:"owl_small")]
     let welcomeLabel = [UILabel()]
     let welcomeText = ["환경 설정"]
     var labelText = ["     즉시 iCloud에서 데이터 복원!     ", "     자동으로 iCloud에 저장!     "]
@@ -90,7 +90,7 @@ class SetEnvViewController: UIViewController {
         cloudSwitch.translatesAutoresizingMaskIntoConstraints = false
         switchSync(cloudSwitch)
         
-//        introButton[0].addTarget(self, action: #selector(startGame), forControlEvents: UIControlEvents.TouchUpInside)
+        introButton[0].addTarget(self, action: #selector(downloadFileFromCloud), forControlEvents: UIControlEvents.TouchUpInside)
         introButton[1].addTarget(self, action: #selector(saveCloudYN), forControlEvents: UIControlEvents.TouchUpInside)
         cloudSwitch.addTarget(self, action: #selector(saveCloudYN), forControlEvents: UIControlEvents.TouchUpInside)
 
@@ -127,6 +127,12 @@ class SetEnvViewController: UIViewController {
     }
     
     // MARK: - Actions
+    func downloadFileFromCloud() {
+        let cloud = CloudViewController()
+        cloud.command = CloudViewController.commandType.downloadWithReturn
+        self.navigationController?.pushViewController(cloud, animated: true)
+    }
+    
     func saveCloudYN() {
         if NSUserDefaults.standardUserDefaults().boolForKey("iCloudYN") {
             NSUserDefaults.standardUserDefaults().setBool(false, forKey: "iCloudYN")

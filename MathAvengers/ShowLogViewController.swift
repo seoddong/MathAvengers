@@ -116,7 +116,10 @@ class ShowLogViewController: UIViewController {
         }
         else {
             let util = Util()
-            self.presentViewController(util.alert("알림", message: "더 이상 데이터가 없습니다", ok: "확인", cancel: nil), animated: true, completion: nil)
+            let okAction = UIAlertAction(title: "확인", style: UIAlertActionStyle.Default) { (result : UIAlertAction) -> Void in
+                self.navigationController?.popViewControllerAnimated(true)
+            }
+            self.presentViewController(util.alert("알림", message: "더 이상 데이터가 없습니다", ok: "확인", cancel: nil, okAction: okAction, cancelAction: nil), animated: true, completion: nil)
         }
         
     }

@@ -45,9 +45,12 @@ class SummaryViewController: UIViewController {
         debugPrint("\(finalScoreInt) \(countLife)")
 
         // icloud에 저장
-        let cloud = CloudViewController()
-        cloud.command = CloudViewController.commandType.store
-        self.navigationController?.pushViewController(cloud, animated: true)
+        if NSUserDefaults.standardUserDefaults().boolForKey("iCloudYN") {
+            
+            let cloud = CloudViewController()
+            cloud.command = CloudViewController.commandType.storeWithReturn
+            self.navigationController?.pushViewController(cloud, animated: true)
+        }
     }
     
     // MARK: - setupUI

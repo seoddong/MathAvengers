@@ -155,7 +155,7 @@ class IntroViewController: UIViewController {
     func getCloud(sender: UIButton!) {
         debugPrint(getCloud)
         let cloud = CloudViewController()
-        cloud.command = CloudViewController.commandType.download
+        cloud.command = CloudViewController.commandType.downloadWithReturn
         self.navigationController?.pushViewController(cloud, animated: true)
     }
     
