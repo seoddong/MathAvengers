@@ -28,6 +28,7 @@ class SummaryViewController: UIViewController {
     var scoreLabel: UILabel!
     var messageLabel: UILabel!
     var imageView: UIImageView!
+    let retryButton = UIButton()
     
     let uidesign = UIDesign()
     
@@ -46,11 +47,22 @@ class SummaryViewController: UIViewController {
 
         // icloud에 저장
         if NSUserDefaults.standardUserDefaults().boolForKey("iCloudYN") {
-            
             let cloud = CloudViewController()
-            cloud.command = CloudViewController.commandType.storeWithReturn
-            self.navigationController?.pushViewController(cloud, animated: true)
+            cloud.command = CloudViewController.commandType.store
+            //self.navigationController?.pushViewController(cloud, animated: true)
+            if cloud.storeFile("default.realm") {
+                debugPrint("저장 성공")
+            }
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     // MARK: - setupUI
@@ -87,11 +99,26 @@ class SummaryViewController: UIViewController {
         messageLabel.backgroundColor = UIColor(patternImage: UIImage(named:"tile001")!)
         messageLabel.heightAnchor.constraintEqualToConstant(200).active = true
         
-        imageView = UIImageView(image: UIImage(named: "rainbow"))
-        //imageView.frame.size = CGSizeMake(imageView.frame.width, imageView.frame.height / 2)
-        imageView.heightAnchor.constraintEqualToConstant(400).active = true
+        let image: UIImage!
+        // 시간 초과나 3번 틀리면 OTL
+        if countLife == 0 || finalScore <= 0 {
+            image = UIImage(named: "otl")
+        }
+        else {
+            image = UIImage(named: "rainbow")
+        }
+        imageView = UIImageView(image: image)
+        imageView.contentMode = .ScaleAspectFit
+        imageView.heightAnchor.constraintEqualToConstant(image.size.height > 250 ? 250 : image.size.height).active = true
+        
+        
+        retryButton.translatesAutoresizingMaskIntoConstraints = false
+        retryButton.setTitle("한 번 더 할래요", forState: .Normal)
+        uidesign.setTextButton(retryButton, fontColor: UIColor.blueColor(), fontSize: 30)
+        retryButton.addTarget(self, action: #selector(retryGame), forControlEvents: UIControlEvents.TouchUpInside)
         
         stackView = UIStackView()
+        stackView.spacing = 50
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .Vertical
         stackView.distribution = .EqualSpacing
@@ -103,12 +130,13 @@ class SummaryViewController: UIViewController {
             self.stackView.addArrangedSubview(self.scoreLabel)
             self.stackView.addArrangedSubview(self.messageLabel)
             self.stackView.addArrangedSubview(self.imageView)
+            self.stackView.addArrangedSubview(self.retryButton)
             self.stackView.layoutIfNeeded()
         })
         
         let viewsDictionary = ["stackView": stackView]
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-20-[stackView]-20-|", options: .AlignAllCenterY, metrics: nil, views: viewsDictionary))
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-\((self.navigationController?.navigationBar.frame.size.height)! + 40)-[stackView]-20-|", options: .AlignAllCenterX, metrics: nil, views: viewsDictionary))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-20-[stackView]-20-|", options: [], metrics: nil, views: viewsDictionary))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-\((self.navigationController?.navigationBar.frame.size.height)! + 40)-[stackView]-20-|", options: [], metrics: nil, views: viewsDictionary))
         
     }
 
@@ -125,14 +153,16 @@ class SummaryViewController: UIViewController {
 
     }
     
-    override func viewWillAppear(animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
+    func retryGame() {
+        let level = NSUserDefaults.standardUserDefaults().integerForKey("level")
+        let levelTitle = NSUserDefaults.standardUserDefaults().stringForKey("levelTitle")
+        debugPrint(levelTitle)
+        let targetView = QuestionViewController()
+        targetView.calledTitle = levelTitle!
+        targetView.calledLevel = level
+        self.navigationController?.pushViewController(targetView, animated: true)
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
     
 
     /*

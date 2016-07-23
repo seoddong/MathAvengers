@@ -109,44 +109,6 @@ class Util {
         return NSBundle.mainBundle().URLForResource(name, withExtension: "realm")
     }
     
-    
-    func cloudPressed() {
-        let filemgr = NSFileManager.defaultManager()
-        
-        var ubiquityURL = filemgr.URLForUbiquityContainerIdentifier(nil)
-        guard ubiquityURL != nil else {
-            debugPrint("Unable to access iCloud Account")
-            debugPrint("Open the Settings app and enter your Apple ID into iCloud settings")
-            return
-        }
-        
-        ubiquityURL = ubiquityURL?.URLByAppendingPathComponent("Documents/default.realm")
-        debugPrint("ubiquityURL=\(ubiquityURL)")
-        
-        // iCloud storage를 검색할 조건과 검색 범위를 지정
-        let metaDataQuery = NSMetadataQuery()
-        metaDataQuery.predicate = NSPredicate(format: "%K like 'default.realm'", NSMetadataItemFSNameKey)
-        metaDataQuery.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
-        
-        // 검색이 끝나면 결과를 알려줄 noti 설정
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainViewController.metadataQueryDidFinishGathering), name: NSMetadataQueryDidFinishGatheringNotification, object: metaDataQuery)
-        
-        let state = metaDataQuery.startQuery()
-        debugPrint("state=\(state)")
-        
-        //        let dirPath = filemgr.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
-        //        // dirPath=[file:///Users/seoddong/Library/Developer/CoreSimulator/Devices/CAE86DB6-92BC-44D3-93D0-F5D4826B54D5/data/Containers/Data/Application/1AA46834-C0FC-43A5-8D41-F3BEA3B048BD/Documents/]
-        //        if let path = dirPath {
-        //            let documentURL = path.URLByAppendingPathComponent("default.realm")
-        //            let maDoc = MADocument(fileURL: documentURL)
-        //            maDoc.checkFileExist(documentURL)
-        //        }
-        //        else {
-        //            debugPrint("There is no Document folder..")
-        //        }
-        
-    }
-    
 }
 
 // String Extension

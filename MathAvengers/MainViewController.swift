@@ -91,47 +91,6 @@ class MainViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    func metadataQueryDidFinishGathering(notification: NSNotification) -> Void {
-        // 일단 결과를 받았으니 더 이상의 쿼리 진행은 막고 noti도 그만 받는 거로 설정한다.
-        let query = notification.object as! NSMetadataQuery
-        query.disableUpdates()
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NSMetadataQueryDidFinishGatheringNotification, object: query)
-        query.stopQuery()
-        
-        let results = query.results
-        if query.resultCount == 1 {
-            // 내가 쓰고자 하는 파일 하나만 검색되면 OK
-            let resultURL = results[0].valueForAttribute(NSMetadataItemURLKey) as! NSURL
-            let maDoc = MADocument(fileURL: resultURL)
-            maDoc.openWithCompletionHandler({ (success: Bool) -> Void in
-                // 이렇게 파일을 여는 경우는 클라우드의 파일을 읽어 특정 정보를 가져오려 할 때이다.
-                if success {
-                    debugPrint("iCloud file open OK")
-                    
-                } else {
-                    debugPrint("iCloud file open failed")
-                }
-            })
-        }
-        else if query.resultCount > 1 {
-            debugPrint("query.results = \(results)")
-        }
-        else {
-            // iCloud에 파일이 없으므로 파일을 카피해 놓는다
-            let maDoc = MADocument(fileURL: ubiquityURL)
-            
-            maDoc.saveToURL(ubiquityURL, forSaveOperation: .ForCreating, completionHandler: {(success: Bool) -> Void in
-                if success {
-                    print("iCloud create OK")
-                } else {
-                    print("iCloud create failed")
-                }
-            })
-        }
-    }
-    
-    
     // MARK: - Actions
     func showLog() {
         let targetView = ShowLogViewController()
@@ -218,13 +177,14 @@ extension MainViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let targetView = QuestionViewController()
         let selectedIndexPath = tableView.indexPathForSelectedRow
         let cell = tableView.cellForRowAtIndexPath(selectedIndexPath!) as! LevelTableViewCell
         cell.contentView.backgroundColor = UIColor.whiteColor()
         cell.contentView.layer.borderColor = UIColor.orangeColor().CGColor
         cell.contentView.layer.borderWidth = 5
         cell.contentView.layer.cornerRadius = 10
+        
+        let targetView = QuestionViewController()
         targetView.calledTitle = cell.cellLabel.text!
         targetView.calledLevel = (selectedIndexPath?.row)! + 1
         self.navigationController?.pushViewController(targetView, animated: true)

@@ -129,9 +129,9 @@ class CloudViewController: UIViewController {
         }
     }
     
-    func storeFile(fileName: String) {
+    func storeFile(fileName: String) -> Bool {
         debugPrint("Storing a file in the cloud directory...")
-        
+
         if let directory = cloudDocumentsDirectory{
             
             let destinationUrl = directory.URLByAppendingPathComponent(fileName)
@@ -172,6 +172,7 @@ class CloudViewController: UIViewController {
                     try fileManager.copyItemAtURL(localURL, toURL: destinationUrl)
                     debugPrint("Successfully copied the file to the cloud...")
                     statusLabel.text = "Saving is OK"
+                    return true
                 } catch let error1 as NSError {
                     savingError = error1
                     if let error = savingError {
@@ -187,7 +188,7 @@ class CloudViewController: UIViewController {
         } else {
             debugPrint("The directory was nil")
         }
-        
+        return false
     }
     
     func doesDocumentsDirectoryExist(targetDirectory: NSURL?) -> Bool{

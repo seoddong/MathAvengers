@@ -31,6 +31,8 @@ class QuestionViewController: UIViewController {
     // 채점, 이력 관리
     var correctAnswer: UInt32 = 0
     var answerArray: [UInt32] = []
+    var correctAnswerArray: [UInt32] = []
+    var selectedAnswerArray: [UInt32] = []
     var countCorrectAnswer = 0
     var countIncorrectAnswer = 0
     var currentLevel = 0
@@ -46,7 +48,9 @@ class QuestionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        debugPrint("Q1: navigationBarHidden=\(self.navigationController?.navigationBarHidden)")
+        NSUserDefaults.standardUserDefaults().setInteger(calledLevel, forKey: "level")
+        NSUserDefaults.standardUserDefaults().setObject(calledTitle, forKey: "levelTitle")
+        
         setupUI()
         
         setActions()
@@ -54,7 +58,7 @@ class QuestionViewController: UIViewController {
         if calledLevel > 0 {
             currentLevel = calledLevel
             gameOver = false
-            makeQuestionLevel(currentLevel)
+            makeQuestionLevel()
             
             startTime = NSDate.timeIntervalSinceReferenceDate()
             _ = NSTimer.scheduledTimerWithTimeInterval(
@@ -118,6 +122,9 @@ class QuestionViewController: UIViewController {
         
     }
     
+    /**
+     결과가 10 미만인 더하기
+     */
     func createLevel1() {
         
         // 문제 생성
@@ -130,6 +137,8 @@ class QuestionViewController: UIViewController {
         // 같은 보기가 나오면 안 된다.
         var ii = 0
         answerArray.append(correctAnswer)
+        
+        // 이미 정답을 넣어놓았으므로 기타 보기 3개만 더 추출
         while (true) {
             if ii >= 3 {
                 break
@@ -147,15 +156,70 @@ class QuestionViewController: UIViewController {
         }
     }
     
+    /**
+     합이 10이 되는 두 수 찾기 - 1
+     ### 문제
+     10 미만의 네 수를 랜덤하게 추출하되 그 중 두 개의 수만 반드시 합이 10을 구성해야 한다.
+     
+     ### 풀이
+     1. 랜덤하게 세 수를 뽑는다. 중복없이 뽑아야 하며 답이 되는 두 수(10의 보수가 되는 두 수)가 있어서도 안 된다.
+     2. 세 수 중 랜덤하게 하나의 수를 선택하고 이 수에 대한 10의 보수를 구한다.
+     4. 위 네 개의 숫자들의 순서를 다시 랜덤하게 나열한다.
+     */
+    func createLevel2() {
+        
+        let question = "?+?=10"
+        
+        // 보기 배열 생성
+        // 같은 보기가 나오면 안 된다.
+        var ii = 0
+        while (true) {
+            // 1. 랜덤한 세 수를 뽑아내면 루프 탈출
+            if ii >= 3 {
+                break
+            }
+            
+            let answer = arc4random_uniform(10)
+            if answerArray.contains({$0 == answer}) {
+                // 이미 같은 보기가 있으므로 loop를 한 번 더 돈다.
+                continue
+            }
+            else if ii == 1 && answerArray[0] + answer == 10 {
+                // 답이 되는 두 수가 만들어지면 안되므로 한 번 더 돈다.
+                continue
+            }
+            else if ii == 2 && (answerArray[0] + answer == 10 || answerArray[1] + answer == 10) {
+                // 답이 되는 두 수가 만들어지면 안되므로 한 번 더 돈다.
+                continue
+            }
+            else {
+                answerArray.append(answer)
+                ii += 1
+            }
+        }
+        // 2. 세 수 중 랜덤하게 하나의 수를 선택하고 이 수에 대한 10의 보수를 구한다.
+        // 사실 어차피 세 숫자가 다 랜덤하게 나왔으므로 걍 첫 번째 보기에 대한 보수를 구한다.
+        answerArray.append(10 - answerArray[2])
+        correctAnswerArray.appendContentsOf(answerArray[2...3])
+        
+        // 문제 생성
+        qLabel.text = question
+        
+        
+    }
     
-    func makeQuestionLevel(level: Int) {
+    
+    func makeQuestionLevel() {
         // 레벨 1: 합이 10 이하의 덧셈 문제
         
         initSettings()
         
-        switch level {
+        switch currentLevel {
         case 1:
             createLevel1()
+            break
+        case 2:
+            createLevel2()
             break
         default:
             createLevel1()
@@ -185,50 +249,85 @@ class QuestionViewController: UIViewController {
         try! realm.commitWrite()
     }
     
+    func correctAnswerProcess(answer: String) {
+        // 이력 저장
+        saveRecord(answer, result: true)
+        
+        countCorrectAnswer += 1
+        if countCorrectAnswer >= 10 {
+            // 모든 문제 다 풀음
+            gameOver = true
+            setGameover()
+        }
+        else {
+            // 새로운 문제 수행
+            makeQuestionLevel()
+        }
+
+    }
+    
+    func incorrectAnswerProcess(answer: String) {
+        // 이력 저장
+        saveRecord(answer, result: false)
+        
+        countIncorrectAnswer += 1
+        if countIncorrectAnswer >= totalLife {
+            // totalLife만큼 틀려서 게임 오버
+            gameOver = true
+            setGameover()
+        }
+        else {
+            // star_sad
+            starImageView[countIncorrectAnswer-1].image = UIImage(named: "star_sad")
+            // 틀릴 때 마다 점수 까기
+            maxSec -= penaltyTime
+        }
+    }
+    
     
     // 채점
     func checkAnswer(sender:UIButton!) {
-        var result = false
-        let answer = sender.titleLabel?.text
-        
-        if answer == String(correctAnswer) {
-            result = true
+        switch currentLevel {
+        case 1:
+            let answer = sender.titleLabel?.text
             
-            // 이력 저장
-            saveRecord(answer!, result: result)
-            
-            countCorrectAnswer += 1
-            if countCorrectAnswer >= 10 {
-                // 모든 문제 다 풀음
-                gameOver = true
-                setGameover()
+            if answer == String(correctAnswer) {
+                correctAnswerProcess(answer!)
             }
             else {
-                // 새로운 문제 수행
-                makeQuestionLevel(currentLevel)
-            }
-        }
-        else {
-            result = false
-            
-            // 이력 저장
-            saveRecord(answer!, result: result)
-            
-            countIncorrectAnswer += 1
-            if countIncorrectAnswer >= totalLife {
-                // totalLife만큼 틀려서 게임 오버
-                gameOver = true
-                setGameover()
-            }
-            else {
-                // star_sad
-                starImageView[countIncorrectAnswer-1].image = UIImage(named: "star_sad")
-                
                 sender.backgroundColor = UIColor.redColor()
-                
-                // 틀릴 때 마다 점수 까기
-                maxSec -= penaltyTime
+                incorrectAnswerProcess(answer!)
             }
+            break
+        case 2:
+            selectedAnswerArray.append(UInt32((sender.titleLabel?.text)!)!)
+            // 답을 하나만 선택한 경우에는 두 번째 답을 기다린다.
+            if selectedAnswerArray.count < 2 {
+                sender.backgroundColor = UIColor.orangeColor()
+                break
+            }
+            else {
+                let sum = selectedAnswerArray.reduce(0, combine: { $0 + $1 })
+                debugPrint("sum = \(sum)")
+                let answer = "\(selectedAnswerArray[0...1])"
+                if sum == 10 {
+                    // 정답 프로세스
+                    correctAnswerProcess(answer)
+                }
+                else {
+                    // 오답 프로세스
+                    incorrectAnswerProcess(answer)
+                    
+                    // 답을 두 개 선택하는 경우에는 그냥 다음 문제로 넘어간다.
+                    makeQuestionLevel()
+                }
+                // 채점이 완료되면 selectedAnswerArray를 비운다.
+                selectedAnswerArray.removeAll()
+            }
+            
+            break
+        default:
+            break
         }
         
     }
@@ -272,6 +371,8 @@ class QuestionViewController: UIViewController {
         // 문제 Label 생성
         qLabel = UILabel()
         qLabel.text = "TEST"
+        qLabel.lineBreakMode = .ByWordWrapping
+        qLabel.numberOfLines = 0
         uidesign.setLabelBubbleGreenWithBorder(qLabel, fontSize: 120)
 
         // 버튼 생성
