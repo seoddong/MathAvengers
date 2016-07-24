@@ -6,22 +6,17 @@
     },
     {
     "level": 2,
-    "levelDesc": "합이 10이 되는 두 수 찾기 1",
+    "levelDesc": "합이 10이 되는 두 수 찾기",
     "imageURL": ""
     },
     {
     "level": 3,
-    "levelDesc": "한 자리 수 + 한 자리 수",
+    "levelDesc": "한 자리 수 + 한 자리 수 1",
     "imageURL": ""
     },
     {
     "level": 4,
-    "levelDesc": "합이 10이 되는 두 수 찾기 2",
-    "imageURL": ""
-    },
-    {
-    "level": 5,
-    "levelDesc": "두 자리 수 + 한 자리 수",
+    "levelDesc": "두 자리 수 + 한 자리 수 2",
     "imageURL": ""
     }
 ]

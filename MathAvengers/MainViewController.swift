@@ -12,6 +12,7 @@ import RealmSwift
 class LevelTableViewCell: UITableViewCell {
     
     let cellImageView = UIImageView()
+    let cellnumImageView = UIImageView()
     let cellLabel = UILabel()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -21,6 +22,11 @@ class LevelTableViewCell: UITableViewCell {
         cellImageView.translatesAutoresizingMaskIntoConstraints = false
         cellImageView.contentMode = .ScaleAspectFit
         self.contentView.addSubview(cellImageView)
+        
+        // cellnumImageView
+        cellnumImageView.translatesAutoresizingMaskIntoConstraints = false
+        cellnumImageView.contentMode = .ScaleAspectFit
+        self.contentView.addSubview(cellnumImageView)
         
         
         cellLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -33,11 +39,16 @@ class LevelTableViewCell: UITableViewCell {
         cellImageView.topAnchor.constraintEqualToAnchor(margins.topAnchor).active = true
         cellImageView.bottomAnchor.constraintEqualToAnchor(margins.bottomAnchor).active = true
         cellImageView.widthAnchor.constraintEqualToConstant(160).active = true
-
+        
+        NSLayoutConstraint(item: cellnumImageView, attribute: .Leading, relatedBy: .Equal, toItem: cellImageView, attribute: .TrailingMargin, multiplier: 1.0, constant: -10.0).active = true
+        cellnumImageView.topAnchor.constraintEqualToAnchor(margins.topAnchor).active = true
+        cellnumImageView.bottomAnchor.constraintEqualToAnchor(margins.bottomAnchor).active = true
+        cellnumImageView.widthAnchor.constraintEqualToConstant(70).active = true
+        
         cellLabel.topAnchor.constraintEqualToAnchor(margins.topAnchor).active = true
         cellLabel.bottomAnchor.constraintEqualToAnchor(margins.bottomAnchor).active = true
         NSLayoutConstraint(item: cellLabel, attribute: .Trailing, relatedBy: .Equal, toItem: self.contentView, attribute: .TrailingMargin, multiplier: 1.0, constant: 0.0).active = true
-        NSLayoutConstraint(item: cellLabel, attribute: .Leading, relatedBy: .Equal, toItem: cellImageView, attribute: .TrailingMargin, multiplier: 1.0, constant: 20.0).active = true
+        NSLayoutConstraint(item: cellLabel, attribute: .Leading, relatedBy: .Equal, toItem: cellnumImageView, attribute: .TrailingMargin, multiplier: 1.0, constant: 20.0).active = true
         
         
     }
@@ -208,9 +219,9 @@ extension MainViewController: UITableViewDataSource {
         // 셀의 데이터와 이미지 설정 코드
         let row = indexPath.row
         cell.cellLabel.text = "\(results[row].levelDesc)"
-        let imageName = String(format: "%03d", results[row].level)
-        debugPrint("imageName=[\(imageName)]")
-        cell.cellImageView.image = UIImage(named: imageName)
+        let imageName = String(format: "%02d", results[row].level)
+        cell.cellImageView.image = UIImage(named: "level")
+        cell.cellnumImageView.image = UIImage(named: imageName)
         
         return cell
     }

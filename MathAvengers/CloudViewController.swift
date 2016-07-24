@@ -23,9 +23,7 @@ class CloudViewController: UIViewController {
     var command: commandType?
     let filename = "default.realm"
     
-    override func viewDidLoad() {
-        
-        setupUI()
+    func initialize() {
         
         // 클라우드 기본 디렉토리 정보 획득
         let cloudBaseURL = fileManager.URLForUbiquityContainerIdentifier(nil)
@@ -35,6 +33,13 @@ class CloudViewController: UIViewController {
             return
         }
         cloudDocumentsDirectory = cloudBaseURL?.URLByAppendingPathComponent("Documents")
+        
+    }
+    
+    override func viewDidLoad() {
+        initialize()
+        setupUI()
+        
         
         // download와 store 시에 스마트하게 처리할 수 있는 방안이 떠오르질 않는다. 일단 임시로 아래와 같이 코드를 작성함
         // 이렇게 하는 이유는 startQuery의 결과를 두 가지 용도로 사용하기 때문이다.
@@ -186,7 +191,7 @@ class CloudViewController: UIViewController {
             }
             
         } else {
-            debugPrint("The directory was nil")
+            debugPrint("The directory was nil: \(cloudDocumentsDirectory)")
         }
         return false
     }

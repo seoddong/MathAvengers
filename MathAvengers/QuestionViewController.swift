@@ -168,7 +168,7 @@ class QuestionViewController: UIViewController {
      */
     func createLevel2() {
         
-        let question = "?+?=10"
+        let question = "? + ? = 10"
         
         // 보기 배열 생성
         // 같은 보기가 나오면 안 된다.
@@ -179,7 +179,7 @@ class QuestionViewController: UIViewController {
                 break
             }
             
-            let answer = arc4random_uniform(10)
+            let answer = arc4random_uniform(9)
             if answerArray.contains({$0 == answer}) {
                 // 이미 같은 보기가 있으므로 loop를 한 번 더 돈다.
                 continue
@@ -208,6 +208,40 @@ class QuestionViewController: UIViewController {
         
     }
     
+    /**
+     한 자리 수 + 한 자리 수
+     */
+    func createLevel3() {
+        
+        // 문제 생성
+        let p1 = arc4random_uniform(9)
+        let p2 = arc4random_uniform(9)
+        qLabel.text = "\(p1) + \(p2) = ?"
+        correctAnswer = p1 + p2
+        
+        // 보기 배열 생성
+        // 같은 보기가 나오면 안 된다.
+        var ii = 0
+        answerArray.append(correctAnswer)
+        
+        // 이미 정답을 넣어놓았으므로 기타 보기 3개만 더 추출
+        while (true) {
+            if ii >= 3 {
+                break
+            }
+            let answer = arc4random_uniform(18)
+            if answerArray.contains({$0 == answer}) {
+                // 이미 같은 보기가 있으므로 loop를 한 번 더 돈다.
+                continue
+            }
+            else {
+                
+                answerArray.append(answer)
+                ii += 1
+            }
+        }
+    }
+    
     
     func makeQuestionLevel() {
         // 레벨 1: 합이 10 이하의 덧셈 문제
@@ -220,6 +254,9 @@ class QuestionViewController: UIViewController {
             break
         case 2:
             createLevel2()
+            break
+        case 3:
+            createLevel3()
             break
         default:
             createLevel1()
@@ -288,7 +325,7 @@ class QuestionViewController: UIViewController {
     // 채점
     func checkAnswer(sender:UIButton!) {
         switch currentLevel {
-        case 1:
+        case 1, 3:
             let answer = sender.titleLabel?.text
             
             if answer == String(correctAnswer) {

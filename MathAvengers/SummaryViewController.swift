@@ -48,6 +48,7 @@ class SummaryViewController: UIViewController {
         // icloud에 저장
         if NSUserDefaults.standardUserDefaults().boolForKey("iCloudYN") {
             let cloud = CloudViewController()
+            cloud.initialize()
             cloud.command = CloudViewController.commandType.store
             //self.navigationController?.pushViewController(cloud, animated: true)
             if cloud.storeFile("default.realm") {
