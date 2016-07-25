@@ -12,8 +12,8 @@ import RealmSwift
 class ImportJSON {
     init () {
         
-        initTB_LEVEL()
-        initTB_SETTINGS()
+//        initTB_LEVEL()
+//        initTB_SETTINGS()
         
     }
     

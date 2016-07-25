@@ -21,7 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             let realms = Realms()
             if case let cnt = realms.countTB_LEVEL() where cnt == 0 {
-                _ = ImportJSON()
+                let json = ImportJSON()
+                json.initTB_LEVEL()
+                json.initTB_SETTINGS()
+
             }
         }
         return true
