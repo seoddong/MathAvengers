@@ -124,7 +124,7 @@ class MainViewController: UIViewController {
         self.automaticallyAdjustsScrollViewInsets = true
         
         self.title = "Math Avengers"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "기록 보기", style: .Plain, target: self, action: #selector(showLog))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "View Records".localize(), style: .Plain, target: self, action: #selector(showLog))
         //self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "cloud", style: .Plain, target: self, action: #selector(cloudPressed))
         
         // TableView 설정
@@ -218,7 +218,8 @@ extension MainViewController: UITableViewDataSource {
         
         // 셀의 데이터와 이미지 설정 코드
         let row = indexPath.row
-        cell.cellLabel.text = "\(results[row].levelDesc)"
+        cell.cellLabel.text = "\(results[row].levelDesc)".localize()
+        cell.cellLabel.adjustsFontSizeToFitWidth = true
         let imageName = String(format: "%02d", results[row].level)
         cell.cellImageView.image = UIImage(named: "level")
         cell.cellnumImageView.image = UIImage(named: imageName)

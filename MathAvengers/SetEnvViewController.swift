@@ -19,8 +19,8 @@ class SetEnvViewController: UIViewController {
     let welcomeImageView = [UIImageView(), UIImageView()]
     let welcomeImage = [UIImage(named:"setenv"), UIImage(named:"owl_small")]
     let welcomeLabel = [UILabel()]
-    let welcomeText = ["환경 설정"]
-    var labelText = ["     즉시 iCloud에서 데이터 복원!     ", "     자동으로 iCloud에 저장!     "]
+    let welcomeText = ["Set Env".localize()]
+    var labelText = ["     Restore from iCloud immediately!     ".localize(), "     Save to iCloud automatically!     ".localize()]
     let introButton = [UIButton(), UIButton()]
     let cloudSwitch = UISwitch()
     var userName = ""
@@ -61,7 +61,7 @@ class SetEnvViewController: UIViewController {
         self.view.backgroundColor = UIColor.whiteColor()
         
         //  Navi Bar
-        self.title = "환경 설정"
+        self.title = "Set Env".localize()
         
         // Welcome Image
         for ii in 0 ..< welcomeImageView.count {

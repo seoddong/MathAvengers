@@ -1,0 +1,11 @@
+        /*
+          InfoPlist.strings
+          MathAvengers
+
+          Created by SeoDongHee on 2016. 7. 25..
+          Copyright © 2016년 SeoDongHee. All rights reserved.
+        */
+
+
+        "CFBundleDisplayName" = "산수 특공대";
+        "CFBundleName" = "산수 특공대";

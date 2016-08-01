@@ -21,7 +21,7 @@ class SummaryViewController: UIViewController {
         }
     }
     var calledTitle = ""
-    var message = ["이런~ 3번 틀렸네요.\n다음엔 좀 더 잘 할 수 있을 거에요.", "음~ 두 번 틀렸네요.\n하지만 잘 했어요~", "오~ 하나 밖에 안 틀렸어요.\n이 정도면 훌륭해요!!", "와우! 모두 다 정답!\n최고로 잘 했어요!", "아악~ 시간이 다 되었네요~\n다음엔 더 빨리 풀어보아요."]
+    var message = ["Hmm~ Wrong 3 times.\nNext time you can do better.".localize(), "Hmm~ Wrong 2 times.\nBut well done~".localize(), "Oh~ Only one wrong\nYou are very good!!".localize(), "WOW! Perfect!\n You are the BEST!".localize(), "Oh my god~ Spended all the time\nNext time little bit faster.".localize()]
     
     var stackView: UIStackView!
     var levelLabel: UILabel!
@@ -72,18 +72,19 @@ class SummaryViewController: UIViewController {
         self.view.backgroundColor = UIColor.whiteColor()
         
         //Navi Bar
-        self.title = "Math Avengers - Summary"
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "처음으로", style: .Plain, target: self, action: #selector(self.leftBarButtonPressed))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "기록 보기", style: .Plain, target: self, action: #selector(self.rightBarButtonPressed))
+        self.title = "Summary".localize()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Go to the Intro".localize(), style: .Plain, target: self, action: #selector(self.leftBarButtonPressed))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Go to the Log".localize(), style: .Plain, target: self, action: #selector(self.rightBarButtonPressed))
 
         
         levelLabel = UILabel()
-        levelLabel.text = "도전 단계: \(calledTitle)"
+        levelLabel.text = "LEVEL: ".localize() + "\(calledTitle)"
         uidesign.setLabelBubbleGreenSmallWithBorder(levelLabel, fontSize: 40)
+        levelLabel.adjustsFontSizeToFitWidth = true
         levelLabel.heightAnchor.constraintEqualToConstant(80).active = true
         
         scoreLabel = UILabel()
-        scoreLabel.text = "최종 점수: \(String(finalScoreInt))"
+        scoreLabel.text = "Final Score: ".localize() + "\(String(finalScoreInt))"
         uidesign.setLabelBubbleGreenSmallWithBorder(scoreLabel, fontSize: 40)
         scoreLabel.heightAnchor.constraintEqualToConstant(80).active = true
         
@@ -114,7 +115,7 @@ class SummaryViewController: UIViewController {
         
         
         retryButton.translatesAutoresizingMaskIntoConstraints = false
-        retryButton.setTitle("한 번 더 할래요", forState: .Normal)
+        retryButton.setTitle("Play one more time".localize(), forState: .Normal)
         uidesign.setTextButton(retryButton, fontColor: UIColor.blueColor(), fontSize: 30)
         retryButton.addTarget(self, action: #selector(retryGame), forControlEvents: UIControlEvents.TouchUpInside)
         

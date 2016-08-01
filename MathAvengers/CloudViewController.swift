@@ -122,13 +122,18 @@ class CloudViewController: UIViewController {
                     
                     try fileManager.copyItemAtURL(destinationUrl, toURL: localURL!)
                     debugPrint("Successfully copied the cloud file to the local...")
-                    statusLabel.text = "Download is OK"
+                    statusLabel.text = "Download is OK".localize()
+                    
+                    
+                    // 클라우드 데이터를 가져왔을 때 level 데이터가 틀어질 수 있으므로 level 데이터만 json에서 다시 가져온다.
+                    let json = ImportJSON()
+                    json.initTB_LEVEL()
 
                 }
                 catch let err as NSError{
                     //error handling
                     debugPrint("err = \(err.localizedDescription)")
-                    statusLabel.text = "Download id Failed.."
+                    statusLabel.text = "Download id Failed..".localize()
                 }
             }
         }
@@ -176,13 +181,13 @@ class CloudViewController: UIViewController {
 
                     try fileManager.copyItemAtURL(localURL, toURL: destinationUrl)
                     debugPrint("Successfully copied the file to the cloud...")
-                    statusLabel.text = "Saving is OK"
+                    statusLabel.text = "Saving is OK".localize()
                     return true
                 } catch let error1 as NSError {
                     savingError = error1
                     if let error = savingError {
                         debugPrint("Failed to move the file to the cloud = \(error)")
-                        statusLabel.text = "Saving is Failed.."
+                        statusLabel.text = "Saving is Failed..".localize()
                     }
                 }
             }
@@ -258,7 +263,7 @@ class CloudViewController: UIViewController {
         
         let results = query.results
         if results.count == 0 {
-            statusLabel.text = "클라우드에 파일이 없습니다."
+            statusLabel.text = "No files in iCloud.".localize()
             return
         }
 

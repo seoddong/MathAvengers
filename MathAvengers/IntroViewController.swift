@@ -18,14 +18,13 @@ class IntroViewController: UIViewController {
     let welcomeImageView = [UIImageView(), UIImageView()]
     let welcomeImage = [UIImage(named:"welcome"), UIImage(named:"owl_small")]
     let welcomeLabel = [UILabel()]
-    var labelText = ["환영합니다!", "     지금 게임을 시작할래요!     ", "     다른 이름을 선택할래요!     ", "     새로운 이름을 사용할래요!     ", "     클라우드 데이터 가져오기     "]
-    let introButton = [UIButton(), UIButton(), UIButton(), UIButton()]
+    var labelText = ["WELCOME!".localize(), "     Play Game Right Now!     ".localize(), "     Let Me Select Another Name!     ".localize(), "     Let Me Create New Name!     ".localize(), "     Get iCloud Data     ".localize()]
+    let introButtons = [UIButton(), UIButton(), UIButton(), UIButton()]
     
     var userName = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
 
     }
     
@@ -41,18 +40,18 @@ class IntroViewController: UIViewController {
         else {
             userName = results[0].userName
             NSUserDefaults.standardUserDefaults().setObject(results[0].userName, forKey: "userName")
-            labelText[0] = "\(userName)님! 환영합니다!"
+            labelText[0] = String.localizedStringWithFormat(NSLocalizedString("Welcome, %@!", comment: "Welcome"), userName)
         }
         
         setupUI()
         
         if userName.isEmpty {
-            introButton[0].hidden = true
-            introButton[1].hidden = true
+            introButtons[0].hidden = true
+            introButtons[1].hidden = true
         }
         else {
-            introButton[0].hidden = false
-            introButton[1].hidden = false
+            introButtons[0].hidden = false
+            introButtons[1].hidden = false
         }
         
     }
@@ -70,9 +69,9 @@ class IntroViewController: UIViewController {
         self.view.backgroundColor = UIColor.whiteColor()
         
         //  Navi Bar
-        self.title = "Intro"
+        self.title = "Intro".localize()
 //        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "이전 단계로", style: .Plain, target: self, action: #selector(self.leftBarButtonPressed))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "세팅", style: .Plain, target: self, action: #selector(settingGame))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings".localize(), style: .Plain, target: self, action: #selector(settingGame))
         
         // Welcome Image
         for ii in 0 ..< welcomeImageView.count {
@@ -91,23 +90,23 @@ class IntroViewController: UIViewController {
         }
         
         // buttons
-        for ii in 0 ..< introButton.count {
+        for ii in 0 ..< introButtons.count {
             
-            introButton[ii].translatesAutoresizingMaskIntoConstraints = false
-            introButton[ii].setTitle(labelText[ii+1], forState: .Normal)
-            uidesign.setTextButton(introButton[ii], fontColor: UIColor.blueColor(), fontSize: 30)
-            introButton[ii].addTarget(self, action: #selector(blink), forControlEvents: UIControlEvents.TouchDown)
+            introButtons[ii].translatesAutoresizingMaskIntoConstraints = false
+            introButtons[ii].setTitle(labelText[ii+1], forState: .Normal)
+            uidesign.setTextButton(introButtons[ii], fontColor: UIColor.blueColor(), fontSize: 30)
+            introButtons[ii].addTarget(self, action: #selector(blink), forControlEvents: UIControlEvents.TouchDown)
         }
 
-        introButton[0].addTarget(self, action: #selector(startGame), forControlEvents: UIControlEvents.TouchUpInside)
-        introButton[1].addTarget(self, action: #selector(selectOtherName), forControlEvents: UIControlEvents.TouchUpInside)
-        introButton[2].addTarget(self, action: #selector(createNewname), forControlEvents: UIControlEvents.TouchUpInside)
-        introButton[3].addTarget(self, action: #selector(getCloud), forControlEvents: UIControlEvents.TouchUpInside)
+        introButtons[0].addTarget(self, action: #selector(startGame), forControlEvents: UIControlEvents.TouchUpInside)
+        introButtons[1].addTarget(self, action: #selector(selectOtherName), forControlEvents: UIControlEvents.TouchUpInside)
+        introButtons[2].addTarget(self, action: #selector(createNewname), forControlEvents: UIControlEvents.TouchUpInside)
+        introButtons[3].addTarget(self, action: #selector(getCloud), forControlEvents: UIControlEvents.TouchUpInside)
 
         
         stackViews[0].addArrangedSubview(welcomeImageView[0])
         stackViews[0].addArrangedSubview(welcomeLabel[0])
-        _ = introButton.map({stackViews[0].addArrangedSubview($0)})
+        _ = introButtons.map({stackViews[0].addArrangedSubview($0)})
         stackViews[0].addArrangedSubview(welcomeImageView[1])
         self.view.addSubview(stackViews[0])
 
@@ -129,38 +128,34 @@ class IntroViewController: UIViewController {
     
     // MARK: - Actions
     func settingGame() {
-        debugPrint(settingGame)
+        //debugPrint(settingGame)
         let setGame = SetEnvViewController()
         self.navigationController?.pushViewController(setGame, animated: true)
     }
     
     func startGame(sender: UIButton!) {
-        debugPrint(startGame)
+        //debugPrint(startGame)
         let start = MainViewController()
         self.navigationController?.pushViewController(start, animated: true)
     }
     
     func selectOtherName(sender: UIButton!) {
-        debugPrint(selectOtherName)
+        //debugPrint(selectOtherName)
         let users = UsersViewController()
         self.navigationController?.pushViewController(users, animated: true)
     }
     
     func createNewname(sender: UIButton!) {
-        debugPrint(createNewname)
+        //debugPrint(createNewname)
         let settings = SettingsViewController()
         self.navigationController?.pushViewController(settings, animated: true)
     }
     
     func getCloud(sender: UIButton!) {
-        debugPrint(getCloud)
+        //debugPrint(getCloud)
         let cloud = CloudViewController()
         cloud.command = CloudViewController.commandType.downloadWithReturn
         self.navigationController?.pushViewController(cloud, animated: true)
-        
-        // 클라우드 데이터를 가져왔을 때 level 데이터가 틀어질 수 있으므로 level 데이터만 json에서 다시 가져온다.
-        let json = ImportJSON()
-        json.initTB_LEVEL()
     }
     
     func blink(sender: UIButton!) {

@@ -76,7 +76,6 @@ class SettingsViewController: UIViewController {
        
     override func viewDidLoad() {
         super.viewDidLoad()
-        debugPrint("viewDidLoad: SettingsViewController")
         
         // 키보드 이벤트 등록
         self.performSelector(#selector(registerKeyboardEvent))
@@ -147,7 +146,7 @@ class SettingsViewController: UIViewController {
     }
     
     func showAlert(section: Int, message: String) {
-        self.presentViewController(util.alert("알림", message: message, ok: "확인", cancel: nil, okAction: nil, cancelAction: nil), animated: true, completion: {
+        self.presentViewController(util.alert("Info".localize(), message: message, ok: "OK".localize(), cancel: nil, okAction: nil, cancelAction: nil), animated: true, completion: {
             let cell = self.collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: 2, inSection: section)) as! SettingsCell
             cell.textField.becomeFirstResponder()
             cell.textField.text = ""
@@ -169,7 +168,7 @@ class SettingsViewController: UIViewController {
                             // 이름이 pk이므로 이미 같은 이름이 있는지 확인한다.
                             let realm = try! Realm()
                             if realm.objects(TB_USER.self).filter("userName == %@", name).count > 0 {
-                                showAlert(section, message: "같은 이름이 있습니다.\n다른 이름을 적어주세요.")
+                                showAlert(section, message: "It's a duplicated name.\nUse another name please.".localize())
                                 break
                             }
                             activeField?.endEditing(true)
@@ -177,7 +176,7 @@ class SettingsViewController: UIViewController {
                             collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
                         }
                         else {
-                            showAlert(section, message: "이름을 적어주세요.")
+                            showAlert(section, message: "Write you name please.".localize())
                         }
                         break
                     case 1:
@@ -188,7 +187,8 @@ class SettingsViewController: UIViewController {
                             collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
                         }
                         else {
-                            showAlert(section, message: "나이를 적어주세요.")                        }
+                            showAlert(section, message: "Write you age please.".localize())
+                        }
                         break
                     case 2:
                         // realm에 저장
@@ -212,13 +212,13 @@ class SettingsViewController: UIViewController {
                             self.navigationController?.pushViewController(cloud, animated: true)
                         }
                         else {
-                            let okAction = UIAlertAction(title: "네, 저장합니다", style: UIAlertActionStyle.Default) { (result : UIAlertAction) -> Void in
+                            let okAction = UIAlertAction(title: "Yes".localize(), style: UIAlertActionStyle.Default) { (result : UIAlertAction) -> Void in
                                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "iCloudYN")
                                 let cloud = CloudViewController()
                                 cloud.command = CloudViewController.commandType.storeToRoot
                                 self.navigationController?.pushViewController(cloud, animated: true)
                             }
-                            let alert = util.alert("알림", message: "iCloud에 저장할까요?", ok: "네, 저장합니다", cancel: "아니오", okAction: okAction, cancelAction: nil)
+                            let alert = util.alert("Info".localize(), message: "Do you save in iCloud?".localize(), ok: "Yes".localize(), cancel: "No".localize(), okAction: okAction, cancelAction: nil)
                             self.presentViewController(alert, animated: true, completion: nil)
                         }
 
@@ -240,7 +240,7 @@ class SettingsViewController: UIViewController {
     }
     
     func nextButtonPressed() {
-        self.presentViewController(util.alert("앗!", message: "이름을 입력하지 않으셨네요~", ok: "네, 입력할게요", cancel: nil, okAction: nil, cancelAction: nil), animated: true, completion: nil)
+        self.presentViewController(util.alert("Alert".localize(), message: "You didn't write your name.".localize(), ok: "Yes, I'll do.".localize(), cancel: nil, okAction: nil, cancelAction: nil), animated: true, completion: nil)
         let indexPath = NSIndexPath(forRow: 0, inSection: 1)
         collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
     }
@@ -250,9 +250,8 @@ class SettingsViewController: UIViewController {
     func setupUI() {
         
         //  Navi Bar
-        self.title = "Math Avengers - Settings"
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "처음으로", style: .Plain, target: self, action: #selector(self.leftBarButtonPressed))
-        //self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "다음 단계로", style: .Plain, target: self, action: #selector(self.nextButtonPressed))
+        self.title = "Settings".localize()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Go to Intro".localize(), style: .Plain, target: self, action: #selector(self.leftBarButtonPressed))
         
         layout.scrollDirection = .Vertical
         layout.minimumLineSpacing = 10
@@ -312,7 +311,7 @@ class SettingsViewController: UIViewController {
             if length > 10 {
                 // label에 경고 문구를 띄운다.
                 let cell = self.collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: 1, inSection: currentSection!)) as! SettingsCell
-                cell.cellLabel.text = "\((cell.cellLabel.text)!)\n(이름은 10글자를 넘으면 안되요~)"
+                cell.cellLabel.text = "\((cell.cellLabel.text)!)\n" + "(Name must be less than 10 letters)".localize()
                 
             }
             return prospectiveText.characters.count <= 10
@@ -321,7 +320,7 @@ class SettingsViewController: UIViewController {
             if !prospectiveText.containsOnlyCharactersIn("0123456789") {
                 // label에 경고 문구를 띄운다.
                 let cell = self.collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: 1, inSection: currentSection!)) as! SettingsCell
-                cell.cellLabel.text = "\((cell.cellLabel.text)!)\n(나이는 숫자만 적어주세요~)"
+                cell.cellLabel.text = "\((cell.cellLabel.text)!)\n" + "(Please enter only numbers~)".localize()
                 
             }
             return prospectiveText.containsOnlyCharactersIn("0123456789") && prospectiveText.characters.count <= 3

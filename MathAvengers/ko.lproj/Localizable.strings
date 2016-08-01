@@ -1,0 +1,111 @@
+/* 
+  String.strings
+  MathAvengers
+
+  Created by SeoDongHee on 2016. 7. 25..
+  Copyright © 2016년 SeoDongHee. All rights reserved.
+*/
+
+
+
+/**
+ *  IntroViewController
+ */
+"Intro" = "시작";
+"WELCOME!" = "환영합니다!";
+"     Play Game Right Now!     " = "     지금 게임할래요!     ";
+"     Let Me Select Another Name!     " = "     다른 이름을 선택할래요!     ";
+"     Let Me Create New Name!     " = "     새로운 이름을 만들래요!     ";
+"     Get iCloud Data     " = "     클라우드 데이터 가져오기     ";
+//" Welcome!" = "님! 환영합니다!";
+"Welcome, %@!" = "%1$@님! 환영합니다!";
+"Settings" = "세팅";
+
+
+
+/**
+ *  MainViewController
+ */
+"View Records" = "기록 보기";
+"An addition the results are less than 10" = "결과가 10 미만인 더하기";
+"Find two numbers the sum is 10" = "합이 10이 되는 두 수 찾기";
+"A single disit + a single disit part 1" = "한 자리 수 + 한 자리 수 1";
+"A single disit + a single disit part 2" = "두 자리 수 + 한 자리 수 2";
+
+
+/**
+ *  QuestionViewController
+ */
+"Quit" = "그만하기";
+
+
+/**
+ *  SummaryViewController
+ */
+"Hmm~ Wrong 3 times.\nNext time you can do better." = "이런~ 3번 틀렸네요.\n다음엔 좀 더 잘 할 수 있을 거에요.";
+"Hmm~ Wrong 2 times.\nBut well done~" = "음~ 두 번 틀렸네요.\n하지만 잘 했어요~";
+"Oh~ Only one wrong\nYou are very good!!" = "오~ 하나 밖에 안 틀렸어요.\n이 정도면 훌륭해요!!";
+"WOW! Perfect!\n You are the BEST!" = "와우! 모두 다 정답!\n최고로 잘 했어요!";
+"Oh my god~ Spended all the time\nNext time little bit faster." = "아악~ 시간이 다 되었네요~\n다음엔 더 빨리 풀어보아요.";
+"LEVEL: " = "도전 단계: ";
+"Final Score: " = "최종 점수: ";
+"Play one more time" = "한 번 더 할래요";
+"Summary" = "결과 보고";
+"Go to the Intro" = "처음으로";
+"Go to the Log" = "기록 보기";
+
+
+/**
+ *  ShowLogViewController
+ *  Alert Message
+ */
+"Log" = "기록 보기";
+"Search more" = "하루 더 조회";
+"OK" = "확인";
+"No" = "아니오";
+"Yes" = "네";
+"Info" = "알림";
+"Alert" = "앗!";
+"Do you save in iCloud?" = "iCloud에 저장할까요?";
+"No more data" = "더 이상 데이터가 없습니다";
+"You didn't write your name." = "이름을 입력하지 않으셨네요~";
+"Yes, I'll do." = "네, 입력할게요";
+"your answer" = "선택한 답";
+"right" = "맞음";
+"wrong" = "틀림";
+
+/**
+ *  SettingsViewController
+ */
+"It's a duplicated name.\nUse another name please." = "같은 이름이 있습니다.\n다른 이름을 적어주세요.";
+"Write you name please." = "이름을 적어주세요.";
+"Write you age please." = "나이을 적어주세요.";
+"Settings" = "설정";
+"(Name must be less than 10 letters)" = "(이름은 10글자를 넘으면 안되요~)";
+"(Please enter only numbers~)" = "(나이는 숫자만 적어주세요~)";
+
+
+/**
+ *  UsersViewController
+ */
+"Users" = "이름 변경";
+"Best Records" = "최고 기록";
+
+
+/**
+ *  SetEnvViewController
+ */
+"Set Env" = "환경 설정";
+"     Restore from iCloud immediately!     " = "     즉시 iCloud에서 데이터 복원!     ";
+"     Save to iCloud automatically!     " = "     자동으로 iCloud에 저장!     ";
+
+
+/**
+ *  CloudViewController
+ */
+"Download is OK" = "다운로드 완료";
+"Download id Failed.." = "다운로드 실패";
+"Saving is OK" = "저장 성공";
+"Saving is Failed.." = "저장 실패";
+"No files in iCloud." = "클라우드에 파일이 없습니다.";
+

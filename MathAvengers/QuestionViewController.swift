@@ -426,7 +426,7 @@ class QuestionViewController: UIViewController {
         
         // Navi
         self.title = calledTitle
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "그만 하기", style: .Plain, target: self, action: #selector(leftBarButtonPressed))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Quit".localize(), style: .Plain, target: self, action: #selector(leftBarButtonPressed))
         
         // score
         scoreLabel = UILabel()

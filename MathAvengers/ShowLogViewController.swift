@@ -35,6 +35,10 @@ class ShowLogViewController: UIViewController {
     let userName = NSUserDefaults.standardUserDefaults().objectForKey("userName") as! String
     var filterDate = NSDate()
     let dateFormatter = NSDateFormatter()
+    
+    let yourAnswer = "선택한 답".localize()
+    let right = "맞음".localize()
+    let wrong = "틀림".localize()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,8 +67,8 @@ class ShowLogViewController: UIViewController {
         
         self.view.backgroundColor = UIColor.whiteColor()
         
-        self.title = "기록 보기"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "하루 더 조회", style: .Plain, target: self, action: #selector(rightBarButtonPressed))
+        self.title = "Log".localize()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Search more".localize(), style: .Plain, target: self, action: #selector(rightBarButtonPressed))
         self.automaticallyAdjustsScrollViewInsets = true
         
         tableView = UITableView(frame: CGRectMake(0, 0, 200, 200), style: .Plain)
@@ -116,10 +120,10 @@ class ShowLogViewController: UIViewController {
         }
         else {
             let util = Util()
-            let okAction = UIAlertAction(title: "확인", style: UIAlertActionStyle.Default) { (result : UIAlertAction) -> Void in
+            let okAction = UIAlertAction(title: "OK".localize(), style: UIAlertActionStyle.Default) { (result : UIAlertAction) -> Void in
                 self.navigationController?.popViewControllerAnimated(true)
             }
-            self.presentViewController(util.alert("알림", message: "더 이상 데이터가 없습니다", ok: "확인", cancel: nil, okAction: okAction, cancelAction: nil), animated: true, completion: nil)
+            self.presentViewController(util.alert("Info".localize(), message: "No more data".localize(), ok: "OK".localize(), cancel: nil, okAction: okAction, cancelAction: nil), animated: true, completion: nil)
         }
         
     }
@@ -167,8 +171,9 @@ extension ShowLogViewController: UITableViewDataSource {
         let record = results[indexPath.row]
         
         dateFormatter.dateFormat = "yyyy.MM.dd HH:mm:ss"
-        cell.textLabel?.text = "\(record.question)      선택한 답: \(record.answer)"
-        cell.detailTextLabel?.text = "\(String(dateFormatter.stringFromDate(record.playdt))) - \(record.result ? "맞음" : "틀림")"
+        
+        cell.textLabel?.text = "\(record.question)      " + yourAnswer + ": \(record.answer)"
+        cell.detailTextLabel?.text = "\(String(dateFormatter.stringFromDate(record.playdt))) - \(record.result ? right : wrong)"
         cell.result = record.result
 
         return cell

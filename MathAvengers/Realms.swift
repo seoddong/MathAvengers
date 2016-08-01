@@ -122,6 +122,10 @@ class TB_LEVEL: Object {
     dynamic var level = 0
     dynamic var levelDesc = ""
     dynamic var imageURL = ""
+    
+    override static func primaryKey() -> String? {
+        return "level"
+    }
 
 }
 

@@ -1,3 +1,11 @@
+//
+//  Util.swift
+//  MathAvengers
+//
+//  Created by SeoDongHee on 2016. 7. 11..
+//  Copyright © 2016년 SeoDongHee. All rights reserved.
+//
+
 import GameplayKit
 import UIKit
 
@@ -165,8 +173,7 @@ extension String {
     // Returns true if the string represents a proper numeric value.
     // This method uses the device's current locale setting to determine
     // which decimal separator it will accept.
-    func isNumeric() -> Bool
-    {
+    func isNumeric() -> Bool {
         let scanner = NSScanner(string: self)
         
         // A newly-created scanner has no locale by default.
@@ -178,6 +185,10 @@ extension String {
         scanner.locale = NSLocale.currentLocale()
         
         return scanner.scanDecimal(nil) && scanner.atEnd
+    }
+    
+    func localize() -> String {
+        return NSLocalizedString(self, comment: self)
     }
     
 }

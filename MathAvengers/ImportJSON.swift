@@ -65,7 +65,7 @@ class ImportJSON {
                 {
                     for each in json
                     {
-                        realm.create(TB_LEVEL.self, value: [each["level"] as! Int, each["levelDesc"] as! String, each["imageURL"] as! String])
+                        realm.create(TB_LEVEL.self, value: [each["level"] as! Int, each["levelDesc"] as! String, each["imageURL"] as! String], update: true)
                     }
                     
             }

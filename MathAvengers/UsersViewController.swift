@@ -49,7 +49,7 @@ class UsersViewController: UIViewController {
         view.backgroundColor = UIColor.whiteColor()
         
         //  Navi Bar
-        self.title = "Users"
+        self.title = "Users".localize()
 
         // tablbeView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -111,7 +111,7 @@ extension UsersViewController: UITableViewDataSource {
         if result.bestScore == 0 {
             cell.detailTextLabel?.text = "\(String(dateFormatter.stringFromDate(result.lastPlaydt)))"
         } else {
-            cell.detailTextLabel?.text = "최고 기록: \(result.bestScore) - \(String(dateFormatter.stringFromDate(result.lastPlaydt)))"
+            cell.detailTextLabel?.text = "Best Records".localize() + ": \(result.bestScore) - \(String(dateFormatter.stringFromDate(result.lastPlaydt)))"
         }
         return cell
     }
