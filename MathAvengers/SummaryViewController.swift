@@ -106,8 +106,11 @@ class SummaryViewController: UIViewController {
         if countLife == 0 || finalScore <= 0 {
             image = UIImage(named: "otl")
         }
+        else if countLife == 3 && finalScore > 0 {
+            image = UIImage(named: "awesome")
+        }
         else {
-            image = UIImage(named: "awesome ")
+            image = UIImage(named: "good")
         }
         imageView = UIImageView(image: image)
         imageView.contentMode = .ScaleAspectFit
