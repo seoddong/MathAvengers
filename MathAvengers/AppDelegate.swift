@@ -22,11 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let realms = Realms()
             if case let cnt = realms.countTB_LEVEL() where cnt == 0 {
                 let json = ImportJSON()
-                json.initTB_LEVEL()
-                json.initTB_SETTINGS()
+                json.initTB_LEVEL(nil)
+                json.initTB_SETTINGS(nil)
 
             }
         }
+        
+        let json = ImportJSON()
+        json.checkVersion()
+        
         return true
     }
 

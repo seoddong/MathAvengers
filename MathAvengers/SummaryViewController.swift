@@ -107,7 +107,7 @@ class SummaryViewController: UIViewController {
             image = UIImage(named: "otl")
         }
         else {
-            image = UIImage(named: "rainbow")
+            image = UIImage(named: "awesome ")
         }
         imageView = UIImageView(image: image)
         imageView.contentMode = .ScaleAspectFit

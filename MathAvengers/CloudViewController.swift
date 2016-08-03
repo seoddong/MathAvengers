@@ -127,7 +127,7 @@ class CloudViewController: UIViewController {
                     
                     // 클라우드 데이터를 가져왔을 때 level 데이터가 틀어질 수 있으므로 level 데이터만 json에서 다시 가져온다.
                     let json = ImportJSON()
-                    json.initTB_LEVEL()
+                    json.checkVersion()
 
                 }
                 catch let err as NSError{

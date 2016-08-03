@@ -17,12 +17,18 @@ class ImportJSON {
         
     }
     
-    func initTB_SETTINGS() {
+    func initTB_SETTINGS(data: NSData?) {
         let jsonFilePath = NSBundle.mainBundle().pathForResource("TB_SETTINGS", ofType: "json")
         debugPrint("jsonFilePath=\(jsonFilePath)")
         do
         {
-            let jsonData = try NSData(contentsOfFile: jsonFilePath!, options: NSDataReadingOptions(rawValue: 0))
+            var jsonData: NSData!
+            if let webData = data {
+                jsonData = webData
+            }
+            else {
+                jsonData = try NSData(contentsOfFile: jsonFilePath!, options: NSDataReadingOptions(rawValue: 0))
+            }
             let json = try NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions()) as! NSArray
             
             
@@ -51,12 +57,18 @@ class ImportJSON {
         
     }
     
-    func initTB_LEVEL() {
+    func initTB_LEVEL(data: NSData?) {
         let jsonFilePath = NSBundle.mainBundle().pathForResource("TB_LEVEL", ofType: "json")
         debugPrint("jsonFilePath=\(jsonFilePath)")
         do
         {
-            let jsonData = try NSData(contentsOfFile: jsonFilePath!, options: NSDataReadingOptions(rawValue: 0))
+            var jsonData: NSData!
+            if let webData = data {
+                jsonData = webData
+            }
+            else {
+                jsonData = try NSData(contentsOfFile: jsonFilePath!, options: NSDataReadingOptions(rawValue: 0))
+            }
             let json = try NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions()) as! NSArray
             
             
@@ -84,4 +96,63 @@ class ImportJSON {
         }
 
     }
+    
+    
+    
+    func checkVersion() {
+        var dataVer = NSUserDefaults.standardUserDefaults().floatForKey("dataVer")
+        if dataVer == 0.0 {
+            NSUserDefaults.standardUserDefaults().setFloat(1.0, forKey: "dataVer")
+            dataVer = NSUserDefaults.standardUserDefaults().floatForKey("dataVer")
+        }
+        var webVer: Float = 0
+        let verURL = NSURL(string: "http://seoddong.myaxler.com/songahbie/MathAvengers/mathavengers_ver.txt")!
+        let task = NSURLSession.sharedSession().dataTaskWithURL(verURL) { (data, response, error) -> Void in
+            debugPrint("web task completed.. ")
+            if let urlContent = data {
+                let webContent = NSString(data: urlContent, encoding: NSUTF8StringEncoding)
+                debugPrint(webContent)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    webVer = Float(String(webContent!))!
+                    if webVer > dataVer {
+                        dataVer = webVer
+                        // 내부 json이 아닌 web 상의 json을 읽는다.
+                        debugPrint(dataVer)
+                        var webData = self.downloadJSONFromWeb(NSURL(string: "http://seoddong.myaxler.com/songahbie/MathAvengers/TB_LEVEL.json")!)
+                        self.initTB_LEVEL(webData)
+                        webData = self.downloadJSONFromWeb(NSURL(string: "http://seoddong.myaxler.com/songahbie/MathAvengers/TB_SETTINGS.json")!)
+                        self.initTB_SETTINGS(webData)
+                    }
+                    else {
+                        self.initTB_LEVEL(nil)
+                        self.initTB_SETTINGS(nil)
+                    }
+                })
+            }
+            else {
+                // 네트워크 연결이 되지 않던가 뭐..
+                debugPrint("web error = [\(error?.localizedDescription)]")
+            }
+        }
+        task.resume()
+    }
+    
+    func downloadJSONFromWeb(url: NSURL) -> NSData? {
+        var urlData: NSData?
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) -> Void in
+            debugPrint("download web task completed.. ")
+            if let webData = data {
+                urlData = webData
+            }
+            else {
+                // 네트워크 연결이 되지 않던가 뭐..
+                debugPrint("web error = [\(error?.localizedDescription)]")
+            }
+        }
+        task.resume()
+        return urlData
+    }
+    
+    
+    
 }
