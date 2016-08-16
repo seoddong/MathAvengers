@@ -290,6 +290,41 @@ class QuestionViewController: UIViewController {
     }
     
     
+    /**
+     10 - 한 자리 수
+     결과는 10 ~ 18 사이가 나오는 문제만 출제
+     */
+    func createLevel5() {
+        
+        // 문제 생성
+        let p1 = arc4random_uniform(10)
+        qLabel.text = "10 - \(p1) = ?"
+        correctAnswer = 10 - p1
+        
+        // 보기 배열 생성
+        // 같은 보기가 나오면 안 된다.
+        var ii = 0
+        answerArray.append(correctAnswer)
+        
+        // 이미 정답을 넣어놓았으므로 기타 보기 3개만 더 추출
+        while (true) {
+            if ii >= 3 {
+                break
+            }
+            let answer = arc4random_uniform(10)
+            if answerArray.contains({$0 == answer}) {
+                // 이미 같은 보기가 있으므로 loop를 한 번 더 돈다.
+                continue
+            }
+            else {
+                
+                answerArray.append(answer)
+                ii += 1
+            }
+        }
+    }
+    
+    
     func makeQuestionLevel() {
         // 레벨 1: 합이 10 이하의 덧셈 문제
         
@@ -307,6 +342,9 @@ class QuestionViewController: UIViewController {
             break
         case 4:
             createLevel4()
+            break
+        case 5:
+            createLevel5()
             break
         default:
             createLevel1()
@@ -375,17 +413,6 @@ class QuestionViewController: UIViewController {
     // 채점
     func checkAnswer(sender:UIButton!) {
         switch currentLevel {
-        case 1, 3, 4:
-            let answer = sender.titleLabel?.text
-            
-            if answer == String(correctAnswer) {
-                correctAnswerProcess(answer!)
-            }
-            else {
-                sender.backgroundColor = UIColor.redColor()
-                incorrectAnswerProcess(answer!)
-            }
-            break
         case 2:
             selectedAnswerArray.append(UInt32((sender.titleLabel?.text)!)!)
             // 답을 하나만 선택한 경우에는 두 번째 답을 기다린다.
@@ -413,7 +440,18 @@ class QuestionViewController: UIViewController {
             }
             
             break
+            
+        // case 1, 3, 4, 5:
         default:
+            let answer = sender.titleLabel?.text
+            
+            if answer == String(correctAnswer) {
+                correctAnswerProcess(answer!)
+            }
+            else {
+                sender.backgroundColor = UIColor.redColor()
+                incorrectAnswerProcess(answer!)
+            }
             break
         }
         

@@ -220,9 +220,9 @@ extension MainViewController: UITableViewDataSource {
         let row = indexPath.row
         cell.cellLabel.text = "\(results[row].levelDesc)".localize()
         cell.cellLabel.adjustsFontSizeToFitWidth = true
-        let imageName = String(format: "%02d", results[row].level)
-        cell.cellImageView.image = UIImage(named: "level")
-        cell.cellnumImageView.image = UIImage(named: imageName)
+        let imageName = String(format: "%03d", results[row].level)
+        cell.cellImageView.image = UIImage(named: imageName)
+        //cell.cellnumImageView.image = UIImage(named: imageName)
         
         return cell
     }
